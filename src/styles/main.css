@@ -1,0 +1,28 @@
+.header-placeholder {
+    height: 50px;
+}
+a[ng-click] {
+    cursor: pointer;
+}
+.form-group label {
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+
+    .visible-xs.collapse.in {
+        display: block !important;
+    }
+    .visible-xs.collapse {
+        display: none !important;
+    }
+
+}
+
+.navbar .collapse {
+    border-top: 1px solid #e7e7e7;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-right: 15px;
+    padding-left: 15px;
+}

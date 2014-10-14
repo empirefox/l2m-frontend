@@ -1,0 +1,38 @@
+# For more information about the configurations used
+# in this file, please see the Travis CI documentation:
+# http://docs.travis-ci.com
+
+git:
+  depth: 10
+
+language: node_js
+
+node_js:
+  - "0.10"
+  
+install:
+  - npm install && bower install
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - cd bower_components/angular-ui-bootstrap
+  - npm install --quiet -g grunt-cli karma
+  - npm install
+  - grunt
+  - cd ../..
+  
+script:
+  - gulp
+
+after_success:
+  - "git clone $REPO git_deploy"
+  - "rm -r git_deploy/*"
+  - "cp -r public/* git_deploy"
+  - "cd git_deploy"
+  - "git config --global push.default simple"
+  - "git config --global user.name 'empirefox'"
+  - "git config --global user.email empirefoxit@sina.com"
+  - "git add -A"
+  - "git commit -m 'update'"
+  - "git push -q"
