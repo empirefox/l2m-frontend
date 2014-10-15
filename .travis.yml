@@ -4,6 +4,9 @@
 
 git:
   depth: 10
+branches:
+  only:
+    - source
 
 language: node_js
 
@@ -36,3 +39,7 @@ after_success:
   - "git add -A"
   - "git commit -m 'update'"
   - "git push -q"
+  
+env:
+  global:
+    - secure: "Oy80NEnY/QoXSMS6wrWk9jDgZLrbjC/tqanX6xTdvMIX2pO+FlyATJ5ETpmVgLY67HSYHHc4okAZcMr2CjgDLV7PDjGXsDFuw5IBCKvfCEoa7Z95cfkidgSGjr9ok9z3f4QiCWOVMnFLZBb6QBpEgyfI7SnO+7Z4zp5A+dIiEQ4="
