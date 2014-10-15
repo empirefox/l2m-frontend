@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="myApp" lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+        Remove this if you use the .htaccess -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+        <title>iniu</title>
+        <meta name="description" content="">
+        <meta name="author" content="savage">
+
+        <meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+        <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+        <script>function cdnizerLoad(u) {document.write('<scr'+'ipt src="'+encodeURIComponent(u)+'"></scr'+'ipt>');}</script><link rel="shortcut icon" href="/favicon.ico">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.2.0/bootstrap.min.css" />
+        <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="//cdn.staticfile.org/spectrum/1.5.0/spectrum.min.css" />
+        <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//cdn.staticfile.org/angular.js/1.2.26/angular.min.js"></script>
+        <script src="//cdn.staticfile.org/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
+        <script src="//cdn.staticfile.org/angular.js/1.2.26/angular-route.min.js"></script>
+        <script src="//cdn.staticfile.org/angular-i18n/1.2.26/angular-locale_zh-cn.js"></script>
+        <script src="//cdn.staticfile.org/spectrum/1.5.0/spectrum.min.js"></script>
+
+        <!-- 运行版 -->
+        <!-- <script src="http://i.luck2.me/kind/themes/default.css"></script>
+        <script src="http://i.luck2.me/kind/messenger.js"></script>
+        <script src="http://i.luck2.me/kind/kindeditor.js"></script>
+        <script src="http://i.luck2.me/kind/lang/zh_CN.js"></script> -->
+        <!-- 运行版结束 -->
+
+        <!-- 本地测试版 -->
+        <link rel="stylesheet" href="/ke/themes/default/default.css" />
+        <script src="/js/vendor-ke.min.js"></script>
+        <script src="/ke/kindeditor.min.js"></script>
+        <!-- 本地测试版结束 -->
+    </head>
+
+    <body>
+        <div ng-controller="HeaderCtrl" class="navbar navbar-default navbar-fixed-top">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-3">
+                        <span class="sr-only">菜单</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="javascript:location.href='/'"><i class="fa fa-refresh">
+                    </i> 首页</a>
+                </div>
+                <nav class="hidden-xs">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="active(nav)" ng-repeat="nav in navs">
+                            <a href="#{{nav.when}}"><span ng-bind="nav.display"></span></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tables <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-class="active(t)" ng-repeat="t in tables">
+                                    <a href="#/table/{{t.Name}}"><span ng-bind="t.Title||t.Name"></span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/logout">退出</a>
+                        </li>
+                    </ul>
+                </nav>
+                <nav class="visible-xs" collapse="!isCollapsed">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="active(nav)" ng-repeat="nav in navs">
+                            <a ng-click="$parent.isCollapsed = !$parent.isCollapsed" href="#{{nav.when}}"><span ng-bind="nav.display"></span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li ng-class="active(t)" ng-repeat="t in tables">
+                            <a href="#/table/{{t.Name}}"><span ng-bind="t.Title||t.Name"></span></a>
+                        </li>
+                        <li>
+                            <a href="/logout">退出</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="header-placeholder"></div>
+
+        <div class="container" ng-view></div>
+        <footer class="container">
+            <p>
+                &copy; Copyright  by savage
+            </p>
+        </footer>
+        <link rel="stylesheet" href="/css/main.css" />
+        <script src="/js/l2m-tpl.min.js"></script>
+        <script src="/js/app.min.js"></script>
+    </body>
+</html>
