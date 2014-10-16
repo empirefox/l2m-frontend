@@ -96,7 +96,7 @@ gulp.task('copy:index.html', function () {
                 		{
                 			file: '**/bootstrap/**/bootstrap.css',
                 			"package": 'bootstrap',
-                			cdn: 'cdnjs:twitter-bootstrap:bootstrap.min.css'
+                			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
                 		}
                		]}))
                .pipe(plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org'))
