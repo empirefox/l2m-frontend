@@ -18,7 +18,7 @@ module.exports = function(config) {
       'bower_components/jquery/dist/jquery.min.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.11.2.min.js',
+      'bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-*.min.js',
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-i18n/angular-locale_zh-cn.js',
       'bower_components/pluralize/pluralize.js',
@@ -46,7 +46,7 @@ module.exports = function(config) {
     
     ngHtml2JsPreprocessor: {
     	stripPrefix: 'src/',
-    	moduleName: 'iniu-tpl'
+    	moduleName: 'l2m-tpl'
     },
 
 

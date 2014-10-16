@@ -1,7 +1,6 @@
 'use strict';
 
 describe('Field', function() {
-	beforeEach(module('iniu-tpl'));
 	beforeEach(module('myApp', function($provide) {
 		return $provide.decorator('FormsIniter', function() {
 			return {

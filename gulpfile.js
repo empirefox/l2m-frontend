@@ -159,7 +159,8 @@ gulp.task('copy:tpl', function () {
 			   		quotes: true
 			   }))
 			   .pipe(plugins.ngHtml2js({
-			   		moduleName: 'l2m-tpl'
+			   		moduleName: 'l2m-tpl',
+			   		prefix: 'views/'
 			   }))
 			   .pipe(plugins.concat('l2m-tpl.min.js'))
 			   .pipe(plugins.uglify())

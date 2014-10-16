@@ -5,7 +5,6 @@ describe('angular app', function() {
 	    $rootScope,
 	    $route,
 	    $httpBackend;
-	beforeEach(module('iniu-tpl'));
 	beforeEach(module('myApp', function($provide) {
 		return $provide.decorator('FormsIniter', function() {
 			return {

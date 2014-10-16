@@ -2,7 +2,6 @@
 
 //load save remove recovery migrate
 describe('Form Directive', function() {
-	beforeEach(module('iniu-tpl'));
 	beforeEach(module('myApp', function($provide) {
 		return $provide.decorator('FormsIniter', function() {
 			return {
