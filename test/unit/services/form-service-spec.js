@@ -3,21 +3,7 @@
 describe('Form Serivce', function() {
 	var service,
 	    http;
-	beforeEach(module('myApp', function($provide) {
-		return $provide.decorator('FormsIniter', function() {
-			return {
-				load : function() {
-					return [{
-						Name : 'Bu',
-						Title : 'BU'
-					}, {
-						Name : 'Cu',
-						Title : 'CU'
-					}];
-				}
-			};
-		});
-	}));
+	beforeEach(module('myApp', FormsIniterInjector));
 	beforeEach(inject(function(FormService, $httpBackend) {
 		service = FormService;
 		http = $httpBackend;

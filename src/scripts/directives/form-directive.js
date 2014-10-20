@@ -10,17 +10,9 @@ function($scope, $http, ParentsSession) {
 		return value;
 	}
 
-	//监视parent,改变后重新载入
-
-	$scope.$watch('parent', /*jshint unused:false */
-	function(value) {
-		delete $scope.pager;
-		$scope.load();
-	});
-
-	$scope.parent = ParentsSession[$scope.form.Name];
+	$scope.parent = ParentsSession[$scope.ops.formName];
 	if (angular.isDefined($scope.parent)) {
-		delete ParentsSession[$scope.form.Name];
+		delete ParentsSession[$scope.ops.formName];
 	}
 	$scope.isDefined = angular.isDefined;
 	$scope.newRecord = function() {
@@ -138,10 +130,18 @@ function($scope, $http, ParentsSession) {
 			}
 		});
 	});
+
+	//监视parent,改变后重新载入
+
+	$scope.$watch('parent', /*jshint unused:false */
+	function(value) {
+		delete $scope.pager;
+		$scope.load();
+	});
 }]).directive('formDirective', function() {
 	return {
 		controller : 'FormDirectiveCtrl',
-		templateUrl : 'views/directive-templates/form/form.html',
+		templateUrl : '/views/directive-templates/form/form.html',
 		restrict : 'E',
 		scope : {
 			form : '=formMetas',

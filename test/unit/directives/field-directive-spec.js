@@ -1,24 +1,10 @@
 'use strict';
 
 describe('Field', function() {
-	beforeEach(module('myApp', function($provide) {
-		return $provide.decorator('FormsIniter', function() {
-			return {
-				load : function() {
-					return [{
-						Name : 'Bu',
-						Title : 'BU'
-					}, {
-						Name : 'Cu',
-						Title : 'CU'
-					}];
-				}
-			};
-		});
-	}));
+	beforeEach(module('myApp', FormsIniterInjector));
 	
 	var $httpBackend;
-	var baseDir = 'views/directive-templates/field/';
+	var baseDir = '/views/directive-templates/field/';
 	var fnames = ['textarea'];
 	beforeEach(inject(function($templateCache, _$httpBackend_) {
 		$httpBackend = _$httpBackend_;
@@ -48,7 +34,7 @@ describe('Field', function() {
 			};
 			field = linkFn(scope);
 			//此处是为什么field-directive.js78行不执行的原因
-			$httpBackend.flush();
+			//$httpBackend.flush();
 			scope.$digest();
 		});
 

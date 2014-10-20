@@ -1,7 +1,7 @@
 'use strict';
 
-angularApp.directive('fieldDirective', ['$http', '$compile', 'editorCssPath', 'ParentsSession',
-function($http, $compile, $location, editorCssPath, ParentsSession) {
+angularApp.directive('fieldDirective', ['$http', '$compile', '$location', 'editorCssPath', 'ParentsSession', '$templateCache',
+function($http, $compile, $location, editorCssPath, ParentsSession, $templateCache) {
 	var placeholders = {
 		search : "关键字",
 		url : "如：http://www.luck2.me",
@@ -10,7 +10,7 @@ function($http, $compile, $location, editorCssPath, ParentsSession) {
 		password : "输入密码",
 	};
 
-	var baseDir = 'views/directive-templates/field/';
+	var baseDir = '/views/directive-templates/field/';
 
 	var getTemplateUrl = function(type) {
 		var templateUrl = '';
@@ -114,17 +114,24 @@ function($http, $compile, $location, editorCssPath, ParentsSession) {
 		if (angular.isDefined(placeholders[type]) && angular.isUndefined(scope.field.Placeholder)) {
 			scope.field.Placeholder = placeholders[type];
 		}
-		var templateUrl = getTemplateUrl(type);
-		$http.get(templateUrl).success(function(data) {
-			element.html(data);
+
+		var resolveTpl = function(tpl) {
+			element.html(tpl);
 			$compile(element.contents())(scope);
 			var initer = initers[type];
 			if (initer) {
 				initer(scope, element);
 			}
-		}).error(function(data) {
-			console.log('fieldDirective linker ' + data);
-		});
+		};
+		var templateUrl = getTemplateUrl(type);
+		var tpl = $templateCache.get(templateUrl);
+		if (tpl) {
+			resolveTpl(tpl);
+		} else {
+			$http.get(templateUrl).success(resolveTpl).error(function(tpl) {
+				console.log('fieldDirective linker ' + tpl + ' with url:' + templateUrl);
+			});
+		}
 	};
 
 	return {

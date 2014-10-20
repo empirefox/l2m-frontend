@@ -11,7 +11,8 @@ function($scope, $routeParams, FormService) {
 		save : table('save'),
 		remove : table('remove'),
 		recovery : table('recovery'),
-		migrate : table('migrate')
+		migrate : table('migrate'),
+		formName : fname
 	};
 	FormService.get(table('form')).then(function(form) {
 		$scope.form = form;

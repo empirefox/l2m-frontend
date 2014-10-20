@@ -90,8 +90,12 @@ gulp.task('copy:index.html', function () {
               		  	},
                 		'cdnjs:font-awesome',
                 		{
-                			file: '**/spectrum/*.{js,css}',
-                			cdn: 'cdnjs:spectrum:${ filenameMin }'
+                			file: '**/spectrum/*.js',
+                			cdn: 'cdnjs:spectrum:js/${ filenameMin }'
+                		},
+                		{
+                			file: '**/spectrum/*.css',
+                			cdn: 'cdnjs:spectrum:css/${ filenameMin }'
                 		},
                 		{
                 			file: '**/bootstrap/**/bootstrap.css',
@@ -153,16 +157,11 @@ gulp.task('copy:ke', function () {
 
 gulp.task('copy:tpl', function () {
 	return gulp.src(template('<%= src %>/views/**/*.html', dirs))
-			   .pipe(plugins.minifyHtml({
-			   		empty: true,
-			   		spare: true,
-			   		quotes: true
+			   .pipe(plugins.angularTemplatecache('l2m-tpl.min.js',{
+			   		standalone:true,
+			   		module: 'l2m-tpl',
+			   		root: '/views'
 			   }))
-			   .pipe(plugins.ngHtml2js({
-			   		moduleName: 'l2m-tpl',
-			   		prefix: 'views/'
-			   }))
-			   .pipe(plugins.concat('l2m-tpl.min.js'))
 			   .pipe(plugins.uglify())
 			   .pipe(gulp.dest(template('<%= dist %>/js', dirs)));
 });

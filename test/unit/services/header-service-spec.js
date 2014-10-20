@@ -5,21 +5,7 @@ describe('Header Service', function() {
 	    $location,
 	    service,
 	    navs;
-	beforeEach(module('myApp', function($provide) {
-		return $provide.decorator('FormsIniter', function() {
-			return {
-				load : function() {
-					return [{
-						Name : 'Bu',
-						Title : 'BU'
-					}, {
-						Name : 'Cu',
-						Title : 'CU'
-					}];
-				}
-			};
-		});
-	}));
+	beforeEach(module('myApp', FormsIniterInjector));
 	beforeEach(inject(function(HeaderService, _$rootScope_, _$location_, _navs_) {
 		service = HeaderService;
 		$rootScope = _$rootScope_;

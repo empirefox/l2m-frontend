@@ -5,21 +5,7 @@ describe('Header Controller', function() {
 	    $location,
 	    scope,
 	    navs;
-	beforeEach(module('myApp', function($provide) {
-		return $provide.decorator('FormsIniter', function() {
-			return {
-				load : function() {
-					return [{
-						Name : 'Bu',
-						Title : 'BU'
-					}, {
-						Name : 'Cu',
-						Title : 'CU'
-					}];
-				}
-			};
-		});
-	}));
+	beforeEach(module('myApp', FormsIniterInjector));
 	beforeEach(inject(function($rootScope, $controller, _$location_, _navs_) {
 		$location = _$location_;
 		navs = _navs_;

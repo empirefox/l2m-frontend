@@ -5,22 +5,8 @@ describe('angular app', function() {
 	    $rootScope,
 	    $route,
 	    $httpBackend;
-	beforeEach(module('myApp', function($provide) {
-		return $provide.decorator('FormsIniter', function() {
-			return {
-				load : function() {
-					return [{
-						Name : 'Bu',
-						Title : 'BU'
-					}, {
-						Name : 'Cu',
-						Title : 'CU'
-					}];
-				}
-			};
-		});
-	}));
-	beforeEach(inject(function(_$rootScope_, _$location_, _$route_, _$httpBackend_) {
+	beforeEach(module('myApp', FormsIniterInjector));
+	beforeEach(inject(function(FormsIniter, $q, _$rootScope_, _$location_, _$route_, _$httpBackend_) {
 		$rootScope = _$rootScope_;
 		$location = _$location_;
 		$route = _$route_;
@@ -34,7 +20,7 @@ describe('angular app', function() {
 			$rootScope.$digest();
 
 			expect($route.current).toEqual(jasmine.objectContaining({
-				templateUrl : 'views/form-container.html',
+				templateUrl : '/views/form-container.html',
 				controller : 'BucketsCtrl'
 			}));
 
@@ -42,7 +28,7 @@ describe('angular app', function() {
 			$rootScope.$digest();
 
 			expect($route.current).toEqual(jasmine.objectContaining({
-				templateUrl : 'views/main.html',
+				templateUrl : '/views/main.html',
 				controller : 'MainCtrl'
 			}));
 		});
@@ -53,7 +39,7 @@ describe('angular app', function() {
 			$rootScope.$digest();
 
 			expect($route.current).toEqual(jasmine.objectContaining({
-				templateUrl : 'views/form-container.html',
+				templateUrl : '/views/form-container.html',
 				controller : 'TablesCtrl'
 			}));
 		});

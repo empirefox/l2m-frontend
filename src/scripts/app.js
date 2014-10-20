@@ -43,34 +43,34 @@ Array.prototype.replace = function(val, rep) {
 };
 
 /* jshint unused: false, -W079 */
-var angularApp = angular.module('myApp', ['angularBsEditor', 'ui.bootstrap', 'ngRoute', 'l2m-tpl']);
+var angularApp = angular.module('myApp', ['ui.bootstrap', 'l2m-tpl', 'angularBsEditor', 'ngRoute']);
 
 angularApp.constant('editorCssPath', ['//cdn.staticfile.org/twitter-bootstrap/3.2.0/css/bootstrap.min.css', '//cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css'])//kindeditor
 .constant('navs', [{
 	display : '从这里开始',
 	when : '/',
-	templateUrl : 'views/main.html',
+	templateUrl : '/views/main.html',
 	controller : 'MainCtrl'
 }, {
 	//表的管理，url全部为复数表名
 	display : 'Bucket',
 	when : '/buckets',
-	templateUrl : 'views/form-container.html',
+	templateUrl : '/views/form-container.html',
 	controller : 'BucketsCtrl'
 }, {
 	display : '测试编辑器',
 	when : '/kindeditors',
-	templateUrl : 'views/test-with-editor.html',
+	templateUrl : '/views/test-with-editor.html',
 	controller : 'KindeditorsCtrl'
 }, {
 	display : '多行文本转变量',
 	when : '/strings',
-	templateUrl : 'views/multitext.html',
+	templateUrl : '/views/multitext.html',
 	controller : 'MultiTextCtrl'
 }, {
 	display : 'Fa列表',
 	when : '/fas',
-	templateUrl : 'views/fa-list.html',
+	templateUrl : '/views/fa-list.html',
 	controller : 'FaListCtrl'
 }]).config(['$routeProvider', 'navs',
 function($routeProvider, navs) {
@@ -78,7 +78,7 @@ function($routeProvider, navs) {
 		$routeProvider.when(nav.when, nav);
 	});
 	$routeProvider.when('/table/:fname', {
-		templateUrl : 'views/form-container.html',
+		templateUrl : '/views/form-container.html',
 		controller : 'TablesCtrl'
 	});
 	$routeProvider.otherwise({
@@ -88,17 +88,19 @@ function($routeProvider, navs) {
 function($http) {
 	return {
 		load : function() {
-			var r = [];
-			$http.get('/forms').success(function(data) {
+			return $http.get('/forms').then(function(response) {
+				var data = response.data;
 				if (!data.error) {
-					r = data.content;
+					return data.content;
 				}
+				return [];
 			});
-			return r;
 		}
 	};
 }]).run(['$rootScope', 'FormsIniter',
 function($rootScope, FormsIniter) {
-	$rootScope.tables = FormsIniter.load();
+	FormsIniter.load().then(function(data) {
+		$rootScope.tables = data;
+	});
 }]);
 

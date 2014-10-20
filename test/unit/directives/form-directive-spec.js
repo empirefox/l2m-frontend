@@ -2,24 +2,10 @@
 
 //load save remove recovery migrate
 describe('Form Directive', function() {
-	beforeEach(module('myApp', function($provide) {
-		return $provide.decorator('FormsIniter', function() {
-			return {
-				load : function() {
-					return [{
-						Name : 'Bu',
-						Title : 'BU'
-					}, {
-						Name : 'Cu',
-						Title : 'CU'
-					}];
-				}
-			};
-		});
-	}));
+	beforeEach(module('myApp', FormsIniterInjector));
 
 	var http;
-	var baseDir = 'views/directive-templates/';
+	var baseDir = '/views/directive-templates/';
 	var fnames1 = ['textarea', 'checkbox', 'date', 'dropdown', 'hidden', 'radio', 'kindeditor'];
 	var fnames2 = ['text', 'search', 'url', 'telephone', 'email', 'password', 'dateTimeLocal', 'month', 'number', 'time', 'week'];
 	beforeEach(inject(function($templateCache, _$httpBackend_) {
