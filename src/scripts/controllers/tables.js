@@ -8,8 +8,8 @@ function($scope, $routeParams, FormService) {
 	};
 	$scope.ops = {
 		load : table('page'),
-		save : table('save'),
-		remove : table('remove'),
+		save : table('binding/save'),
+		remove : table('binding/remove'),
 		recovery : table('recovery'),
 		migrate : table('migrate'),
 		formName : fname

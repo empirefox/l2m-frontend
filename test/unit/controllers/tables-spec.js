@@ -24,8 +24,8 @@ describe('Tables Controller', function() {
 	it('should generate right ops', function() {
 		expect(scope.ops).toEqual(jasmine.objectContaining({
 			load : '/Bucket/page',
-			save : '/Bucket/save',
-			remove : '/Bucket/remove',
+			save : '/Bucket/binding/save',
+			remove : '/Bucket/binding/remove',
 			recovery : '/Bucket/recovery',
 			migrate : '/Bucket/migrate'
 		}));
