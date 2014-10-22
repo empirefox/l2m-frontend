@@ -39,7 +39,7 @@ function($scope, $http, ParentsSession) {
 			params : {
 				size : $scope.pager.itemsPerPage,
 				num : $scope.pager.currentPage,
-				parent : angular.isDefined($scope.parent) ? $scope.parent.Id : 'null'
+				parent : angular.isDefined($scope.parent) ? $scope.parent.Id : 'all'
 			}
 		}).success(function(data) {
 			data = JSON.parse(JSON.stringify(data, delGoNullTime));

@@ -1,6 +1,6 @@
 <div class="form-group">
     <label>
-        <input ng-disabled="field.Readonly" name="{{field.Name}}" ng-model="data[field.Name]" type="checkbox" ng-true-value="1" ng-false-value="0" ng-required="field.Required"/>
+        <input ng-disabled="field.Readonly" name="{{field.Name}}" ng-model="data[field.Name]" type="checkbox" ng-required="field.Required"/>
         <span ng-bind="field.Title"></span> <span class="text-danger" ng-show="field.Required && data[field.Name] == 0">(* 必选)</span></label>
 </div>
 

@@ -15,6 +15,7 @@ function($http, $compile, $location, editorCssPath, ParentsSession, $templateCac
 	var getTemplateUrl = function(type) {
 		var templateUrl = '';
 		switch(type) {
+			case 'number':
 			case 'textarea':
 			case 'checkbox':
 			case 'date':
@@ -35,7 +36,6 @@ function($http, $compile, $location, editorCssPath, ParentsSession, $templateCac
 			//ng额外
 			case 'dateTimeLocal':
 			case 'month':
-			case 'number':
 			case 'time':
 			case 'week':
 				templateUrl = baseDir + 'textfield.html';
@@ -92,11 +92,13 @@ function($http, $compile, $location, editorCssPath, ParentsSession, $templateCac
 		/*jshint unused:false */
 		children : function(scope, element) {
 			scope.view = function(plural) {
-				var single = pluralize.plural(plural, 1);
+				var single = pluralize.singular(plural);
 				//将当前记录传递到子列表中
 				ParentsSession[single] = scope.data;
+				console.log(single);
+				console.log(ParentsSession);
 				//以form名称定向
-				$location.path('/' + plural.toLowerCase());
+				$location.path('/table/' + single);
 			};
 		}
 	};

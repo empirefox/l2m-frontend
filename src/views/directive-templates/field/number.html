@@ -1,0 +1,5 @@
+<div class="form-group">
+    <label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !data[field.Name] && data[field.Name]!=0">* 必填</span>
+        <input ng-disabled="field.Readonly" type="{{field.Type}}" placeholder="{{field.Placeholder}}" name="{{field.Name}}" ng-model="data[field.Name]" ng-required="field.Required" class="form-control">
+    </label>
+</div>
