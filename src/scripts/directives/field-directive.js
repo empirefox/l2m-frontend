@@ -94,9 +94,7 @@ function($http, $compile, $location, editorCssPath, ParentsSession, $templateCac
 			scope.view = function(plural) {
 				var single = pluralize.singular(plural);
 				//将当前记录传递到子列表中
-				ParentsSession[single] = scope.data;
-				console.log(single);
-				console.log(ParentsSession);
+				ParentsSession[single] = [scope.data];
 				//以form名称定向
 				$location.path('/table/' + single);
 			};

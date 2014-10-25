@@ -98,8 +98,13 @@ gulp.task('copy:index.html', function () {
                 			cdn: 'cdnjs:spectrum:css/${ filenameMin }'
                 		},
                 		{
+                			file: '**/string.js',
+                			package: 'string',
+                			cdn: 'cdnjs:string.js:${ filenameMin }'
+                		},
+                		{
                 			file: '**/bootstrap/**/bootstrap.css',
-                			"package": 'bootstrap',
+                			package: 'bootstrap',
                 			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
                 		}
                		]}))

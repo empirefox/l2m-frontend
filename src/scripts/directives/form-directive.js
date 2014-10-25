@@ -4,20 +4,26 @@ angularApp.service('ParentsSession', function() {
 }).controller('FormDirectiveCtrl', ['$scope', '$http', 'ParentsSession',
 function($scope, $http, ParentsSession) {
 	function delGoNullTime(key, value) {
+		"id|pos|createdat|created_at|updatedat|updated_at".split('|').forEach(function(e) {
+			if ( typeof key === 'string' && key.toLowerCase() === e) {
+				return undefined;
+			}
+		});
 		if (/^0001-01-01T(\d{2}):(\d{2}):(\d{2}).*$/.test(value)) {
 			return undefined;
 		}
 		return value;
 	}
 
-	$scope.parent = ParentsSession[$scope.ops.formName];
-	if (angular.isDefined($scope.parent)) {
+
+	$scope.parents = ParentsSession[$scope.ops.formName];
+	if (angular.isDefined($scope.parents)) {
 		delete ParentsSession[$scope.ops.formName];
 	}
 	$scope.isDefined = angular.isDefined;
 	$scope.newRecord = function() {
 		var New = $scope.form.New;
-		if (angular.isUndefined(New)) {
+		if (angular.isUndefined(New) || $.isEmptyObject(New)) {
 			return {
 				isNew : true
 			};
@@ -35,11 +41,20 @@ function($scope, $http, ParentsSession) {
 				currentPage : 1
 			};
 		}
+
+		var ps = {};
+		if (angular.isDefined($scope.parents)) {
+			$scope.parents.forEach(function(parent) {
+				var key = S(parent.Name).underscore().chompLeft('_').s + "_id";
+				ps[key] = parent.Id;
+			});
+		}
+
 		$http.get($scope.ops.load, {
 			params : {
 				size : $scope.pager.itemsPerPage,
 				num : $scope.pager.currentPage,
-				parent : angular.isDefined($scope.parent) ? $scope.parent.Id : 'all'
+				parent : $.isEmptyObject(ps) ? 'all' : JSON.stringify(ps)
 			}
 		}).success(function(data) {
 			data = JSON.parse(JSON.stringify(data, delGoNullTime));
@@ -131,9 +146,9 @@ function($scope, $http, ParentsSession) {
 		});
 	});
 
-	//监视parent,改变后重新载入
+	//监视parents,改变后重新载入
 
-	$scope.$watch('parent', /*jshint unused:false */
+	$scope.$watch('parents', /*jshint unused:false */
 	function(value) {
 		delete $scope.pager;
 		$scope.load();
