@@ -1,25 +1,24 @@
 'use strict';
 
-angularApp.service('ParentsSession', function() {
-}).controller('FormDirectiveCtrl', ['$scope', '$http', 'ParentsSession',
-function($scope, $http, ParentsSession) {
+angularApp.controller('FormDirectiveCtrl', ['$scope', '$http', '$location',
+function($scope, $http, $location) {
 	function delGoNullTime(key, value) {
-		"id|pos|createdat|created_at|updatedat|updated_at".split('|').forEach(function(e) {
-			if ( typeof key === 'string' && key.toLowerCase() === e) {
-				return undefined;
-			}
-		});
 		if (/^0001-01-01T(\d{2}):(\d{2}):(\d{2}).*$/.test(value)) {
 			return undefined;
 		}
 		return value;
 	}
 
-
-	$scope.parents = ParentsSession[$scope.ops.formName];
-	if (angular.isDefined($scope.parents)) {
-		delete ParentsSession[$scope.ops.formName];
+	function delNoneExampleEntry(key, value) {
+		"id|pos|createdat|created_at|updatedat|updated_at".split('|').forEach(function(e) {
+			if ( typeof key === 'string' && key.toLowerCase() === e) {
+				return undefined;
+			}
+		});
+		return delGoNullTime(key, value);
 	}
+
+
 	$scope.isDefined = angular.isDefined;
 	$scope.newRecord = function() {
 		var New = $scope.form.New;
@@ -28,7 +27,7 @@ function($scope, $http, ParentsSession) {
 				isNew : true
 			};
 		}
-		var r = JSON.parse(JSON.stringify(New, delGoNullTime));
+		var r = JSON.parse(JSON.stringify(New, delNoneExampleEntry));
 		r.isNew = true;
 		return r;
 	};
@@ -42,19 +41,11 @@ function($scope, $http, ParentsSession) {
 			};
 		}
 
-		var ps = {};
-		if (angular.isDefined($scope.parents)) {
-			$scope.parents.forEach(function(parent) {
-				var key = S(parent.Name).underscore().chompLeft('_').s + "_id";
-				ps[key] = parent.Id;
-			});
-		}
-
 		$http.get($scope.ops.load, {
 			params : {
 				size : $scope.pager.itemsPerPage,
 				num : $scope.pager.currentPage,
-				parent : $.isEmptyObject(ps) ? 'all' : JSON.stringify(ps)
+				search : JSON.stringify($location.search())
 			}
 		}).success(function(data) {
 			data = JSON.parse(JSON.stringify(data, delGoNullTime));

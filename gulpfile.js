@@ -175,6 +175,21 @@ gulp.task('copy:app', function () {
 	return gulp.src(['bower_components/pluralize/pluralize.js',
 					template('<%= src %>/scripts/**/*.js', dirs)])
 			   .pipe(plugins.concat('app.min.js'))
+			   .pipe(plugins.cdnizer({
+               		fallbackTest: null,
+               		matchers: [/(["'])({{.+?}})(["'])/gi],
+               		files: [
+                		{
+                			file: '{{font-awesome.css}}',
+                			cdn: 'cdnjs:font-awesome'
+                		},
+                		{
+                			file: '{{bootstrap.css}}',
+                			package: 'bootstrap',
+                			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
+                		}
+               		]}))
+               .pipe(plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org'))
     		   .pipe(plugins.uglify())
                .pipe(gulp.dest(template('<%= dist %>/js', dirs)));
 });

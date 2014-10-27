@@ -1,7 +1,7 @@
 'use strict';
 
-angularApp.directive('fieldDirective', ['$http', '$compile', '$location', 'editorCssPath', 'ParentsSession', '$templateCache',
-function($http, $compile, $location, editorCssPath, ParentsSession, $templateCache) {
+angularApp.directive('fieldDirective', ['$http', '$compile', '$location', '$routeParams', 'editorCssPath', '$templateCache',
+function($http, $compile, $location, $routeParams, editorCssPath, $templateCache) {
 	var placeholders = {
 		search : "关键字",
 		url : "如：http://www.luck2.me",
@@ -23,6 +23,7 @@ function($http, $compile, $location, editorCssPath, ParentsSession, $templateCac
 			case 'hidden':
 			case 'radio':
 			case 'kindeditor':
+			case 'parent':
 			case 'children':
 				templateUrl = baseDir + type + '.html';
 				break;
@@ -91,13 +92,58 @@ function($http, $compile, $location, editorCssPath, ParentsSession, $templateCac
 		},
 		/*jshint unused:false */
 		children : function(scope, element) {
-			scope.view = function(plural) {
-				var single = pluralize.singular(plural);
-				//将当前记录传递到子列表中
-				ParentsSession[single] = [scope.data];
+			scope.view = function() {
+				var single = pluralize.singular(scope.field.Name);
+				var s = {};
+				var pIdKey = S($routeParams.fname).underscore().chompLeft('_').s + "_id";
+				s[pIdKey] = scope.data.Id;
 				//以form名称定向
-				$location.path('/table/' + single);
+				$location.path('/table/' + single).search(s);
 			};
+		},
+		/*jshint unused:false */
+		parent : function(scope, element) {
+			var getPform = function() {
+				return S(scope.field.Name).chompRight('Id').s;
+			};
+			var getPid = function(data) {
+				return data[scope.field.Name];
+			};
+			scope.view = function() {
+				$location.path('/table/' + getPform()).search({
+					id : getPid(scope.data)
+				});
+			};
+
+			scope.$watch('data', function(newValue, oldValue) {
+				var pid = getPid(newValue);
+				if (angular.isUndefined(pid)) {
+					delete scope.parent;
+					return;
+				}
+				if (angular.isDefined(scope.parent) && pid === getPid(oldValue)) {
+					return;
+				}
+				var url = '/' + getPform() + '/names';
+				$http.get(url, {
+					params : {
+						search : JSON.stringify({
+							id : pid
+						})
+					}
+				}).success(function(data) {
+					if (data.error) {
+						return;
+					}
+					var idPosNames = data.content.list;
+					console.log(idPosNames);
+					if (idPosNames[0].Id === pid) {
+						scope.parent = idPosNames[0].Name;
+						return;
+					}
+					console.log('返回多个值');
+				});
+			});
 		}
 	};
 

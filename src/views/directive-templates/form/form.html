@@ -1,7 +1,7 @@
 <nav class="navbar navbar-inverse" role="navigation">
     <ul class="nav navbar-nav">
         <li>
-            <a ng-click="load()">载入<span ng-show="isDefined(parent)"><span ng-bind="parent.Name">的</span></span><span ng-bind="form.Title"></span>列表</a>
+            <a ng-click="load()">重载列表</a>
         </li>
         <li>
             <a ng-click="recovery()">重建数据库</a>
@@ -18,7 +18,8 @@
         </i> 新建</a>
         <a ng-class="{active:(record==r)}" ng-repeat="r in rs" ng-click="edit(r)" class="list-group-item"><span ng-bind="r.Name"></span></a>
     </div>
-    <pagination ng-show="rs" ng-change="load()" total-items="pager.totalItems" ng-model="pager.currentPage" items-per-page="pager.itemsPerPage" max-size="pager.maxSize" class="pager-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+    <pagination ng-show="rs" ng-change="load()" total-items="pager.totalItems" ng-model="pager.currentPage" items-per-page="pager.itemsPerPage" max-size="pager.maxSize" class="pager-sm" 
+        boundary-links="true" rotate="false" num-pages="numPages" previous-text="‹" next-text="›" first-text="«" last-text="»"></pagination>
 </div>
 
 <div ng-if="isDefined(editing)" class="col-md-9">
@@ -53,20 +54,18 @@
     </div>
 
     <a ng-show="!showJson" ng-click="showJson = true">显示实时数据</a>
-    <a ng-show="showJson" ng-click="showJson = false">隐藏实时数据</a>
     <br>
     <div ng-show="showJson">
-        <h4>实时数据:</h4>
+        <h4>实时数据:<a ng-click="showJson = false">隐藏</a></h4>
         <pre>{{ editing | json }}</pre>
     </div>
 </div>
 
 <hr>
 <a ng-show="!showForm" ng-click="showForm = true">显示表单元数据</a>
-<a ng-show="showForm" ng-click="showForm = false">隐藏表单元数据</a>
 <br>
 <br>
 <div ng-show="showForm">
-    <h4>表单元数据:</h4>
+    <h4>表单元数据:<a ng-click="showForm = false">隐藏</a></h4>
     <pre>{{ form | json }}</pre>
 </div>

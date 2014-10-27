@@ -45,7 +45,7 @@ Array.prototype.replace = function(val, rep) {
 /* jshint unused: false, -W079 */
 var angularApp = angular.module('myApp', ['ui.bootstrap', 'l2m-tpl', 'angularBsEditor', 'ngRoute']);
 
-angularApp.constant('editorCssPath', ['//cdn.staticfile.org/twitter-bootstrap/3.2.0/css/bootstrap.min.css', '//cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css'])//kindeditor
+angularApp.constant('editorCssPath', ['{{bootstrap.css}}', '{{font-awesome.css}}'])//kindeditor
 .constant('navs', [{
 	display : '从这里开始',
 	when : '/',
