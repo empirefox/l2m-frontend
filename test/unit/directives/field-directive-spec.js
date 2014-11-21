@@ -1,7 +1,10 @@
 'use strict';
 
-describe('Field', function() {
-	beforeEach(module('myApp', FormsIniterInjector));
+describe('FieldDirective', function() {
+
+	beforeEach(module('myApp'));
+	beforeEach(EqualData);
+	beforeEach(inject(httpd()));
 	
 	var $httpBackend;
 	var baseDir = '/views/directive-templates/field/';

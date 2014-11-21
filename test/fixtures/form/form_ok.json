@@ -1,0 +1,24 @@
+{
+    "Name": "Google",
+    "Title": "表单字段",
+    "Fields": [
+        {
+            "Name": "Pos",
+            "Type": "number"
+        }, {
+            "Name": "Id",
+            "Type": "hidden"
+        }, {
+            "Name": "Name",
+            "Required": true,
+            "Maxlength": 64
+        }, {
+            "Name": "Description",
+            "Type": "textfield",
+            "Maxlength": 128
+        }
+    ],
+    "New": {
+        "Name": "new form name"
+    }
+}

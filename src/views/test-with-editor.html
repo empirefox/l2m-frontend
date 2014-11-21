@@ -1,18 +1,15 @@
 <h3>测试模式</h3>
-<div style="width: 100%;height: 80px">
-    <alert ng-show="alert" type="{{alert.type}}" close="alert=false">
-        {{alert.msg}}
-    </alert>
-</div>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-5">
         <div class="list-group">
-            <a ng-repeat="b in buckets" ng-click="show(b)" class="list-group-item"><span ng-bind="b"></span></a>
+            <a ng-repeat="b in buckets" ng-click="show(b.Name)" class="list-group-item"><span ng-bind="b.Name"></span></a>
         </div>
+        <pagination ng-show="buckets" ng-change="list()" total-items="pager.totalItems" ng-model="pager.currentPage" items-per-page="pager.itemsPerPage" max-size="pager.maxSize" class="pager-sm"
+        boundary-links="true" rotate="false" num-pages="numPages" previous-text="‹" next-text="›" first-text="«" last-text="»"></pagination>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-7">
         <form>
-            <textarea ng-repeat="b in buckets" id="{{b}}" style="visibility:hidden;"></textarea>
+            <textarea ng-repeat="b in buckets" id="{{b.Name}}" style="visibility:hidden;"></textarea>
         </form>
     </div>
 </div>

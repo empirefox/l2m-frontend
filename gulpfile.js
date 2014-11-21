@@ -1,3 +1,66 @@
+var cdnizerFiles = [
+              		  	'cdnjs:jquery',
+              		  	'cdnjs:angular.js',
+              		  	'cdnjs:angular.js:angular-animate.min.js',
+              		  	'cdnjs:angular.js:angular-resource.min.js',
+                        'cdnjs:angular.js:angular-route.min.js',
+                        'cdnjs:angular.js:angular-sanitize.min.js',
+                        {
+                            file: '**/angular-translate/*.js',
+                            package: 'angular-translate',
+                            cdn: 'cdnjs:bower-angular-translate:angular-translate.min.js'
+                        },
+              		  	'cdnjs:angular-i18n:angular-locale_zh-cn.js',
+              		  	{
+              		  		file: '**/angular-ui-bootstrap/**/*.js',
+              		  		cdn: 'cdnjs:angular-ui-bootstrap:ui-bootstrap-tpls.min.js'
+              		  	},
+              		  	'cdnjs:angular-filter:${ filenameMin }',
+                        {
+                            file: '**/angularjs-toaster/*.js',
+                            cdn: 'cdnjs:angularjs-toaster:${ filenameMin }'
+                        },
+                		{
+                			file: '**/angularjs-toaster/*.css',
+                			cdn: 'cdnjs:angularjs-toaster:${ filenameMin }'
+                		},
+                		'cdnjs:font-awesome',
+                		{
+                			file: '**/spectrum/spectrum.js',
+                			cdn: 'cdnjs:spectrum:js/${ filenameMin }'
+                		},
+                		{
+                			file: '**/spectrum/*.css',
+                			cdn: 'cdnjs:spectrum:css/${ filenameMin }'
+                		},
+                		{
+                			file: '**/spectrum/i18n/*.js',
+                			cdn: 'cdnjs:spectrum-i18n:js/${ filenameMin }'
+                		},
+                		{
+                			file: '**/string.js',
+                			package: 'string',
+                			cdn: 'cdnjs:string.js:${ filenameMin }'
+                		},
+                		{
+                			file: '**/bootstrap/**/bootstrap.css',
+                			package: 'bootstrap',
+                			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
+                		}
+               		];
+
+var bsCssFiles = [
+                		{
+                			file: '{{font-awesome.css}}',
+                			cdn: 'cdnjs:font-awesome'
+                		},
+                		{
+                			file: '{{bootstrap.css}}',
+                			package: 'bootstrap',
+                			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
+                		}
+               		];
+
 var fs = require('fs');
 var path = require('path');
 
@@ -12,6 +75,9 @@ var template = require('lodash').template;
 
 var pkg = require('./package.json');
 var dirs = pkg['h5bp-configs'].directories;
+
+// init vars
+var toStaticfilesCDN = plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org');
 
 // -----------------------------------------------------------------------------
 // | Helper tasks                                                              |
@@ -79,46 +145,20 @@ gulp.task('copy:index.html', function () {
                .pipe(plugins.cdnizer({
                		//relativeRoot: template('<%= src %>', dirs),
                		fallbackTest: null,
-               		files: [
-              		  	'cdnjs:jquery',
-              		  	'cdnjs:angular.js',
-              		  	'cdnjs:angular.js:angular-route.min.js',
-              		  	'cdnjs:angular-i18n:angular-locale_zh-cn.js',
-              		  	{
-              		  		file: '**/angular-ui-bootstrap/**/*.js',
-              		  		cdn: 'cdnjs:angular-ui-bootstrap:ui-bootstrap-tpls.min.js'
-              		  	},
-                		'cdnjs:font-awesome',
-                		{
-                			file: '**/spectrum/*.js',
-                			cdn: 'cdnjs:spectrum:js/${ filenameMin }'
-                		},
-                		{
-                			file: '**/spectrum/*.css',
-                			cdn: 'cdnjs:spectrum:css/${ filenameMin }'
-                		},
-                		{
-                			file: '**/string.js',
-                			package: 'string',
-                			cdn: 'cdnjs:string.js:${ filenameMin }'
-                		},
-                		{
-                			file: '**/bootstrap/**/bootstrap.css',
-                			package: 'bootstrap',
-                			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
-                		}
-               		]}))
-               .pipe(plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org'))
+               		files: cdnizerFiles}))
+               .pipe(toStaticfilesCDN)
                .pipe(gulp.dest(template('<%= dist %>', dirs)));
 });
 
 gulp.task('copy:main.css', function () {
 
-    var banner = '/*! HTML5 Boilerplate v' + pkg.version +
+    var banner = '/*! L2M v' + pkg.version +
                     ' | ' + pkg.license.type + ' License' +
                     ' | ' + pkg.homepage + ' */\n\n';
 
-    return gulp.src(template('<%= src %>/styles/main.css', dirs))
+    return gulp.src(['bower_components/angular-ui-tree/dist/angular-ui-tree.min.css',
+                    'bower_components/angular-dialog-service/dist/dialogs.min.css',
+                    template('<%= src %>/styles/main.css', dirs)])
                .pipe(plugins.header(banner))
                .pipe(gulp.dest(template('<%= dist %>/css', dirs)));
 
@@ -138,15 +178,15 @@ gulp.task('copy:misc', function () {
         template('!<%= src %>/views', dirs)
 
     ], {
-
         // Include hidden files by default
         dot: true
-
     }).pipe(gulp.dest(template('<%= dist %>', dirs)));
 });
 
 gulp.task('copy:vendor-ke', function () {
     return gulp.src([
+    				'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
+    				'bower_components/angular-dialog-service/dist/dialogs.min.js',
     				'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
     				'lib/messenger.js'
     			])
@@ -178,18 +218,8 @@ gulp.task('copy:app', function () {
 			   .pipe(plugins.cdnizer({
                		fallbackTest: null,
                		matchers: [/(["'])({{.+?}})(["'])/gi],
-               		files: [
-                		{
-                			file: '{{font-awesome.css}}',
-                			cdn: 'cdnjs:font-awesome'
-                		},
-                		{
-                			file: '{{bootstrap.css}}',
-                			package: 'bootstrap',
-                			cdn: 'cdnjs:twitter-bootstrap:css/bootstrap.min.css'
-                		}
-               		]}))
-               .pipe(plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org'))
+               		files: bsCssFiles}))
+               .pipe(toStaticfilesCDN)
     		   .pipe(plugins.uglify())
                .pipe(gulp.dest(template('<%= dist %>/js', dirs)));
 });

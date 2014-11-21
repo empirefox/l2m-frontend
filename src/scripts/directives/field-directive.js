@@ -1,7 +1,7 @@
 'use strict';
 
-angularApp.directive('fieldDirective', ['$http', '$compile', '$location', '$routeParams', 'editorCssPath', '$templateCache',
-function($http, $compile, $location, $routeParams, editorCssPath, $templateCache) {
+angularApp.directive('fieldDirective', ['$http', '$compile', '$location', '$routeParams', 'EditorCssPath', '$templateCache',
+function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache) {
 	var placeholders = {
 		search : "关键字",
 		url : "如：http://www.luck2.me",
@@ -61,7 +61,7 @@ function($http, $compile, $location, $routeParams, editorCssPath, $templateCache
 				angular : angularApp,
 				allowImageUpload : true,
 				allowFileManager : true,
-				cssPath : editorCssPath,
+				cssPath : EditorCssPath,
 				afterChange : function() {
 					var self = this;
 					self.sync();

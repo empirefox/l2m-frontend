@@ -42,65 +42,55 @@ Array.prototype.replace = function(val, rep) {
 	}
 };
 
+angular.module('githubs', ['ui.bootstrap', 'ngRoute', 'ngResource', 'toaster', 'dialogs.main', 'pascalprecht.translate', 'angular.filter']);
+angular.module('app-filter', ['containsWithPropertyFilter']);
 /* jshint unused: false, -W079 */
-var angularApp = angular.module('myApp', ['ui.bootstrap', 'l2m-tpl', 'angularBsEditor', 'ngRoute']);
+var angularApp = angular.module('myApp', ['githubs', 'navs-const', 'app.fns', 'cps-service', 'l2m-tpl', 'bs-ng-editor', 'formServices', 'msg', 'app-filter']);
 
-angularApp.constant('editorCssPath', ['{{bootstrap.css}}', '{{font-awesome.css}}'])//kindeditor
-.constant('navs', [{
-	display : '从这里开始',
-	when : '/',
-	templateUrl : '/views/main.html',
-	controller : 'MainCtrl'
-}, {
-	//表的管理，url全部为复数表名
-	display : 'Bucket',
-	when : '/buckets',
-	templateUrl : '/views/form-container.html',
-	controller : 'BucketsCtrl'
-}, {
-	display : '测试编辑器',
-	when : '/kindeditors',
-	templateUrl : '/views/test-with-editor.html',
-	controller : 'KindeditorsCtrl'
-}, {
-	display : '多行文本转变量',
-	when : '/strings',
-	templateUrl : '/views/multitext.html',
-	controller : 'MultiTextCtrl'
-}, {
-	display : 'Fa列表',
-	when : '/fas',
-	templateUrl : '/views/fa-list.html',
-	controller : 'FaListCtrl'
-}]).config(['$routeProvider', 'navs',
+angularApp.config(['$routeProvider', 'navs',
 function($routeProvider, navs) {
 	angular.forEach(navs, function(nav) {
 		$routeProvider.when(nav.when, nav);
 	});
 	$routeProvider.when('/table/:fname', {
-		templateUrl : '/views/form-container.html',
+		templateUrl : '/views/tables.html',
 		controller : 'TablesCtrl'
 	});
 	$routeProvider.otherwise({
 		redirectTo : '/'
 	});
-}]).factory('FormsIniter', ['$http',
-function($http) {
-	return {
-		load : function() {
-			return $http.get('/forms').then(function(response) {
-				var data = response.data;
-				if (!data.error) {
-					return data.content;
-				}
-				return [];
-			});
-		}
-	};
-}]).run(['$rootScope', 'FormsIniter',
-function($rootScope, FormsIniter) {
-	FormsIniter.load().then(function(data) {
-		$rootScope.tables = data;
+}]).config(['$tooltipProvider',
+function($tooltipProvider) {
+	$tooltipProvider.options({
+		placement : 'top',
+		animation : false,
+		popupDelay : 0,
+		appendToBody : true
 	});
-}]);
+}]).config(['dialogsProvider', '$translateProvider',
+function(dialogsProvider, $translateProvider) {
+	dialogsProvider.useBackdrop('static');
+	dialogsProvider.useEscClose(false);
+	dialogsProvider.useCopy(false);
+	dialogsProvider.setSize('sm');
 
+	$translateProvider.translations('zh-CN', {
+		DIALOGS_ERROR : "错误",
+		DIALOGS_ERROR_MSG : "发生未知错误.",
+		DIALOGS_CLOSE : "关闭",
+		DIALOGS_PLEASE_WAIT : "请稍等",
+		DIALOGS_PLEASE_WAIT_ELIPS : "请稍等...",
+		DIALOGS_PLEASE_WAIT_MSG : "等待操作结束.",
+		DIALOGS_PERCENT_COMPLETE : "已完成 %",
+		DIALOGS_NOTIFICATION : "通知",
+		DIALOGS_NOTIFICATION_MSG : "未知程序通知.",
+		DIALOGS_CONFIRMATION : "请确认",
+		DIALOGS_CONFIRMATION_MSG : "确认进行.",
+		DIALOGS_OK : "确定",
+		DIALOGS_YES : "确认",
+		DIALOGS_NO : "取消"
+	});
+
+	$translateProvider.preferredLanguage('zh-CN');
+}]).run(function() {
+});

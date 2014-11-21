@@ -1,10 +1,160 @@
 'use strict';
 
-angularApp.service('FormService', ['$http',
-function($http) {
-	this.get = function(formPath) {
-		return $http.get(formPath).then(function(response) {
-			return response.data;
-		});
+// all Ips is {Ips: mods}
+angular.module('formServices', []).factory('FormResource', ['$routeParams', '$resource', 'CpsService',
+function($routeParams, $resource, CpsService) {
+	return $resource('/:fname/:act', {
+		fname : function() {
+			return $routeParams.fname;
+		}
+	}, {
+		mf : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				act : 'mf'
+			},
+			transformResponse : function(data) {
+				return angular.fromJson(data).Fields;
+			}
+		},
+		form : {
+			method : 'GET',
+			params : {
+				act : 'form',
+			}
+		},
+
+		one : {
+			method : 'GET',
+			params : {
+				act : '1',
+			}
+		},
+		page : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				act : 'page'
+			}
+		},
+		names : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				act : 'names'
+			}
+		},
+		saveAll : {
+			method : 'POST',
+			isArray : true,
+			params : {
+				act : 'saveall'
+			}
+		},
+		save : {
+			method : 'POST',
+			params : {
+				act : 'save'
+			}
+		},
+		saveup : {
+			method : 'POST',
+			params : {
+				act : 'saveup',
+				cp : CpsService.get
+			}
+		},
+		remove : {
+			method : 'PUT',
+			params : {
+				act : 'remove'
+			}
+		},
+
+		forms : {
+			method : 'GET',
+			isArray : true,
+			cache : true,
+			params : {
+				fname : 'forms'
+			}
+		},
+		rearrange : {
+			method : 'PUT',
+			isArray : true,
+			params : {
+				act : 'rearrange'
+			}
+		},
+		recovery : {
+			method : 'DELETE',
+			params : {
+				act : 'recovery'
+			}
+		},
+		migrate : {
+			method : 'PUT',
+			params : {
+				act : 'migrate'
+			}
+		},
+
+		modIps : {
+			method : 'POST',
+			isArray : true,
+			params : {
+				act : 'modips'
+			}
+		},
+		xpos : {
+			method : 'POST',
+			params : {
+				act : 'xpos'
+			}
+		},
+		posTop : {
+			method : 'PUT',
+			params : {
+				act : 'postop',
+			}
+		},
+		posBottom : {
+			method : 'POST',
+			isArray : true,
+			params : {
+				act : 'posbottom'
+			}
+		},
+		posUpSingle : {
+			method : 'POST',
+			params : {
+				act : 'singleposup'
+			}
+		}
+	});
+}]).service('FormService', ['FormResource',
+function(FormResource) {
+	function applyArgs(handler, names) {
+		var args = [];
+		for (name in names) {
+			if handler[name] {
+				args.push(handler[name]);
+			}
+		}
+		return args;
+	}
+
+
+	this.FP = function(handler) {
+		return function() {
+			var args = applyArgs(handler, ['param', 'postData', 'handle', 'error']);
+			return FormResource[handler.act].apply(null, args).$promise;
+		};
+	};
+	this.F = function(name) {
+		return function() {
+			return FormResource[name]().$promise;
+		};
 	};
 }]);

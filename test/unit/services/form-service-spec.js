@@ -1,19 +1,66 @@
 'use strict';
 
-describe('Form Serivce', function() {
-	var service,
-	    http;
-	beforeEach(module('myApp', FormsIniterInjector));
-	beforeEach(inject(function(FormService, $httpBackend) {
-		service = FormService;
-		http = $httpBackend;
-		$httpBackend.when('GET', "/google/form").respond('200', '{"name":"google form"}');
+describe('FormResource', function() {
+	var $rootScope,
+	    FormResource,
+	    $httpBackend,
+	    $routeParams;
+
+	beforeEach(EqualData);
+
+	beforeEach(module('myApp'));
+
+	beforeEach(inject(httpd()));
+
+	beforeEach(inject(function(_$rootScope_, _FormResource_, _$httpBackend_, _$routeParams_) {
+		$rootScope = _$rootScope_;
+		FormResource = _FormResource_;
+		$httpBackend = _$httpBackend_;
+		$routeParams = _$routeParams_;
+
+		$rootScope.$apply();
 	}));
 
-	it('should get form data', function() {
-		service.get('/google/form').then(function(form) {
-			http.flush();
-			expect(form.name).toBe('google form');
+	it('should check $routeParams.fname ok', function() {
+		expect($routeParams.fname).toBe('Field');
+	});
+
+	describe('mf', function() {
+		it('should get mf', function() {
+			var r;
+			FormResource.mf(function(data) {
+				r = data;
+			});
+			$httpBackend.flush();
+			expect(r).toEqualData(__fixtures__['form/mf_ok'].Fields);
+		});
+	});
+
+	describe('form', function() {
+		it('should get data', function() {
+			var r;
+			FormResource.form(function(data) {
+				r = data;
+			});
+			$httpBackend.flush();
+			expect(r).toEqualData(__fixtures__['form/form_ok']);
+		});
+	});
+
+	describe('recovery', function() {
+		it('should get error', function() {
+			var r,
+			    err;
+			FormResource.recovery({
+				fname : 'err'
+			}, function(data) {
+				r = data;
+			}, function(error) {
+				err = error;
+			});
+			$httpBackend.flush();
+			expect(r).not.toBeDefined();
+			expect(err.data).toEqualData('Bad Request');
 		});
 	});
 })

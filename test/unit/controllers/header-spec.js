@@ -1,26 +1,37 @@
 'use strict';
 
-describe('Header Controller', function() {
+describe('HeaderCtrl', function() {
 	var controller,
-	    $location,
+	    $httpBackend,
 	    scope,
-	    navs;
-	beforeEach(module('myApp', FormsIniterInjector));
-	beforeEach(inject(function($rootScope, $controller, _$location_, _navs_) {
-		$location = _$location_;
+	    navs,
+	    toaster;
+
+	beforeEach(module('myApp'));
+	beforeEach(EqualData);
+	beforeEach(inject(httpd()));
+
+	beforeEach(inject(function($rootScope, $controller, _$httpBackend_, _navs_) {
+		$httpBackend = _$httpBackend_;
 		navs = _navs_;
 		scope = $rootScope.$new();
+		toaster = jasmine.createSpyObj('toaster', ['pop', 'clear']);
 
 		controller = $controller('HeaderCtrl', {
-			'$scope' : scope
+			'$scope' : scope,
+			'toaster' : toaster
 		});
+		$httpBackend.flush();
 	}));
 
-	it('should get the navs', function() {
+	it('should get the navs and HeaderService.active', function() {
 		expect(scope.navs[0].controller).toBe('MainCtrl');
+		expect(scope.active).toBeDefined();
 	});
 
 	it('should get the tables', function() {
-		expect(scope.tables[0].Name).toBe('Bu');
+		expect(toaster.pop).not.toHaveBeenCalled();
+		expect(scope.tables.length).toBe(6);
+		expect(scope.tables[0].Name).toBe('Bucket1');
 	});
 });
