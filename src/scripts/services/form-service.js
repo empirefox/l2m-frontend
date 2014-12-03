@@ -129,7 +129,7 @@ function($routeParams, $resource, CpsService) {
 		posUpSingle : {
 			method : 'POST',
 			params : {
-				act : 'singleposup'
+				act : 'posupsingle'
 			}
 		}
 	});
@@ -137,14 +137,16 @@ function($routeParams, $resource, CpsService) {
 function(FormResource) {
 	function applyArgs(handler, names) {
 		var args = [];
-		for (name in names) {
-			if handler[name] {
+		angular.forEach(names, function(name) {
+			if (angular.isDefined(handler[name])) {
 				args.push(handler[name]);
 			}
-		}
+		});
 		return args;
 	}
 
+
+	this.applyArgs = applyArgs;
 
 	this.FP = function(handler) {
 		return function() {

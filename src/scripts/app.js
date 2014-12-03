@@ -1,9 +1,5 @@
 'use strict';
 
-var DEBUG;
-if ( typeof DEBUG === 'undefined') {
-	DEBUG = true;
-}
 $(document).on('mouseenter', '.result', function() {
 	var doc = document,
 	    text = $(this),

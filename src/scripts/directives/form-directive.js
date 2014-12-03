@@ -2,13 +2,12 @@ angularApp.controller('FormDirectiveCtrl', ['$scope', '$location', '$routeParams
 function($scope, $location, $routeParams, FormResource, FormService, CpsService, Msg, $q, ArrFn, JsonFn, PosFn) {
 
 	var copy = angular.copy,
-	noop = angular.noop,
-	isDefined = $scope.isDefined = angular.isDefined,
-	isUndefined = $scope.isUndefined = angular.isUndefined,
-	FP = FormService.FP,
+	    noop = angular.noop,
+	    isDefined = $scope.isDefined = angular.isDefined,
+	    isUndefined = $scope.isUndefined = angular.isUndefined,
+	    FP = FormService.FP;
 
-	$scope.
-	isFields = $routeParams.fname === 'Field';
+	$scope.isFields = ($routeParams.fname == 'Field');
 	$scope.ops = $scope.ops || {};
 	var ban = $scope.ops.ban || {};
 
@@ -137,9 +136,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		};
 
 		if (newPos === -1) {
-			var response;
 			return FormResource.saveup($scope.editing).$promise.then(function(data) {
-				var record = new FormResource(response.Newer);
+				var record = new FormResource(data.Newer);
 				$scope.rs.push(record);
 				$scope.edit(record);
 				return data;
@@ -170,8 +168,15 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		return FormResource.posUpSingle({
 			reverse : reverse,
 			search : CpsService.pSearch(record)
-		}, PosFn.NewIp(record)).$promise.then(function(data) {
+		}, PosFn.newIp(record)).$promise.then(function(data) {
 			$scope.rs.push(data);
+			if (data.Pos > $scope.idRange.tid) {
+				$scope.idRange.tid = data.Pos
+			}
+			if (data.Pos < $scope.idRange.bid) {
+				$scope.idRange.bid = data.Pos
+			}
+			PosFn.xpos(record, data);
 		});
 	}
 
@@ -283,7 +288,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			stopWhen : iNow === 0 && isFirstPage(),
 			stopPop : 'alreadyTop',
 			act : 'posTop',
-			postData : PosFn.NewIp(record),
+			postData : PosFn.newIp(record),
 			param : {
 				search : CpsService.pSearch(record)
 			},
@@ -300,7 +305,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			stopWhen : iNow === $scope.rs.length - 1 && isLastPage(),
 			stopPop : 'alreadyBottom',
 			act : 'posBottom',
-			postData : PosFn.NewIp(record),
+			postData : PosFn.newIp(record),
 			param : {
 				search : CpsService.pSearch(record)
 			},
@@ -371,7 +376,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	//return a new Resource instance
 	$scope.newRecord = function(from) {
 		var New = from || $scope.form.New || {};
-		New = JSON.parse(JSON.stringify(New, JsonFn.delNoneExampleEntry));
+		New = JsonFn.filterExample(New);
 		New.Pos = -1;
 		return new FormResource(New);
 	};
@@ -379,18 +384,18 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	$scope.page = function() {
 		remoteAction({
 			act : 'page',
-			postData : {
+			param : {
 				size : $scope.pager.itemsPerPage,
 				num : $scope.pager.currentPage,
 				search : $location.search()
 			},
 			handle : function(data, getResponseHeaders) {
-				// data = JSON.parse(JSON.stringify(data, delGoNullTime));
 				$scope.rs = data;
 				$scope.pager.totalItems = parseInt(getResponseHeaders('X-Total-Items'));
 				$scope.pager.currentPage = parseInt(getResponseHeaders('X-Page'));
-				$scope.pageTop = PosFn.NewIp(isFirstPage() ? -1 : rs[0]);
-				$scope.pageBottom = PosFn.NewIp($scope.rs[$scope.rs.length - 1]);
+				$scope.pager.itemsPerPage = parseInt(getResponseHeaders('X-Page-Size'));
+				$scope.pageTop = PosFn.newIp(isFirstPage() ? -1 : rs[0]);
+				$scope.pageBottom = PosFn.newIp($scope.rs[$scope.rs.length - 1]);
 				$scope.idRange = {
 					bid : $scope.pageBottom.Id,
 					tid : $scope.pageTop

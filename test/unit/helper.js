@@ -52,8 +52,9 @@ function httpd(ok, err) {
 		act = 'page';
 		$httpBackend.whenGET(parseUrl(act)).respond(result('form/' + act + '_ok'), {
 			'X-Total-Items' : 5,
-			'X-Page' : 1,
-			'Access-Control-Expose-Headers' : 'X-Total-Items, X-Page'
+            'X-Page' : 1,
+            'X-Page-Size' : 10,
+			'Access-Control-Expose-Headers' : 'X-Total-Items, X-Page, X-Page-Size'
 		});
 
 		$httpBackend.whenGET(okName + '/one/1?id=123').respond(result('form/one_ok'));

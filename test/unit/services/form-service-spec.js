@@ -3,6 +3,7 @@
 describe('FormResource', function() {
 	var $rootScope,
 	    FormResource,
+	    FormService,
 	    $httpBackend,
 	    $routeParams;
 
@@ -12,9 +13,10 @@ describe('FormResource', function() {
 
 	beforeEach(inject(httpd()));
 
-	beforeEach(inject(function(_$rootScope_, _FormResource_, _$httpBackend_, _$routeParams_) {
+	beforeEach(inject(function(_$rootScope_, _FormResource_, _FormService_, _$httpBackend_, _$routeParams_) {
 		$rootScope = _$rootScope_;
 		FormResource = _FormResource_;
+		FormService = _FormService_;
 		$httpBackend = _$httpBackend_;
 		$routeParams = _$routeParams_;
 
@@ -61,6 +63,26 @@ describe('FormResource', function() {
 			$httpBackend.flush();
 			expect(r).not.toBeDefined();
 			expect(err.data).toEqualData('Bad Request');
+		});
+	});
+
+	describe('FormResource', function() {
+		it('should get apply args', function() {
+			var h = {
+				act : 'form',
+				param : {
+					size : 10
+				},
+				postData : {
+					data : 1
+				}
+			};
+			var args = FormService.applyArgs(h, ['param', 'postData', 'handle', 'error']);
+			expect(args).toEqual([{
+				size : 10
+			}, {
+				data : 1
+			}]);
 		});
 	});
 })

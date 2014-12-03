@@ -1,4 +1,4 @@
-ddescribe('FormDirectiveCtrl', function() {
+describe('FormDirectiveCtrl', function() {
 	beforeEach(module('myApp'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
