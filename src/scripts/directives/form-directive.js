@@ -7,7 +7,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	    isUndefined = $scope.isUndefined = angular.isUndefined,
 	    FP = FormService.FP;
 
-	$scope.isFields = ($routeParams.fname == 'Field');
+	$scope.isFields = $routeParams.fname === 'Field';
 	$scope.ops = $scope.ops || {};
 	var ban = $scope.ops.ban || {};
 
@@ -104,7 +104,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	function pass(data) {
 		return function() {
 			return data;
-		}
+		};
 	}
 
 	function saveNormal() {
@@ -133,7 +133,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		if (isDefined(newPos.Mods)) {
 			var ips = newPos.Mods;
 			return FormResource.modIps(ips).$promise.then(pass(ips)).then(updateIps).then(pass(newPos.Pos)).then(saveNormalWithPos);
-		};
+		}
 
 		if (newPos === -1) {
 			return FormResource.saveup($scope.editing).$promise.then(function(data) {
@@ -160,6 +160,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			var temp = r1.Pos;
 			r1.Pos = r2.Pos;
 			r2.Pos = temp;
+			return data;
 		});
 	}
 
@@ -171,10 +172,10 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		}, PosFn.newIp(record)).$promise.then(function(data) {
 			$scope.rs.push(data);
 			if (data.Pos > $scope.idRange.tid) {
-				$scope.idRange.tid = data.Pos
+				$scope.idRange.tid = data.Pos;
 			}
 			if (data.Pos < $scope.idRange.bid) {
-				$scope.idRange.bid = data.Pos
+				$scope.idRange.bid = data.Pos;
 			}
 			PosFn.xpos(record, data);
 		});
@@ -187,6 +188,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	//isFields
 	$scope.mfsTreeOptions = {
+		/*jshint unused:false */
 		accept : function(sourceNodeScope, destNodesScope, destIndex) {
 			if (destNodesScope.nodrop || destNodesScope.outOfDepth(sourceNodeScope)) {
 				return false;
@@ -197,6 +199,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			}
 			return false;
 		},
+		/*jshint unused:false */
 		dragStart : function(event) {
 			$scope.__rs = $scope.__rs || copy($scope.rs);
 		},
@@ -216,6 +219,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	};
 
 	$scope.rsTreeOptions = {
+		/*jshint unused:false */
 		accept : function(sourceNodeScope, destNodesScope, destIndex) {
 			if (destNodesScope.nodrop || destNodesScope.outOfDepth(sourceNodeScope)) {
 				return false;
@@ -236,9 +240,11 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 			return true;
 		},
+		/*jshint unused:false */
 		dragStart : function(event) {
 			$scope.__rs = $scope.__rs || copy($scope.rs);
 		},
+		/*jshint unused:false */
 		dropped : function(event) {
 			var rs = $scope.__rs;
 			var bottom = rs[rs.length - 1].Pos;
@@ -251,11 +257,11 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	$scope.shouldCreate = function(record) {
 		return !ArrFn.containsName($scope.rs, record);
-	}
+	};
 
 	$scope.shouldDelete = function(record) {
 		return !ArrFn.containsName($scope.mfs, record);
-	}
+	};
 
 	$scope.removeUnexpected = function() {
 		if ($scope._rs) {
@@ -311,6 +317,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			},
 			handle : function(data) {
 				removeRecord(record, isLastPage());
+				return data;
 			}
 		});
 	};
@@ -345,7 +352,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	$scope.insert = function(record) {
 		var r = $scope.newRecord();
-		r.Pos = record.Pos
+		r.Pos = record.Pos;
 		$scope.edit(r);
 	};
 
@@ -394,7 +401,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 				$scope.pager.totalItems = parseInt(getResponseHeaders('X-Total-Items'));
 				$scope.pager.currentPage = parseInt(getResponseHeaders('X-Page'));
 				$scope.pager.itemsPerPage = parseInt(getResponseHeaders('X-Page-Size'));
-				$scope.pageTop = PosFn.newIp(isFirstPage() ? -1 : rs[0]);
+				$scope.pageTop = PosFn.newIp(isFirstPage() ? -1 : $scope.rs[0]);
 				$scope.pageBottom = PosFn.newIp($scope.rs[$scope.rs.length - 1]);
 				$scope.idRange = {
 					bid : $scope.pageBottom.Id,
@@ -417,6 +424,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			handle : function(data) {
 				$scope.__rs = false;
 				$scope.__isFull = false;
+				return data;
 			}
 		});
 	};
@@ -487,10 +495,10 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	$scope.rearrange = function() {
 		remoteAction({
 			act : 'rearrange',
-			postData : $scope.idRange,
 			param : {
-				search : CpsService.pSearch(record)
+				search : $location.search()
 			},
+			postData : $scope.idRange
 		});
 	};
 

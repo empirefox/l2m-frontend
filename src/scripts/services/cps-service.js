@@ -34,12 +34,12 @@ function(Cps, $routeParams, $location, ArrFn) {
 		// 找到处理终点
 		var space = Math.abs(pNow - pCheck) - Math.abs(step);
 		if (space > 0) {
+            var mods = [];
 			// 向上处理
 			if (step < 0) {
 				if (step === -1) {
 					return (pCheck + pNow) / 2;
 				}
-				var mods = [];
 				for (var i = iNow - 1; i > iNext; i--) {
 					mods.push({
 						Id : models[i].Id,
@@ -56,11 +56,10 @@ function(Cps, $routeParams, $location, ArrFn) {
 			if (step === 1) {
 				return (pCheck + pNow) / 2;
 			}
-			var mods = [];
-			for (var i = iNow; i < iNext; i++) {
+			for (var j = iNow; j < iNext; j++) {
 				mods.push({
-					Id : models[i].Id,
-					Pos : models[i].Pos - Math.floor(space / 2)
+					Id : models[j].Id,
+					Pos : models[j].Pos - Math.floor(space / 2)
 				});
 				// need to save
 			}
@@ -104,8 +103,8 @@ function(Cps, $routeParams, $location, ArrFn) {
 		if (section < 1) {
 			return false;
 		}
-		for (var i = 0; i < models.length - 1; i++) {
-			models[i].Pos = Math.floor(top - i * section);
+		for (var j = 0; j < models.length - 1; j++) {
+			models[j].Pos = Math.floor(top - j * section);
 		}
 		models[models.length - 1].Pos = bottom;
 		return true;
@@ -142,7 +141,7 @@ function(Cps, $routeParams, $location, ArrFn) {
 		}
 
 		bottom = angular.isDefined(bottom) ? bottom : models[models.length - 1].Pos;
-		top = angular.isDefined(top) ? (top === -1 ? models[0].Pos + 16 : top) : models[0].Pos
+		top = angular.isDefined(top) ? (top === -1 ? models[0].Pos + 16 : top) : models[0].Pos;
 
 		if (models[0].Pos < top) {
 			models = [{

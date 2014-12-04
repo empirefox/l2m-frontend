@@ -1,14 +1,14 @@
 'use strict';
 
-angularApp.controller('KindeditorsCtrl', ['$scope', 'FormResource', 'toaster', 'editorCssPath',
-function($scope, FormResource, toaster, editorCssPath) {
+angularApp.controller('KindeditorsCtrl', ['$scope', 'FormResource', 'toaster', 'EditorCssPath', '$routeParams', '$location',
+function($scope, FormResource, toaster, EditorCssPath, $routeParams, $location) {
 	$scope.show = function(bucket) {
 		var id = '#' + bucket;
 		KindEditor.remove(id);
 		var editor = KindEditor.create(id, {
 			angular : angularApp,
 			bucket : bucket,
-			cssPath : editorCssPath
+			cssPath : EditorCssPath
 			// fileServer : 'http://127.0.0.1:8080/',
 			// baidumapPath : 'http://127.0.0.1:8080/plugins/',
 		});
@@ -29,7 +29,7 @@ function($scope, FormResource, toaster, editorCssPath) {
 			act : 'names',
 			size : $scope.pager.itemsPerPage,
 			num : $scope.pager.currentPage,
-			search : JSON.stringify($location.search())
+			search : $location.search()
 		}, function(data, getResponseHeaders) {
 			// data = JSON.parse(JSON.stringify(data, delGoNullTime));
 			$scope.buckets = data;
@@ -37,7 +37,10 @@ function($scope, FormResource, toaster, editorCssPath) {
 			$scope.pager.currentPage = parseInt(getResponseHeaders('X-Page'));
 			toaster.clear();
 			toaster.pop('success', $routeParams.fname, "载入完毕");
-		}, errorHandle('载入失败'));
+		}, function() {
+			toaster.clear();
+			toaster.pop('error', $routeParams.fname, "载入错误");
+		});
 	};
 
 	$scope.list();

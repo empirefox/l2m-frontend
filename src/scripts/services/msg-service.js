@@ -201,7 +201,7 @@ function($log, $routeParams, toaster, dialogs, ActionText, Pops) {
 				return msg._confirm(confirm.head, confirm.msg, confirm.opts).result;
 			}
 			return data;
-		}
+		};
 	};
 
 	return msg;

@@ -30,7 +30,7 @@ module.exports = function(config) {
       'bower_components/angularjs-toaster/toaster.js',
       'bower_components/pluralize/pluralize.js',
       'bower_components/spectrum/spectrum.js',
-      'bower_components/spectrum/i18n/jquery.spectrum-zh-cn.js',
+//      'bower_components/spectrum/i18n/jquery.spectrum-zh-cn.js',
       'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js',
       'bower_components/string/lib/string.js',
 

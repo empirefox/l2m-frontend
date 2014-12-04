@@ -18,4 +18,4 @@ angular.module('navs-const', []).constant('navs', [{
 	when : '/fas',
 	templateUrl : '/views/fa-list.html',
 	controller : 'FaListCtrl'
-}])
+}]);

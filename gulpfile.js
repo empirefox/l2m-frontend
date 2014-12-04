@@ -15,7 +15,11 @@ var cdnizerFiles = [
               		  		file: '**/angular-ui-bootstrap/**/*.js',
               		  		cdn: 'cdnjs:angular-ui-bootstrap:ui-bootstrap-tpls.min.js'
               		  	},
-              		  	'cdnjs:angular-filter:${ filenameMin }',
+              		  	{
+              		  	    file: '**/angular-filter/**/*.js',
+                            package: 'angular-filter',
+              		  	    cdn: '//cdnjs.cloudflare.com/ajax/libs/angular-filter/${ version }/${ filenameMin }'
+              		  	},
                         {
                             file: '**/angularjs-toaster/*.js',
                             cdn: 'cdnjs:angularjs-toaster:${ filenameMin }'
@@ -33,10 +37,10 @@ var cdnizerFiles = [
                 			file: '**/spectrum/*.css',
                 			cdn: 'cdnjs:spectrum:css/${ filenameMin }'
                 		},
-                		{
-                			file: '**/spectrum/i18n/*.js',
-                			cdn: 'cdnjs:spectrum-i18n:js/${ filenameMin }'
-                		},
+//                		{
+//                			file: '**/spectrum/i18n/*.js',
+//                			cdn: 'cdnjs:spectrum-i18n:js/${ filenameMin }'
+//                		},
                 		{
                 			file: '**/string.js',
                 			package: 'string',
@@ -77,7 +81,9 @@ var pkg = require('./package.json');
 var dirs = pkg['h5bp-configs'].directories;
 
 // init vars
-var toStaticfilesCDN = plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org');
+var toStaticfilesCDN = function(){
+    return plugins.replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org');
+};
 
 // -----------------------------------------------------------------------------
 // | Helper tasks                                                              |
@@ -146,7 +152,7 @@ gulp.task('copy:index.html', function () {
                		//relativeRoot: template('<%= src %>', dirs),
                		fallbackTest: null,
                		files: cdnizerFiles}))
-               .pipe(toStaticfilesCDN)
+               .pipe(toStaticfilesCDN())
                .pipe(gulp.dest(template('<%= dist %>', dirs)));
 });
 
@@ -185,6 +191,7 @@ gulp.task('copy:misc', function () {
 
 gulp.task('copy:vendor-ke', function () {
     return gulp.src([
+    				'bower_components/pluralize/pluralize.js',
     				'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
     				'bower_components/angular-dialog-service/dist/dialogs.min.js',
     				'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
@@ -212,15 +219,14 @@ gulp.task('copy:tpl', function () {
 });
 
 gulp.task('copy:app', function () {
-	return gulp.src(['bower_components/pluralize/pluralize.js',
-					template('<%= src %>/scripts/**/*.js', dirs)])
-			   .pipe(plugins.concat('app.min.js'))
-			   .pipe(plugins.cdnizer({
-               		fallbackTest: null,
-               		matchers: [/(["'])({{.+?}})(["'])/gi],
-               		files: bsCssFiles}))
-               .pipe(toStaticfilesCDN)
-    		   .pipe(plugins.uglify())
+    return gulp.src(template('<%= src %>/scripts/**/*.js', dirs))
+               .pipe(plugins.concat('app.min.js'))
+               .pipe(plugins.cdnizer({
+                    fallbackTest: null,
+                    matchers: [/(["'])({{.+?}})(["'])/gi],
+                    files: bsCssFiles}))
+               .pipe(toStaticfilesCDN())
+               .pipe(plugins.uglify())
                .pipe(gulp.dest(template('<%= dist %>/js', dirs)));
 });
 

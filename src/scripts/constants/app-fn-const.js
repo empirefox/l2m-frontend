@@ -1,4 +1,4 @@
-angular.module('app.fns', []).constant('ArrFn', function() {
+angular.module('app.fns', []).constant('ArrFn', (function() {
 	var ArrFn = {
 		isOutOfFn : function(container) {
 			return function(ele) {
@@ -43,7 +43,7 @@ angular.module('app.fns', []).constant('ArrFn', function() {
 	ArrFn.equals = function(a1, a2) {
 		a1 = a1 || [];
 		a2 = a2 || [];
-		if (a1.length != a2.length) {
+		if (a1.length !== a2.length) {
 			return false;
 		}
 		return !(a1.some(ArrFn.isOutOfFn(a2)) || a2.some(ArrFn.isOutOfFn(a1)));
@@ -72,7 +72,7 @@ angular.module('app.fns', []).constant('ArrFn', function() {
 		return all.filter(ArrFn.namesInFn(from, true));
 	};
 	return ArrFn;
-}()).constant('PosFn', {
+}())).constant('PosFn', {
 	desc : function(a, b) {
 		return b.Pos - a.Pos;
 	},
@@ -93,7 +93,7 @@ angular.module('app.fns', []).constant('ArrFn', function() {
 			return {
 				Id : -1,
 				Pos : -1
-			}
+			};
 		}
 		return {
 			Id : data.Id,
@@ -106,7 +106,7 @@ angular.module('app.fns', []).constant('ArrFn', function() {
 		ip1.Pos = ip2.Pos;
 		ip2.Pos = temp;
 	}
-}).constant('JsonFn', function() {
+}).constant('JsonFn', (function() {
 	var JsonFn = {
 		delGoNullTime : function(key, value) {
 			if (/^0001-01-01T(\d{2}):(\d{2}):(\d{2}).*$/.test(value)) {
@@ -125,4 +125,4 @@ angular.module('app.fns', []).constant('ArrFn', function() {
 		return JSON.parse(JSON.stringify(obj, JsonFn.delNoneExampleEntry));
 	};
 	return JsonFn;
-}());
+}()));
