@@ -1,10 +1,10 @@
 var cdnizerFiles = [
               		  	'cdnjs:jquery',
-              		  	'cdnjs:angular.js',
               		  	'cdnjs:angular.js:angular-animate.min.js',
               		  	'cdnjs:angular.js:angular-resource.min.js',
                         'cdnjs:angular.js:angular-route.min.js',
                         'cdnjs:angular.js:angular-sanitize.min.js',
+                        'cdnjs:angular.js:angular.min.js',
                         {
                             file: '**/angular-translate/*.js',
                             package: 'angular-translate',
