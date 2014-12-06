@@ -38,7 +38,7 @@ Array.prototype.replace = function(val, rep) {
 	}
 };
 
-angular.module('githubs', ['ui.bootstrap', 'ngRoute', 'ngResource', 'toaster', 'dialogs.main', 'pascalprecht.translate', 'angular.filter']);
+angular.module('githubs', ['ui.bootstrap', 'ngRoute', 'ngResource', 'toaster', 'dialogs.main', 'pascalprecht.translate', 'angular.filter', 'ui.tree']);
 angular.module('app-filter', ['containsWithPropertyFilter']);
 /* jshint unused: false, -W079 */
 var angularApp = angular.module('myApp', ['githubs', 'navs-const', 'app.fns', 'cps-service', 'l2m-tpl', 'bs-ng-editor', 'formServices', 'msg', 'app-filter']);

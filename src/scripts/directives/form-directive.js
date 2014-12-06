@@ -199,17 +199,13 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			}
 			return false;
 		},
-		/*jshint unused:false */
-		dragStart : function(event) {
-			$scope.__rs = $scope.__rs || copy($scope.rs);
-		},
 		dropped : function(event) {
 			//mfs.field >>> rs.field
 			if (event.dest.nodesScope.$modelValue === $scope.rs) {
 				$scope.mfs.push(copy(event.source.nodeScope.$modelValue));
 			}
 
-			var rs = $scope.__rs;
+            var rs = $scope.__rs = $scope.__rs || copy($scope.rs);
 			var bottom = rs[rs.length - 1].Pos;
 			var top = isFirstPage() ? -1 : rs[0].Pos;
 			if (!CpsService.averagePos($scope.rs, bottom, top)) {
@@ -225,7 +221,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 				return false;
 			}
 
-			var rs = $scope.__rs;
+            var rs = $scope.__rs = $scope.__rs || copy($scope.rs);
 
 			if (destNodesScope.$modelValue.length >= rs[0].Pos - rs[rs.length - 1].Pos + 1) {
 				$scope.__isFull = true;
@@ -241,12 +237,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			return true;
 		},
 		/*jshint unused:false */
-		dragStart : function(event) {
-			$scope.__rs = $scope.__rs || copy($scope.rs);
-		},
-		/*jshint unused:false */
 		dropped : function(event) {
-			var rs = $scope.__rs;
+            var rs = $scope.__rs = $scope.__rs || copy($scope.rs);
 			var bottom = rs[rs.length - 1].Pos;
 			var top = isFirstPage() ? -1 : rs[0].Pos;
 			if (!CpsService.averagePos($scope.rs, bottom, top)) {
@@ -434,7 +426,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			act : 'cancelBatch',
 			handle : function() {
 				$scope.rs = $scope.__rs || $scope.rs;
-				$scope.__rs = false;
+				delete $scope.__rs;
 				$scope.__isFull = false;
 			}
 		});

@@ -105,10 +105,10 @@ angular.module('msg', ['ngRoute', 'toaster', 'dialogs.main']).constant('ActionTe
 		type : 'info',
 		body : '已是最顶项'
 	},
-    alreadyBottom : {
-        type : 'info',
-        body : '已是最底项'
-    }
+	alreadyBottom : {
+		type : 'info',
+		body : '已是最底项'
+	}
 }).factory('Msg', ['$log', '$routeParams', 'toaster', 'dialogs', 'ActionText', 'Pops',
 function($log, $routeParams, toaster, dialogs, ActionText, Pops) {
 	var isDefined = angular.isDefined;
@@ -198,7 +198,9 @@ function($log, $routeParams, toaster, dialogs, ActionText, Pops) {
 		return function(data) {
 			var confirm = ActionText[act].confirm;
 			if (confirm) {
-				return msg._confirm(confirm.head, confirm.msg, confirm.opts).result;
+				return msg._confirm(confirm.head, confirm.msg, confirm.opts).then(function() {
+					return data;
+				});
 			}
 			return data;
 		};

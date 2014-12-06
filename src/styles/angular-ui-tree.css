@@ -1,0 +1,21 @@
+.btn-group > button.angular-ui-tree-handle {
+    line-height: 1.5;
+}
+
+.angular-ui-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    min-height: 10px;
+}
+
+.angular-ui-tree-node.list-group-item {
+    padding: 5px;
+}
+
+.group-title {
+    background-color: #687074 !important;
+    color: #FFF !important;
+}

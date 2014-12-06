@@ -164,7 +164,9 @@ gulp.task('copy:main.css', function () {
 
     return gulp.src(['bower_components/angular-ui-tree/dist/angular-ui-tree.min.css',
                     'bower_components/angular-dialog-service/dist/dialogs.min.css',
+                    template('<%= src %>/styles/angular-ui-tree.css', dirs),
                     template('<%= src %>/styles/main.css', dirs)])
+               .pipe(plugins.concat('main.css'))
                .pipe(plugins.header(banner))
                .pipe(gulp.dest(template('<%= dist %>/css', dirs)));
 
@@ -226,7 +228,7 @@ gulp.task('copy:app', function () {
                     matchers: [/(["'])({{.+?}})(["'])/gi],
                     files: bsCssFiles}))
                .pipe(toStaticfilesCDN())
-               .pipe(plugins.uglify())
+               //.pipe(plugins.uglify())
                .pipe(gulp.dest(template('<%= dist %>/js', dirs)));
 });
 
