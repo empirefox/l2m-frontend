@@ -1,0 +1,5 @@
+<div ui-tree="rsTreeOptions" data-max-depth="1">
+	<ol ui-tree-nodes="" ng-model="__rs" class="list-group">
+		<li ng-repeat="r in __rs" ui-tree-node ng-include="template('list-node-drag')" ng-class="{'active':(record==r)}" class="list-group-item list-group-item-warning"></li>
+	</ol>
+</div>

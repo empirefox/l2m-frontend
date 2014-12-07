@@ -193,9 +193,6 @@ gulp.task('copy:misc', function () {
 
 gulp.task('copy:vendor-ke', function () {
     return gulp.src([
-    				'bower_components/pluralize/pluralize.js',
-    				'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
-    				'bower_components/angular-dialog-service/dist/dialogs.min.js',
     				'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
     				'lib/messenger.js'
     			])
@@ -221,7 +218,11 @@ gulp.task('copy:tpl', function () {
 });
 
 gulp.task('copy:app', function () {
-    return gulp.src(template('<%= src %>/scripts/**/*.js', dirs))
+    return gulp.src([
+                    'bower_components/pluralize/pluralize.js',
+                    'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
+                    'bower_components/angular-dialog-service/dist/dialogs.min.js',
+                    template('<%= src %>/scripts/**/*.js', dirs)])
                .pipe(plugins.concat('app.min.js'))
                .pipe(plugins.cdnizer({
                     fallbackTest: null,

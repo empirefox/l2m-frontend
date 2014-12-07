@@ -1,0 +1,25 @@
+<ng-include src="template('navbar')"></ng-include>
+<div ng-if="candidates" class="col-md-2">
+	form结构信息
+	<div ui-tree="mfsTreeOptions" data-max-depth="1">
+		<ol ui-tree-nodes="" ng-model="candidates" class="list-group">
+			<li ng-repeat="r in candidates" ui-tree-node ng-class="{'active':(record.Name==r.Name)}" class="list-group-item list-group-item-warning">
+				<span ng-bind="r.Name"></span>
+				<button data-nodrag type="button" class="pull-right btn-info btn-xs" tooltip="已此为模板编辑" ng-click="copyFromForm(r)">
+					<i class="fa fa-copy"> </i>
+				</button>
+			</li>
+		</ol>
+	</div>
+</div>
+<div class="col-md-5" ng-init="listNodes='list-nodes'">
+	操作的数据
+	<a ng-click="removeUnexpected()" class="btn btn-warning"><i class="fa fa-warning"> </i> 一键删除全部多余Field</a>
+	<a ng-if="!__rs" ng-click="startBatch()" class="btn btn-info"> 批量位置操作</a>
+	<a ng-if="__rs" ng-click="saveBatch()" class="btn btn-warning"> 批量保存位置(与非拖动操作冲突)</a>
+	<a ng-if="__rs" ng-click="cancelBatch()" class="btn btn-warning"> 取消批量拖动</a>
+	<ng-include ng-if="!__rs" src="template('list-nodes')"></ng-include>
+	<ng-include ng-if="__rs" src="template('list-nodes-drag')"></ng-include>
+	<ng-include src="template('pagination')"></ng-include>
+</div>
+<div ng-include="template('fields')"  class="col-md-5"></div>

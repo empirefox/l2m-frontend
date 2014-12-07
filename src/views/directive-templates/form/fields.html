@@ -1,0 +1,29 @@
+<div ng-if="isDefined(editing) && isUndefined(__rs)">
+	<form name="myForm" role="form">
+		<div ng-repeat="field in form.Fields">
+			<field-directive field="field" record="editing"></field-directive>
+		</div>
+		<div class="form-group">
+			<button ng-click="save()" ng-disabled="myForm.$invalid" type="button" class="btn btn-success">
+				<i class="glyphicon glyphicon-ok-circle"> </i>
+				<span ng-show="isUndefined(editing.Id)">新建</span>
+				<span ng-hide="isUndefined(editing.Id)">保存</span>
+			</button>
+			<button ng-click="edit()" type="button" class="btn btn-primary">
+				<i class="glyphicon glyphicon-repeat"> </i>
+				重置
+			</button>
+			<button ng-click="remove()" ng-disabled="isUndefined(editing.Id)" type="button" class="btn btn-danger">
+				<i class="glyphicon glyphicon-remove-circle"> </i>
+				删除
+			</button>
+		</div>
+	</form>
+
+	<a ng-show="!showJson" ng-click="showJson = true">显示实时数据</a>
+	<br>
+	<div ng-show="showJson">
+		<h4><a ng-click="showJson = false">隐藏实时数据:</a></h4>
+		<pre>{{ editing | json }}</pre>
+	</div>
+</div>

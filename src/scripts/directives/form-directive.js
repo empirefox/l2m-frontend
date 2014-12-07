@@ -157,9 +157,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			Id1 : r1.Id,
 			Id2 : r2.Id
 		}).$promise.then(function(data) {
-			var temp = r1.Pos;
-			r1.Pos = r2.Pos;
-			r2.Pos = temp;
+			PosFn.xpos(r1, r2);
+			$scope.rs.sort(PosFn.desc);
 			return data;
 		});
 	}
@@ -201,14 +200,14 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		},
 		dropped : function(event) {
 			//mfs.field >>> rs.field
-			if (event.dest.nodesScope.$modelValue === $scope.rs) {
+			if (event.dest.nodesScope.$modelValue === $scope.__rs) {
 				$scope.mfs.push(copy(event.source.nodeScope.$modelValue));
 			}
 
-            var rs = $scope.__rs = $scope.__rs || copy($scope.rs);
+			var rs = $scope.rs;
 			var bottom = rs[rs.length - 1].Pos;
 			var top = isFirstPage() ? -1 : rs[0].Pos;
-			if (!CpsService.averagePos($scope.rs, bottom, top)) {
+			if (!CpsService.averagePos($scope.__rs, bottom, top)) {
 				Msg.pop('rsFull');
 			}
 		}
@@ -221,11 +220,11 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 				return false;
 			}
 
-            var rs = $scope.__rs = $scope.__rs || copy($scope.rs);
+			var rs = $scope.rs;
 
 			if (destNodesScope.$modelValue.length >= rs[0].Pos - rs[rs.length - 1].Pos + 1) {
 				$scope.__isFull = true;
-				if ($scope.rs.indexOf(sourceNodeScope.$modelValue) > -1) {
+				if ($scope.__rs.indexOf(sourceNodeScope.$modelValue) > -1) {
 					return true;
 				}
 				Msg.pop('rsFull');
@@ -238,10 +237,10 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		},
 		/*jshint unused:false */
 		dropped : function(event) {
-            var rs = $scope.__rs = $scope.__rs || copy($scope.rs);
+			var rs = $scope.rs;
 			var bottom = rs[rs.length - 1].Pos;
 			var top = isFirstPage() ? -1 : rs[0].Pos;
-			if (!CpsService.averagePos($scope.rs, bottom, top)) {
+			if (!CpsService.averagePos($scope.__rs, bottom, top)) {
 				Msg.pop('rsFull');
 			}
 		}
@@ -409,23 +408,27 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		$scope.editing = copy($scope.record);
 	};
 
-	$scope.saveAll = function() {
+	$scope.saveBatch = function() {
 		remoteAction({
 			act : 'saveAll',
-			postData : $scope.rs,
+			postData : $scope._rs,
 			handle : function(data) {
-				$scope.__rs = false;
+				$scope.rs = $scope.__rs;
+				delete $scope.__rs;
 				$scope.__isFull = false;
 				return data;
 			}
 		});
 	};
 
+	$scope.startBatch = function() {
+		$scope.__rs = copy($scope.rs);
+	};
+
 	$scope.cancelBatch = function() {
 		simpleAction({
 			act : 'cancelBatch',
 			handle : function() {
-				$scope.rs = $scope.__rs || $scope.rs;
 				delete $scope.__rs;
 				$scope.__isFull = false;
 			}
@@ -544,13 +547,27 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	$scope.page();
 
-}]).directive('formDirective', function() {
+	$scope.template = function(name) {
+		return '/views/directive-templates/form/' + name + '.html'
+	};
+
+}]).directive('formDirective', ['$routeParams',
+function($routeParams) {
 	return {
 		controller : 'FormDirectiveCtrl',
-		templateUrl : '/views/directive-templates/form/form.html',
+		/*jshint unused:false */
+		templateUrl : function(elem, attr) {
+			var fname = $routeParams.fname;
+			var prefix = '';
+			switch (fname) {
+				case 'Field':
+					prefix = fname + '-';
+			}
+			return '/views/directive-templates/form/' + prefix + 'form.html';
+		},
 		restrict : 'E',
 		scope : {
 			ops : '='
 		}
 	};
-});
+}]);

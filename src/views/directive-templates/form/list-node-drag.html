@@ -1,0 +1,21 @@
+<div ui-tree-handle>
+	<div class="pull-left"  tooltip="拖放">
+		<i class="fa fa-arrows fa-lg text-success"></i>
+	</div>
+
+	<span ng-class="{'text-danger':isFields && shouldDelete(r)}">
+		<span ng-bind="r.Name"></span><span ng-if="isUndefined(r.Id)">(未保存)</span>
+	</span>
+
+	<div class="pull-right btn-group">
+		<button type="button" class="btn btn-info btn-xs" tooltip="已此为模板新建" ng-click="copyInsert(r)">
+			<i class="fa fa-copy"></i>
+		</button>
+		<button type="button" class="btn btn-info btn-xs" tooltip="在此位置上方新建" ng-click="insert(r)">
+			<i class="fa fa-share"></i>
+		</button>
+		<button type="button" class="btn btn-danger btn-xs" tooltip="删除" ng-click="removeNode(this)" ng-disabled="isDefined(r.Id)">
+			<i class="fa fa-remove"></i>
+		</button>
+	</div>
+</div>

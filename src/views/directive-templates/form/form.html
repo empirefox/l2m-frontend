@@ -1,137 +1,20 @@
-<nav class="navbar navbar-inverse" role="navigation">
-	<ul class="nav navbar-nav">
-		<li>
-			<a ng-click="page()">重载列表</a>
-		</li>
-		<li>
-			<a ng-click="rearrange()">全列表位置更新</a>
-		</li>
-		<li>
-			<a ng-click="recovery()">重建数据库</a>
-		</li>
-		<li>
-			<a ng-click="migrate()">安全更新数据库</a>
-		</li>
-	</ul>
-</nav>
-<!-- Nested node template -->
-<script type="text/ng-template" id="form_nodes_renderer.html">
-	<div class="tree-node">
-
-	<div class="pull-left" ui-tree-handle tooltip="拖放">
-	<i class="fa fa-arrows fa-lg text-success"></i>
-	</div>
-
-	<button ng-class="{'btn-warning':shouldDelete(r)}" type="button" class="btn btn-xs" tooltip="编辑" ng-click="edit(r)">
-	<i class="fa fa-edit"></i> <span ng-bind="r.Name"></span><span ng-if="isUndefined(r.Id)">(未保存)</span>
-	</button>
-
-	<div class="pull-right btn-group">
-	<button type="button" class="btn btn-success btn-xs" tooltip="置顶" ng-click="posTop($index)"  ng-if="isUndefined(__rs)">
-	<i class="fa fa-angle-double-up"></i>
-	</button>
-	<button type="button" class="btn btn-success btn-xs" tooltip="上移" ng-click="posUp($index)"  ng-if="isUndefined(__rs)">
-	<i class="fa fa-angle-up"></i>
-	</button>
-	<button type="button" class="btn btn-success btn-xs" tooltip="下移" ng-click="posDown($index)"  ng-if="isUndefined(__rs)">
-	<i class="fa fa-angle-down"></i>
-	</button>
-	<button type="button" class="btn btn-success btn-xs" tooltip="置底" ng-click="posBottom($index)"  ng-if="isUndefined(__rs)">
-	<i class="fa fa-angle-double-down"></i>
-	</button>
-	<button type="button" class="btn btn-info btn-xs" tooltip="已此为模板新建" ng-click="copyInsert(r)">
-	<i class="fa fa-copy"></i>
-	</button>
-	<button type="button" class="btn btn-info btn-xs" tooltip="在此位置上方新建" ng-click="insert(r)">
-	<i class="fa fa-share"></i>
-	</button>
-	<button type="button" class="btn btn-danger btn-xs" tooltip="删除" ng-click="removeNode(this)"  ng-if="isUndefined(__rs) || (isDefined(__rs) && isDefined(r.Id))">
-	<i class="fa fa-remove"></i>
-	</button>
-	</div>
-	</div>
-</script>
-
-<div ng-if="candidates" class="col-md-2">
-	form结构信息
-	<div ui-tree="mfsTreeOptions" data-max-depth="1">
-		<ol ui-tree-nodes="" ng-model="candidates" class="list-group">
-			<li ng-repeat="r in $modelValue" ui-tree-node ng-class="{'active':(record.Name==r.Name)}" class="list-group-item list-group-item-warning">
-				<span ng-bind="r.Name"></span>
-				<button data-nodrag type="button" class="pull-right btn-info btn-xs"
-				tooltip="已此为模板编辑" ng-click="copyFromForm(r)">
-					<i class="fa fa-copy"> </i>
-				</button>
-			</li>
-		</ol>
-	</div>
-</div>
-<div ng-if="isFields" class="col-md-3">
-	操作的数据
-	<a ng-click="removeUnexpected()" class="btn btn-warning"><i class="fa fa-warning"> </i> 一键删除全部多余Field</a>
-	<a ng-if="__rs" ng-click="saveAll()" class="btn btn-warning"><i class="fa fa-default"> </i> 批量保存位置，与非拖动操作冲突</a>
-	<a ng-if="__rs" ng-click="cancelBatch()" class="btn btn-warning"><i class="fa fa-default"> </i> 取消批量拖动</a>
-	<div ui-tree="rsTreeOptions" data-max-depth="1">
-		<ol ui-tree-nodes="" ng-model="rs" class="list-group">
-			<li ng-repeat="r in rs" ui-tree-node ng-include="'form_nodes_renderer.html'" ng-class="{'active':(record==r)}" class="list-group-item list-group-item-warning"></li>
-		</ol>
-	</div>
-	<pagination ng-show="rs" ng-change="page()" ng-model="pager.currentPage"  class="pager-sm"
-	total-items="pager.totalItems" items-per-page="pager.itemsPerPage" max-size="pager.maxSize"
-	boundary-links="true" rotate="false" num-pages="numPages"
-	previous-text="‹" next-text="›" first-text="«" last-text="»"></pagination>
-</div>
-
-<div ng-if="!isFields" class="col-md-5">
+<ng-include src="template('navbar')"></ng-include>
+<div class="col-md-5">
 	<a ng-class="{active:isUndefined(editing.Id)}" ng-click="edit()"> <i class="fa fa-plus-circle"> </i> 新建</a>
-	<a ng-if="__rs" ng-click="saveAll()" class="btn btn-warning"><i class="fa fa-default"> </i> 批量保存位置，与非拖动操作冲突</a>
-	<a ng-if="__rs" ng-click="cancelBatch()" class="btn btn-warning"><i class="fa fa-default"> </i> 取消批量拖动</a>
-	<div ui-tree="rsTreeOptions" data-max-depth="1">
-		<ol ui-tree-nodes="" ng-model="rs" class="list-group">
-			<li ng-repeat="r in rs" ui-tree-node ng-include="'form_nodes_renderer.html'" ng-class="{'active':(record==r)}" class="list-group-item list-group-item-warning"></li>
-		</ol>
-	</div>
-	<pagination ng-show="rs" ng-change="page()" ng-model="pager.currentPage"  class="pager-sm"
-	total-items="pager.totalItems" items-per-page="pager.itemsPerPage" max-size="pager.maxSize"
-	boundary-links="true" rotate="false" num-pages="numPages"
-	previous-text="‹" next-text="›" first-text="«" last-text="»"></pagination>
-</div>
+	<a ng-if="!__rs" ng-click="startBatch()" class="btn btn-info"> 批量位置操作</a>
+	<a ng-if="__rs" ng-click="saveBatch()" class="btn btn-warning"> 批量保存位置(与非拖动操作冲突)</a>
+	<a ng-if="__rs" ng-click="cancelBatch()" class="btn btn-warning"> 取消批量拖动</a>
+	<ng-include ng-if="!__rs" src="template('list-nodes')"></ng-include>
+	<ng-include ng-if="__rs" src="template('list-nodes-drag')"></ng-include>
+	<ng-include src="template('pagination')"></ng-include>
 
-<div ng-if="isDefined(editing) && isUndefined(__rs)" class="col-md-7">
-	<form name="myForm" role="form">
-		<div ng-repeat="field in form.Fields">
-			<field-directive field="field" record="editing"></field-directive>
-		</div>
-		<div class="form-group">
-			<button ng-click="save()" ng-disabled="myForm.$invalid" type="button" class="btn btn-success">
-				<i class="glyphicon glyphicon-ok-circle"> </i>
-				<span ng-show="isUndefined(editing.Id)">新建</span>
-				<span ng-hide="isUndefined(editing.Id)">保存</span>
-			</button>
-			<button ng-click="edit()" type="button" class="btn btn-primary">
-				<i class="glyphicon glyphicon-repeat"> </i>
-				重置
-			</button>
-			<button ng-click="remove()" ng-disabled="isUndefined(editing.Id)" type="button" class="btn btn-danger">
-				<i class="glyphicon glyphicon-remove-circle"> </i>
-				删除
-			</button>
-		</div>
-	</form>
-
-	<a ng-show="!showJson" ng-click="showJson = true">显示实时数据</a>
+	<hr>
+	<a ng-show="!showForm" ng-click="showForm = true">显示表单元数据</a>
 	<br>
-	<div ng-show="showJson">
-		<h4><a ng-click="showJson = false">隐藏实时数据:</a></h4>
-		<pre>{{ editing | json }}</pre>
+	<br>
+	<div ng-show="showForm">
+		<h4><a ng-click="showForm = false">隐藏表单元数据:</a></h4>
+		<pre>{{ form | json }}</pre>
 	</div>
 </div>
-
-<hr>
-<a ng-show="!showForm" ng-click="showForm = true">显示表单元数据</a>
-<br>
-<br>
-<div ng-show="showForm">
-	<h4><a ng-click="showForm = false">隐藏表单元数据:</a></h4>
-	<pre>{{ form | json }}</pre>
-</div>
+<div ng-include="template('fields')"  class="col-md-7"></div>

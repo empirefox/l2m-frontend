@@ -1,0 +1,27 @@
+<button ng-class="{'btn-danger':isFields && shouldDelete(r)}" type="button" class="btn btn-link btn-xs" tooltip="编辑" ng-click="edit(r)">
+	<i class="fa fa-edit"></i><span ng-bind="r.Name"></span><span ng-if="isUndefined(r.Id)">(未保存)</span>
+</button>
+
+<div class="pull-right btn-group">
+	<button type="button" class="btn btn-success btn-xs" tooltip="置顶" ng-click="posTop($index)">
+		<i class="fa fa-angle-double-up"></i>
+	</button>
+	<button type="button" class="btn btn-success btn-xs" tooltip="上移" ng-click="posUp($index)">
+		<i class="fa fa-angle-up"></i>
+	</button>
+	<button type="button" class="btn btn-success btn-xs" tooltip="下移" ng-click="posDown($index)">
+		<i class="fa fa-angle-down"></i>
+	</button>
+	<button type="button" class="btn btn-success btn-xs" tooltip="置底" ng-click="posBottom($index)">
+		<i class="fa fa-angle-double-down"></i>
+	</button>
+	<button type="button" class="btn btn-info btn-xs" tooltip="已此为模板新建" ng-click="copyInsert(r)">
+		<i class="fa fa-copy"></i>
+	</button>
+	<button type="button" class="btn btn-info btn-xs" tooltip="在此位置上方新建" ng-click="insert(r)">
+		<i class="fa fa-share"></i>
+	</button>
+	<button type="button" class="btn btn-danger btn-xs" tooltip="删除" ng-click="removeNode(this)">
+		<i class="fa fa-remove"></i>
+	</button>
+</div>
