@@ -34,7 +34,7 @@ describe('CpsService', function() {
 	}));
 
 	it('should get Cp', function() {
-		expect(service.get()).toBe(Cps[fname]);
+		expect(service.getArray()).toBe(Cps[fname]);
 	});
 
 	describe('averagePos', function() {

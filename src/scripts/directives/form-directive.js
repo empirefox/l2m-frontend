@@ -8,6 +8,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	    FP = FormService.FP;
 
 	$scope.isFields = $routeParams.fname === 'Field';
+	$scope.canSetPos = CpsService.canSetPos();
 	$scope.ops = $scope.ops || {};
 	var ban = $scope.ops.ban || {};
 
@@ -199,6 +200,9 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			return false;
 		},
 		dropped : function(event) {
+			if (!$scope.__rs) {
+				return;
+			}
 			//mfs.field >>> rs.field
 			if (event.dest.nodesScope.$modelValue === $scope.__rs) {
 				$scope.mfs.push(copy(event.source.nodeScope.$modelValue));
@@ -237,6 +241,9 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		},
 		/*jshint unused:false */
 		dropped : function(event) {
+			if (!$scope.__rs) {
+				return;
+			}
 			var rs = $scope.rs;
 			var bottom = rs[rs.length - 1].Pos;
 			var top = isFirstPage() ? -1 : rs[0].Pos;
@@ -373,7 +380,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	//return a new Resource instance
 	$scope.newRecord = function(from) {
-		var New = from || $scope.form.New || {};
+		var New = from || ($scope.form || {}).New || {};
 		New = JsonFn.filterExample(New);
 		New.Pos = -1;
 		return new FormResource(New);
@@ -517,20 +524,23 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	FormResource.form(function(data) {
 		$scope.form = data;
 		$scope.hasPos = hasPos();
+		if (!$scope.editing) {
+			$scope.edit();
+		}
 	});
 
 	if ($scope.isFields) {
 
 		$scope.pager.itemsPerPage = 200;
 
-		var promise = FormResource.mf().$promise.then(function(data) {
+		var promise = FormResource.mfs().$promise.then(function(data) {
 			$scope.mfs = data;
 
 			$scope.$watchCollection('rs', function(newValue, oldValue, scope) {
 				scope.candidates = ArrFn.diffName($scope.mfs, $scope.rs);
 			});
 		});
-		Msg.end.call(promise, 'mf');
+		Msg.end.call(promise, 'mfs');
 	}
 
 	$scope.$watchCollection('rs', function(newValue, oldValue, scope) {

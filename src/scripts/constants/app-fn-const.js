@@ -1,78 +1,81 @@
-angular.module('app.fns', []).constant('ArrFn', (function() {
-	var ArrFn = {
-		isOutOfFn : function(container) {
-			return function(ele) {
-				return container.indexOf(ele) < 0;
-			};
-		},
+angular.module('app.fns', []).constant('ArrFn', ( function() {
+		var ArrFn = {
+			isOutOfFn : function(container) {
+				return function(ele) {
+					return container.indexOf(ele) < 0;
+				};
+			},
 
-		findIndexByPos : function(container, pos) {
-			container = container || [];
-			var index = -2;
-			container.some(function(ele, i) {
-				if (ele.Pos === pos) {
-					index = i;
-					return true;
-				}
-				return false;
-			});
-			return index;
-		},
+			findIndexByPos : function(container, pos) {
+				container = container || [];
+				var index = -2;
+				container.some(function(ele, i) {
+					if (ele.Pos === pos) {
+						index = i;
+						return true;
+					}
+					return false;
+				});
+				return index;
+			},
 
-		containsWithProperty : function(container, target, propName) {
-			container = container || [];
-			return container.some(function(ele) {
-				if (angular.isDefined(propName)) {
-					return ele[propName] === target[propName];
-				}
-				return ele === target;
-			});
-		},
+			containsWithProperty : function(container, target, propName) {
+				container = container || [];
+				return container.some(function(ele) {
+					if (angular.isDefined(propName)) {
+						return ele[propName] === target[propName];
+					}
+					return ele === target;
+				});
+			},
 
-		// namesInFn
-		pick : function(all, fn, from) {
-			return all.filter(fn(from, true));
-		},
+			// namesInFn
+			pick : function(all, fn, from) {
+				return all.filter(fn(from, true));
+			},
 
-		// namesInFn
-		drop : function(all, fn, from) {
-			return all.filter(fn(from, false));
-		}
-	};
-
-	ArrFn.equals = function(a1, a2) {
-		a1 = a1 || [];
-		a2 = a2 || [];
-		if (a1.length !== a2.length) {
-			return false;
-		}
-		return !(a1.some(ArrFn.isOutOfFn(a2)) || a2.some(ArrFn.isOutOfFn(a1)));
-	};
-
-	ArrFn.containsName = function(container, target) {
-		return ArrFn.containsWithProperty(container, target, 'Name');
-	};
-
-	ArrFn.containsId = function(container, target) {
-		return ArrFn.containsWithProperty(container, target, 'Id');
-	};
-
-	ArrFn.namesInFn = function(arr, within) {
-		return function(v) {
-			var has = ArrFn.containsName(arr, v);
-			return within ? has : !has;
+			// namesInFn
+			drop : function(all, fn, from) {
+				return all.filter(fn(from, false));
+			}
 		};
-	};
 
-	ArrFn.diffName = function(all, from) {
-		return all.filter(ArrFn.namesInFn(from, false));
-	};
+		ArrFn.equals = function(a1, a2) {
+			a1 = a1 || [];
+			a2 = a2 || [];
+			if (a1.length === 0 && a2.length === 0) {
+				return true;
+			}
+			if (a1.length !== a2.length) {
+				return false;
+			}
+			return !(a1.some(ArrFn.isOutOfFn(a2)) || a2.some(ArrFn.isOutOfFn(a1)));
+		};
 
-	ArrFn.intersectName = function(all, from) {
-		return all.filter(ArrFn.namesInFn(from, true));
-	};
-	return ArrFn;
-}())).constant('PosFn', {
+		ArrFn.containsName = function(container, target) {
+			return ArrFn.containsWithProperty(container, target, 'Name');
+		};
+
+		ArrFn.containsId = function(container, target) {
+			return ArrFn.containsWithProperty(container, target, 'Id');
+		};
+
+		ArrFn.namesInFn = function(arr, within) {
+			return function(v) {
+				var has = ArrFn.containsName(arr, v);
+				return within ? has : !has;
+			};
+		};
+
+		ArrFn.diffName = function(all, from) {
+			return all.filter(ArrFn.namesInFn(from, false));
+		};
+
+		ArrFn.intersectName = function(all, from) {
+			return all.filter(ArrFn.namesInFn(from, true));
+		};
+		return ArrFn;
+	}())).constant('PosFn', {
 	desc : function(a, b) {
 		return b.Pos - a.Pos;
 	},
@@ -106,23 +109,23 @@ angular.module('app.fns', []).constant('ArrFn', (function() {
 		ip1.Pos = ip2.Pos;
 		ip2.Pos = temp;
 	}
-}).constant('JsonFn', (function() {
-	var JsonFn = {
-		delGoNullTime : function(key, value) {
-			if (/^0001-01-01T(\d{2}):(\d{2}):(\d{2}).*$/.test(value)) {
-				return undefined;
+}).constant('JsonFn', ( function() {
+		var JsonFn = {
+			delGoNullTime : function(key, value) {
+				if (/^0001-01-01T(\d{2}):(\d{2}):(\d{2}).*$/.test(value)) {
+					return undefined;
+				}
+				return value;
 			}
-			return value;
-		}
-	};
-	JsonFn.delNoneExampleEntry = function(key, value) {
-		var eq = 'id|pos|createdat|created_at|updatedat|updated_at'.split('|').some(function(e) {
-			return typeof key === 'string' && key.toLowerCase() === e;
-		});
-		return eq ? undefined : JsonFn.delGoNullTime(key, value);
-	};
-	JsonFn.filterExample = function(obj) {
-		return JSON.parse(JSON.stringify(obj, JsonFn.delNoneExampleEntry));
-	};
-	return JsonFn;
-}()));
+		};
+		JsonFn.delNoneExampleEntry = function(key, value) {
+			var eq = 'id|pos|createdat|created_at|updatedat|updated_at'.split('|').some(function(e) {
+				return typeof key === 'string' && key.toLowerCase() === e;
+			});
+			return eq ? undefined : JsonFn.delGoNullTime(key, value);
+		};
+		JsonFn.filterExample = function(obj) {
+			return JSON.parse(JSON.stringify(obj, JsonFn.delNoneExampleEntry));
+		};
+		return JsonFn;
+	}()));

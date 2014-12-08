@@ -1,0 +1,17 @@
+[
+    {
+        "Name": "Pos",
+        "Type": "number"
+    }, {
+        "Name": "Id",
+        "Type": "hidden"
+    }, {
+        "Name": "Name",
+        "Required": true,
+        "Maxlength": 64
+    }, {
+        "Name": "Temp",
+        "Type": "textfield",
+        "Maxlength": 128
+    }
+]

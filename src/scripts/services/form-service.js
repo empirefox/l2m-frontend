@@ -1,23 +1,32 @@
 'use strict';
 
 // all Ips is {Ips: mods}
-angular.module('formServices', []).factory('FormResource', ['$routeParams', '$resource', 'CpsService',
-function($routeParams, $resource, CpsService) {
+angular.module('formServices', []).factory('FormResource', ['$location', '$routeParams', '$resource', 'CpsService',
+function($location, $routeParams, $resource, CpsService) {
 	return $resource('/:fname/:act', {
 		fname : function() {
 			return $routeParams.fname;
 		}
 	}, {
-		mf : {
-			method : 'GET',
-			isArray : true,
-			params : {
-				act : 'mf'
-			},
-			transformResponse : function(data) {
-				return angular.fromJson(data).Fields;
-			}
-		},
+        mf : {
+            method : 'GET',
+            params : {
+                act : 'mf'
+            }
+        },
+        mfs : {
+            method : 'GET',
+            isArray : true,
+            params : {
+                fname : 'mfs',
+                act : function() {
+                    var id = $location.search().form_id;
+                    if (angular.isDefined(id)) {
+                        return id;
+                    }
+                }
+            }
+        },
 		form : {
 			method : 'GET',
 			params : {
@@ -62,7 +71,7 @@ function($routeParams, $resource, CpsService) {
 			method : 'POST',
 			params : {
 				act : 'saveup',
-				cp : CpsService.get
+				cp : CpsService.getString
 			}
 		},
 		remove : {

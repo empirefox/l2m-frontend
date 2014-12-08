@@ -2,6 +2,9 @@
 angular.module('msg', ['ngRoute', 'toaster', 'dialogs.main']).constant('ActionText', {
 
 	mf : {
+		name : '获取mf'
+	},
+	mfs : {
 		name : '获取mfs'
 	},
 	form : {

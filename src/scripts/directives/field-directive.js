@@ -127,16 +127,11 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 				var url = '/' + getPform() + '/names';
 				$http.get(url, {
 					params : {
-						search : JSON.stringify({
+						search : {
 							id : pid
-						})
+						}
 					}
-				}).success(function(data) {
-					if (data.error) {
-						return;
-					}
-					var idPosNames = data.content.list;
-					console.log(idPosNames);
+				}).success(function(idPosNames) {
 					if (idPosNames[0].Id === pid) {
 						scope.parent = idPosNames[0].Name;
 						return;

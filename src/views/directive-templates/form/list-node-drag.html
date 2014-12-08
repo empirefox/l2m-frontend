@@ -11,7 +11,7 @@
 		<button type="button" class="btn btn-info btn-xs" tooltip="已此为模板新建" ng-click="copyInsert(r)">
 			<i class="fa fa-copy"></i>
 		</button>
-		<button type="button" class="btn btn-info btn-xs" tooltip="在此位置上方新建" ng-click="insert(r)">
+		<button type="button" class="btn btn-info btn-xs" tooltip="在此位置上方新建" ng-click="insert(r)" ng-if="canSetPos">
 			<i class="fa fa-share"></i>
 		</button>
 		<button type="button" class="btn btn-danger btn-xs" tooltip="删除" ng-click="removeNode(this)" ng-disabled="isDefined(r.Id)">

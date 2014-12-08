@@ -1,0 +1,7 @@
+<hr>
+<a ng-show="!showForm" ng-click="showForm = true">显示表单元数据</a>
+<br>
+<div ng-show="showForm">
+	<h4><a ng-click="showForm = false">隐藏表单元数据:</a></h4>
+	<pre>{{ form | json }}</pre>
+</div>

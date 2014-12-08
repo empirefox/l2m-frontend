@@ -2,8 +2,8 @@
 //used by save up
 angular.module('cps-service', ['ngRoute', 'app.fns']).constant('Cps', {
 
-	Field : 'FormId',
-	Oauth : 'AccountId'
+	Field : 'FormId'.split(','),
+	Oauth : 'AccountId'.split(',')
 
 }).service('CpsService', ['Cps', '$routeParams', '$location', 'ArrFn',
 function(Cps, $routeParams, $location, ArrFn) {
@@ -34,7 +34,7 @@ function(Cps, $routeParams, $location, ArrFn) {
 		// 找到处理终点
 		var space = Math.abs(pNow - pCheck) - Math.abs(step);
 		if (space > 0) {
-            var mods = [];
+			var mods = [];
 			// 向上处理
 			if (step < 0) {
 				if (step === -1) {
@@ -79,8 +79,15 @@ function(Cps, $routeParams, $location, ArrFn) {
 
 	var cps = this;
 
-	this.get = function() {
-		return Cps[$routeParams.fname];
+	this.getArray = function() {
+		return Cps[$routeParams.fname] || [];
+	};
+
+	this.getString = function() {
+		var arr = cps.getArray();
+		if (arr.length > 0) {
+			return arr.join();
+		}
 	};
 
 	// length of models must be 3 at least
@@ -112,7 +119,7 @@ function(Cps, $routeParams, $location, ArrFn) {
 
 	this.pSearch = function(record) {
 		var ps;
-		cps.get().split(',').forEach(function(p) {
+		cps.getArray().forEach(function(p) {
 			if (angular.isDefined(record[p])) {
 				ps = ps || {};
 				var pKey = S(p).underscore().chompLeft('_').s;
@@ -123,7 +130,7 @@ function(Cps, $routeParams, $location, ArrFn) {
 	};
 
 	this.canSetPos = function() {
-		var arr = cps.get().split(',').map(function(p) {
+		var arr = cps.getArray().map(function(p) {
 			return S(p).underscore().chompLeft('_').s;
 		});
 		var keys = Object.keys($location.search());

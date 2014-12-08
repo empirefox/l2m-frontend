@@ -36,7 +36,8 @@ function httpd(ok, err) {
 
 	return function($httpBackend, $location, $routeParams) {
 		//respond ok
-		$httpBackend.whenGET('/forms').respond(result('form/names_ok'));
+        $httpBackend.whenGET('/forms').respond(result('form/names_ok'));
+        $httpBackend.whenGET('/mfs').respond(result('form/mfs_ok'));
 
 		['form', 'mf', 'names'].forEach(function(act) {
 			$httpBackend.whenGET(okName + '/' + act).respond(result('form/' + act + '_ok'));
