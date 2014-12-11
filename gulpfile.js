@@ -162,7 +162,9 @@ gulp.task('copy:main.css', function () {
                     ' | ' + pkg.license.type + ' License' +
                     ' | ' + pkg.homepage + ' */\n\n';
 
-    return gulp.src(['bower_components/angular-ui-tree/dist/angular-ui-tree.min.css',
+    return gulp.src([
+                    'bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.css',
+                    'bower_components/angular-ui-tree/dist/angular-ui-tree.min.css',
                     'bower_components/angular-dialog-service/dist/dialogs.min.css',
                     template('<%= src %>/styles/angular-ui-tree.css', dirs),
                     template('<%= src %>/styles/main.css', dirs)])
@@ -220,6 +222,7 @@ gulp.task('copy:tpl', function () {
 gulp.task('copy:app', function () {
     return gulp.src([
                     'bower_components/pluralize/pluralize.js',
+                    'bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
                     'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
                     'bower_components/angular-dialog-service/dist/dialogs.min.js',
                     template('<%= src %>/scripts/**/*.js', dirs)])

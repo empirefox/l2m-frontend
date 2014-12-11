@@ -1,0 +1,15 @@
+<div class="form-group">
+	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !data[field.Name]">* 必填 </span> </label>
+	<div class="col-xs-12 col-sm-6" style="padding-left:0;">
+		<datetimepicker
+		ng-model="data[field.Name]"
+		min-date="ops.minDate"
+		max-date="ops.maxDate"
+		show-weeks="ops.showWeeks"
+		hour-step="ops.hourStep"
+		minute-step="ops.minuteStep"
+		show-meridian="ops.showMeridian"
+		date-options="ops.dateOptions"
+		readonly-time="ops.readonlyTime"></datetimepicker>
+	</div>
+</div>

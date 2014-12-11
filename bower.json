@@ -20,6 +20,7 @@
     "angular-route": "1.3.0",
     "angular-sanitize": "1.3.0",
     "angular-ui-bootstrap": "0.11.2",
+    "angular-ui-bootstrap-datetimepicker": "*",
     "angular-i18n": "1.2.15",
     "angular-translate": "2.0.1",
     "angular-filter": "0.4.9",

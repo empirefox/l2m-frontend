@@ -1,6 +1,27 @@
 'use strict';
 
-angularApp.directive('fieldDirective', ['$http', '$compile', '$location', '$routeParams', 'EditorCssPath', '$templateCache',
+angularApp.controller('fieldDirectiveCtrl', ['$scope',
+function($scope) {
+	var isDefined = angular.isDefined;
+	var name = $scope.field.Name,
+	    type = $scope.field.Type;
+	if (isDefined($scope.data[name])) {
+		switch(type) {
+			case 'datetimepicker':
+				var ops = {
+					minDate : null,
+					maxDate : null,
+					showWeeks : true,
+					hourStep : 1,
+					minuteStep : 5,
+					showMeridian : true,
+					dayTitleFormat : 'yyyy MMMM',
+					readonlyTime : false
+				};
+				$scope.ops = angular.extend(ops, JSON.parse(scope.field.Ops));
+		}
+	}
+}]).directive('fieldDirective', ['$http', '$compile', '$location', '$routeParams', 'EditorCssPath', '$templateCache',
 function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache) {
 	var placeholders = {
 		search : "关键字",
@@ -19,6 +40,7 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 			case 'textarea':
 			case 'checkbox':
 			case 'date':
+			case 'datetimepicker':
 			case 'dropdown':
 			case 'hidden':
 			case 'radio':
@@ -35,7 +57,7 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 			case 'email':
 			case 'password':
 			//ng额外
-			case 'dateTimeLocal':
+			// case 'datetime-local':
 			case 'month':
 			case 'time':
 			case 'week':
@@ -178,6 +200,7 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 	return {
 		template : '<div>{{}}</div>',
 		restrict : 'E',
+		controller : 'fieldDirectiveCtrl',
 		scope : {
 			field : '=',
 			data : '=record'

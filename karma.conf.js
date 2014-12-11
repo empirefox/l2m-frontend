@@ -24,6 +24,7 @@ module.exports = function(config) {
       'bower_components/angular-translate/angular-translate.js',
       'bower_components/angular-i18n/angular-locale_zh-cn.js',
       'bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-*.min.js',
+      'bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
       'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
       'bower_components/angular-filter/dist/angular-filter.js',
       'bower_components/angular-dialog-service/dist/dialogs.min.js',

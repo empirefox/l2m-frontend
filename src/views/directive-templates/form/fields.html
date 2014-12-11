@@ -3,6 +3,8 @@
 		<div ng-repeat="field in form.Fields">
 			<field-directive field="field" record="editing"></field-directive>
 		</div>
+		<div class="row"></div>
+		<hr/>
 		<div class="form-group">
 			<button ng-click="save()" ng-disabled="myForm.$invalid" type="button" class="btn btn-success">
 				<i class="glyphicon glyphicon-ok-circle"> </i>

@@ -38,7 +38,7 @@ Array.prototype.replace = function(val, rep) {
 	}
 };
 
-angular.module('githubs', ['ui.bootstrap', 'ngRoute', 'ngResource', 'toaster', 'dialogs.main', 'pascalprecht.translate', 'angular.filter', 'ui.tree']);
+angular.module('githubs', ['ui.bootstrap', 'ui.bootstrap.datetimepicker', 'ngRoute', 'ngResource', 'toaster', 'dialogs.main', 'pascalprecht.translate', 'angular.filter', 'ui.tree']);
 angular.module('app-filter', ['containsWithPropertyFilter']);
 /* jshint unused: false, -W079 */
 var angularApp = angular.module('myApp', ['githubs', 'navs-const', 'app.fns', 'cps-service', 'l2m-tpl', 'bs-ng-editor', 'formServices', 'msg', 'app-filter']);
@@ -88,5 +88,10 @@ function(dialogsProvider, $translateProvider) {
 	});
 
 	$translateProvider.preferredLanguage('zh-CN');
+}]).config(['datepickerPopupConfig',
+function(datepickerPopupConfig) {
+	datepickerPopupConfig.currentText = '今日';
+	datepickerPopupConfig.clearText = '清除';
+	datepickerPopupConfig.closeText = '关闭';
 }]).run(function() {
 });

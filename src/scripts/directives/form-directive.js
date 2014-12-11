@@ -412,6 +412,13 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	$scope.edit = function(record) {
 		$scope.record = record || $scope.newRecord();
+		// ugly fix date fmt problem
+		angular.forEach($scope.form.Fields, function(field) {
+			if (field.Type === 'datetime-local') {
+				var name = field.Name;
+//				$scope.record[name] = new Date($scope.record[name]);
+			}
+		});
 		$scope.editing = copy($scope.record);
 	};
 
