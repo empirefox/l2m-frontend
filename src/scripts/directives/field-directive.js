@@ -33,6 +33,7 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 
 	var baseDir = '/views/directive-templates/field/';
 
+	// next code-mirror
 	var getTemplateUrl = function(type) {
 		var templateUrl = '';
 		switch(type) {
@@ -187,14 +188,7 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 			}
 		};
 		var templateUrl = getTemplateUrl(type);
-		var tpl = $templateCache.get(templateUrl);
-		if (tpl) {
-			resolveTpl(tpl);
-		} else {
-			$http.get(templateUrl).success(resolveTpl).error(function(tpl) {
-				console.log('fieldDirective linker ' + tpl + ' with url:' + templateUrl);
-			});
-		}
+		resolveTpl('<ng-include src="\'' + templateUrl + '\'"></ng-include>');
 	};
 
 	return {
