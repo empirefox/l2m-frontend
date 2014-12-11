@@ -1,12 +1,12 @@
 <div class="form-group">
-	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !data[field.Name]">* 必填 </span>
+	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !data">* 必填 </span>
 		<p class="input-group">
 			<input
 			ng-disabled="field.Readonly"
 			datepicker-options="{formatYear:'yy'}"
 			name="{{field.Name}}"
 			type="text"
-			ng-model="data[field.Name]"
+			ng-model="data"
 			class="form-control"
 			datepicker-popup="yyyy-MM-dd"
 			is-open="opened"
@@ -15,7 +15,9 @@
 			ng-required="field.Required"
 			close-text="关闭" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-disabled="field.Readonly" ng-click="$event.preventDefault();$event.stopPropagation();opened=true">
+				<button type="button" class="btn btn-default"
+				ng-disabled="field.Readonly"
+				ng-click="$event.preventDefault();$event.stopPropagation();opened=true">
 					<i class="glyphicon glyphicon-calendar"> </i>
 				</button> </span>
 		</p></label>

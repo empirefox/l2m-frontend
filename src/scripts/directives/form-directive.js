@@ -405,20 +405,14 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 					bid : $scope.pageBottom.Id,
 					tid : $scope.pageTop
 				};
-				$scope.edit();
+				var record = $scope.rs.length === 1 ? $scope.rs[0] : null;
+				$scope.edit(record);
 			}
 		});
 	};
 
 	$scope.edit = function(record) {
 		$scope.record = record || $scope.newRecord();
-		// ugly fix date fmt problem
-		angular.forEach($scope.form.Fields, function(field) {
-			if (field.Type === 'datetime-local') {
-				var name = field.Name;
-//				$scope.record[name] = new Date($scope.record[name]);
-			}
-		});
 		$scope.editing = copy($scope.record);
 	};
 

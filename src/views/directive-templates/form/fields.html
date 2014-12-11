@@ -1,7 +1,7 @@
 <div ng-if="isDefined(editing) && isUndefined(__rs)">
 	<form name="myForm" role="form">
 		<div ng-repeat="field in form.Fields">
-			<field-directive field="field" record="editing"></field-directive>
+			<field-control field="field" record="editing"></field-control>
 		</div>
 		<div class="row"></div>
 		<hr/>

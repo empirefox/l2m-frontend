@@ -1,38 +1,8 @@
 'use strict';
 
-angularApp.controller('fieldDirectiveCtrl', ['$scope',
-function($scope) {
-	var isDefined = angular.isDefined;
-	var name = $scope.field.Name,
-	    type = $scope.field.Type;
-	if (isDefined($scope.data[name])) {
-		switch(type) {
-			case 'datetimepicker':
-				var ops = {
-					minDate : null,
-					maxDate : null,
-					showWeeks : true,
-					hourStep : 1,
-					minuteStep : 5,
-					showMeridian : true,
-					dayTitleFormat : 'yyyy MMMM',
-					readonlyTime : false
-				};
-				$scope.ops = angular.extend(ops, JSON.parse(scope.field.Ops));
-		}
-	}
-}]).directive('fieldDirective', ['$http', '$compile', '$location', '$routeParams', 'EditorCssPath', '$templateCache',
-function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache) {
-	var placeholders = {
-		search : "关键字",
-		url : "如：http://www.luck2.me",
-		telephone : "如：18688888888",
-		email : "Email",
-		password : "输入密码",
-	};
-
+angularApp.controller('fieldControlCtrl', ['$scope', '$http', '$location', '$routeParams', '$log',
+function($scope, $http, $location, $routeParams, $log) {
 	var baseDir = '/views/directive-templates/field/';
-
 	// next code-mirror
 	var getTemplateUrl = function(type) {
 		var templateUrl = '';
@@ -42,7 +12,6 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 			case 'checkbox':
 			case 'date':
 			case 'datetimepicker':
-			case 'dropdown':
 			case 'hidden':
 			case 'radio':
 			case 'kindeditor':
@@ -66,138 +35,141 @@ function($http, $compile, $location, $routeParams, EditorCssPath, $templateCache
 				break;
 			default:
 				templateUrl = baseDir + 'textfield.html';
-				console.log(type);
+				$log.warn(type);
 		}
 		return templateUrl;
 	};
-	var getValue = function(scope) {
-		return scope.data[scope.field.Name] || "";
-	};
-	var deleteValue = function(scope) {
-		delete scope.data[scope.field.Name];
-	};
-	var initers = {
-		kindeditor : function(scope, element) {
-			var initValue = getValue(scope);
-			var ops = {
-				width : "100%",
-				angular : angularApp,
-				allowImageUpload : true,
-				allowFileManager : true,
-				cssPath : EditorCssPath,
-				afterChange : function() {
-					var self = this;
-					self.sync();
-					var fn = function() {
-						var content = self.html();
-						if ("" === content) {
-							deleteValue(scope);
-						} else {
-							scope.data[scope.field.Name] = content;
-						}
-					};
-					if (angular.isDefined(scope.data)) {
-						(scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
-					}
-				},
-				afterCreate : function() {
-					this.html(initValue);
-				}
-			};
-			var ke = KindEditor.create(element.find("textarea")[0], angular.extend(ops, JSON.parse(scope.field.Ops)));
 
-			/*jshint unused:false */
-			scope.$watch('data', function(value) {
-				if (angular.isDefined(scope.data)) {
-					ke.html(getValue(scope));
-				}
-			});
-		},
-		/*jshint unused:false */
-		children : function(scope, element) {
-			scope.view = function() {
-				var single = pluralize.singular(scope.field.Name);
-				var s = {};
-				var pIdKey = S($routeParams.fname).underscore().chompLeft('_').s + "_id";
-				s[pIdKey] = scope.data.Id;
-				//以form名称定向
-				$location.path('/table/' + single).search(s);
-			};
-		},
-		/*jshint unused:false */
-		parent : function(scope, element) {
-			var getPform = function() {
-				return S(scope.field.Name).chompRight('Id').s;
-			};
-			var getPid = function(data) {
-				return data[scope.field.Name];
-			};
-			scope.view = function() {
-				$location.path('/table/' + getPform()).search({
-					id : getPid(scope.data)
-				});
-			};
+	var isDefined = angular.isDefined,
+	    isUndefined = angular.isUndefined,
 
-			scope.$watch('data', function(newValue, oldValue) {
-				var pid = getPid(newValue);
-				if (angular.isUndefined(pid)) {
-					delete scope.parent;
+	    data,
+	    field,
+	    name,
+	    type;
+
+	$scope.$watch('record', function(record, old) {
+		field = $scope.field,
+		name = field.Name,
+		type = field.Type || "text",
+		data = $scope.data = record[name];
+
+		field.Title = field.Title || name;
+
+		$scope.templateUrl = getTemplateUrl(type);
+
+		switch(type) {
+			case 'children':
+				$scope.view = function() {
+					var s = {};
+					var pIdKey = S($routeParams.fname).underscore().chompLeft('_').s + "_id";
+					s[pIdKey] = record.Id;
+					//以form名称定向
+					$location.path('/table/' + pluralize.singular(name)).search(s);
+				};
+				break;
+			case 'parent':
+				if (isUndefined(data)) {
+					delete $scope.parent;
+					break;
+				}
+				var parentForm = S(name).chompRight('Id').s;
+				$scope.view = function() {
+					$location.path('/table/' + parentForm).search({
+						id : data
+					});
+				};
+
+				if (isDefined($scope.parent) && data === old[name]) {
 					return;
 				}
-				if (angular.isDefined(scope.parent) && pid === getPid(oldValue)) {
-					return;
-				}
-				var url = '/' + getPform() + '/names';
+				var url = '/' + parentForm + '/names';
 				$http.get(url, {
 					params : {
 						search : {
-							id : pid
+							id : data
 						}
 					}
 				}).success(function(idPosNames) {
-					if (idPosNames[0].Id === pid) {
-						scope.parent = idPosNames[0].Name;
-						return;
+					if (Array.isArray(idPosNames) && idPosNames.length === 1 && idPosNames[0].Id === data) {
+						$scope.parent = idPosNames[0].Name;
 					}
-					console.log('返回多个值');
+				}).error(function(err) {
+					$log.error(err);
 				});
-			});
+				break;
+			case 'datetimepicker':
+				var ops = {
+					minDate : null,
+					maxDate : null,
+					showWeeks : true,
+					hourStep : 1,
+					minuteStep : 5,
+					showMeridian : true,
+					dayTitleFormat : 'yyyy MMMM',
+					readonlyTime : false
+				};
+				$scope.ops = angular.extend(ops, angular.fromJson(field.Ops));
+				break;
 		}
+	});
+
+}]).directive('fieldControl', ['EditorCssPath',
+function(EditorCssPath) {
+	var getValue = function(scope) {
+		return scope.record[scope.field.Name] || "";
 	};
-
+	var deleteValue = function(scope) {
+		delete scope.record[scope.field.Name];
+	};
 	var linker = function(scope, element) {
-		var name = scope.field.Name,
-		    type = scope.field.Type;
-		// GET template content from path
-		if (!scope.field.Title) {
-			scope.field.Title = name;
-		}
-		if (!type) {
-			type = "text";
-		}
-		if (angular.isDefined(placeholders[type]) && angular.isUndefined(scope.field.Placeholder)) {
-			scope.field.Placeholder = placeholders[type];
-		}
+		var type = scope.field.Type;
+		switch(type) {
+			case 'kindeditor':
+				var initValue = getValue(scope);
+				var ops = {
+					width : "100%",
+					angular : angularApp,
+					allowImageUpload : true,
+					allowFileManager : true,
+					cssPath : EditorCssPath,
+					afterChange : function() {
+						var self = this;
+						self.sync();
+						var fn = function() {
+							var content = self.html();
+							if ("" === content) {
+								deleteValue(scope);
+							} else {
+								scope.record[scope.field.Name] = content;
+							}
+						};
+						if (angular.isDefined(scope.record)) {
+							(scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
+						}
+					},
+					afterCreate : function() {
+						this.html(initValue);
+					}
+				};
+				var ke = KindEditor.create(element.find("textarea")[0], angular.extend(ops, angular.fromJson(field.Ops)));
 
-		var resolveTpl = function(tpl) {
-			element.html(tpl);
-			$compile(element.contents())(scope);
-			var initer = initers[type];
-			if (initer) {
-				initer(scope, element);
-			}
-		};
-		var templateUrl = getTemplateUrl(type);
-		resolveTpl('<ng-include src="\'' + templateUrl + '\'"></ng-include>');
+				/*jshint unused:false */
+				scope.$watch('record', function(value) {
+					if (angular.isDefined(scope.record)) {
+						ke.html(getValue(scope));
+					}
+				});
+		}
 	};
 
 	return {
-		template : '<div>{{}}</div>',
+		template : '<ng-include src="templateUrl"></ng-include>',
 		restrict : 'E',
-		controller : 'fieldDirectiveCtrl',
+		controller : 'fieldControlCtrl',
 		scope : {
 			field : '=',
-			data : '=record'
+			record : '='
 		},
 		link : linker
 	};
