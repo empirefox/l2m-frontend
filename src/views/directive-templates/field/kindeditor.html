@@ -1,6 +1,6 @@
 <div class="form-group">
     <label><span ng-bind="field.Title"></span>
-        <span class="text-danger" ng-show="field.Required && !data">* 必填</span>
-        <textarea type="text" ng-model="data" name="{{field.Name}}" ng-required="field.Required"></textarea>
+        <span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填</span>
+        <textarea type="text" ng-model="record[field.Name]" name="{{field.Name}}" ng-required="field.Required"></textarea>
     </label>
 </div>

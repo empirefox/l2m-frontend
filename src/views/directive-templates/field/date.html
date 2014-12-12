@@ -1,12 +1,12 @@
 <div class="form-group">
-	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !data">* 必填 </span>
+	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填 </span>
 		<p class="input-group">
 			<input
 			ng-disabled="field.Readonly"
 			datepicker-options="{formatYear:'yy'}"
 			name="{{field.Name}}"
 			type="text"
-			ng-model="data"
+			ng-model="record[field.Name]"
 			class="form-control"
 			datepicker-popup="yyyy-MM-dd"
 			is-open="opened"

@@ -41,126 +41,89 @@ function($scope, $http, $location, $routeParams, $log) {
 	};
 
 	var isDefined = angular.isDefined,
-	    isUndefined = angular.isUndefined,
+	    isUndefined = angular.isUndefined;
 
-	    data,
-	    field,
-	    name,
-	    type;
+	$scope.field.Type = $scope.field.Type || "text";
+	$scope.field.Title = $scope.field.Title || $scope.field.Name;
 
-	$scope.$watch('record', function(record, old) {
-		field = $scope.field,
-		name = field.Name,
-		type = field.Type || "text",
-		data = $scope.data = record[name];
+	$scope.templateUrl = getTemplateUrl($scope.field.Type);
 
-		field.Title = field.Title || name;
-
-		$scope.templateUrl = getTemplateUrl(type);
-
-		switch(type) {
-			case 'children':
-				$scope.view = function() {
-					var s = {};
-					var pIdKey = S($routeParams.fname).underscore().chompLeft('_').s + "_id";
-					s[pIdKey] = record.Id;
-					//以form名称定向
-					$location.path('/table/' + pluralize.singular(name)).search(s);
-				};
-				break;
-			case 'parent':
-				if (isUndefined(data)) {
+	switch($scope.field.Type) {
+		case 'children':
+			$scope.view = function() {
+				var s = {};
+				var pIdKey = S($routeParams.fname).underscore().chompLeft('_').s + "_id";
+				s[pIdKey] = $scope.record.Id;
+				//以form名称定向
+				$location.path('/table/' + pluralize.singular($scope.field.Name)).search(s);
+			};
+			break;
+		case 'parent':
+			var parentForm = function() {
+				return S($scope.field.Name).chompRight('Id').s;
+			};
+			$scope.view = function() {
+				$location.path('/table/' + parentForm()).search({
+					id : $scope.record[$scope.field.Name]
+				});
+			};
+			$scope.$watch('record', function(record, old) {
+				var name = $scope.field.Name;
+				if (isUndefined($scope.record[name])) {
 					delete $scope.parent;
-					break;
-				}
-				var parentForm = S(name).chompRight('Id').s;
-				$scope.view = function() {
-					$location.path('/table/' + parentForm).search({
-						id : data
-					});
-				};
-
-				if (isDefined($scope.parent) && data === old[name]) {
 					return;
 				}
-				var url = '/' + parentForm + '/names';
+				if (isDefined($scope.parent) && record[name] === old[name]) {
+					return;
+				}
+				var url = '/' + parentForm() + '/names';
 				$http.get(url, {
 					params : {
 						search : {
-							id : data
+							id : record[name]
 						}
 					}
 				}).success(function(idPosNames) {
-					if (Array.isArray(idPosNames) && idPosNames.length === 1 && idPosNames[0].Id === data) {
+					if (Array.isArray(idPosNames) && idPosNames.length === 1 && idPosNames[0].Id === record[$scope.field.Name]) {
 						$scope.parent = idPosNames[0].Name;
 					}
 				}).error(function(err) {
 					$log.error(err);
 				});
-				break;
-			case 'datetimepicker':
-				var ops = {
-					minDate : null,
-					maxDate : null,
-					showWeeks : true,
-					hourStep : 1,
-					minuteStep : 5,
-					showMeridian : true,
-					dayTitleFormat : 'yyyy MMMM',
-					readonlyTime : false
-				};
-				$scope.ops = angular.extend(ops, angular.fromJson(field.Ops));
-				break;
-		}
-	});
+			});
+			break;
+		case 'datetimepicker':
+			var ops = {
+				minDate : null,
+				maxDate : null,
+				showWeeks : true,
+				hourStep : 1,
+				minuteStep : 5,
+				showMeridian : true,
+				dayTitleFormat : 'yyyy MMMM',
+				readonlyTime : false
+			};
+			$scope.ops = angular.extend(ops, angular.fromJson($scope.field.Ops));
+			break;
+	}
 
-}]).directive('fieldControl', ['EditorCssPath',
-function(EditorCssPath) {
-	var getValue = function(scope) {
-		return scope.record[scope.field.Name] || "";
-	};
-	var deleteValue = function(scope) {
-		delete scope.record[scope.field.Name];
-	};
-	var linker = function(scope, element) {
-		var type = scope.field.Type;
-		switch(type) {
-			case 'kindeditor':
-				var initValue = getValue(scope);
-				var ops = {
-					width : "100%",
-					angular : angularApp,
-					allowImageUpload : true,
-					allowFileManager : true,
-					cssPath : EditorCssPath,
-					afterChange : function() {
-						var self = this;
-						self.sync();
-						var fn = function() {
-							var content = self.html();
-							if ("" === content) {
-								deleteValue(scope);
-							} else {
-								scope.record[scope.field.Name] = content;
-							}
-						};
-						if (angular.isDefined(scope.record)) {
-							(scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
-						}
-					},
-					afterCreate : function() {
-						this.html(initValue);
+}]).directive('fieldControl', ['EditorCssPath', '$log',
+function(EditorCssPath, $log) {
+	var pre = function(scope) {
+		scope.$watch('record', function(record) {
+			var data = record[scope.field.Name];
+			switch(scope.field.Type) {
+				case 'date':
+				case 'time':
+				case 'datepicker':
+				case 'timepicker':
+				case 'datetimepicker':
+					if ( typeof data === 'string') {
+						$log.log('adjust string to Date')
+						record[scope.field.Name] = new Date(data);
 					}
-				};
-				var ke = KindEditor.create(element.find("textarea")[0], angular.extend(ops, angular.fromJson(field.Ops)));
-
-				/*jshint unused:false */
-				scope.$watch('record', function(value) {
-					if (angular.isDefined(scope.record)) {
-						ke.html(getValue(scope));
-					}
-				});
-		}
+			}
+		});
 	};
 
 	return {
@@ -171,6 +134,10 @@ function(EditorCssPath) {
 			field : '=',
 			record : '='
 		},
-		link : linker
+		compile : function(element, attrs, link) {
+			return {
+				pre : pre
+			}
+		}
 	};
 }]);

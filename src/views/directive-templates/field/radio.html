@@ -1,7 +1,7 @@
 <div class="form-group">
-    <label><span ng-bind="field.Title"></span> <span class="text-danger" ng-show="field.Required && !data">* 必填</span> </label>
-    <input type="hidden" name="{{field.Name}}" value="{{data}}" ng-required="field.Required" />
+    <label><span ng-bind="field.Title"></span> <span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填</span> </label>
+    <input type="hidden" name="{{field.Name}}" value="{{record[field.Name]}}" ng-required="field.Required" />
     <div class="btn-group">
-        <label ng-repeat="option in field.Ops" class="btn btn-primary" ng-model="data" btn-radio="option.Value">{{option.Title}}</label>
+        <label ng-repeat="option in field.Ops" class="btn btn-primary" ng-model="record[field.Name]" btn-radio="option.Value">{{option.Title}}</label>
     </div>
 </div>

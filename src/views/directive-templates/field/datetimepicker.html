@@ -1,9 +1,9 @@
 <div class="form-group">
-	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !data">* 必填 </span> </label>
+	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填 </span> </label>
 	<div style="white-space:nowrap;">
 		<datetimepicker
 		ng-required="field.Required"
-		ng-model="data"
+		ng-model="record[field.Name]"
 		min-date="ops.minDate"
 		max-date="ops.maxDate"
 		show-weeks="ops.showWeeks"
