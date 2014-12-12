@@ -10,14 +10,19 @@ function($scope, $http, $location, $routeParams, $log) {
 			case 'number':
 			case 'textarea':
 			case 'checkbox':
-			case 'date':
-			case 'datetimepicker':
 			case 'hidden':
 			case 'radio':
 			case 'kindeditor':
 			case 'parent':
 			case 'children':
+			case 'timepicker':
+			case 'datetimepicker':
 				templateUrl = baseDir + type + '.html';
+				break;
+			case 'datepicker':
+			case 'monthpicker':
+			case 'yearpicker':
+				templateUrl = baseDir + 'datepicker.html';
 				break;
 			case 'text':
 			case 'textfield':
@@ -27,7 +32,8 @@ function($scope, $http, $location, $routeParams, $log) {
 			case 'email':
 			case 'password':
 			//ng额外
-			// case 'datetime-local':
+			case 'date':
+			case 'datetime-local':
 			case 'month':
 			case 'time':
 			case 'week':
@@ -47,6 +53,10 @@ function($scope, $http, $location, $routeParams, $log) {
 	$scope.field.Title = $scope.field.Title || $scope.field.Name;
 
 	$scope.templateUrl = getTemplateUrl($scope.field.Type);
+	// ops is dateOptions in datepicker
+	// ops is time options container in timepicker
+	// ops is time options and dateOptions container in datetimepicker
+	$scope.ops = angular.fromJson($scope.field.Ops);
 
 	switch($scope.field.Type) {
 		case 'children':
@@ -93,17 +103,22 @@ function($scope, $http, $location, $routeParams, $log) {
 			});
 			break;
 		case 'datetimepicker':
-			var ops = {
-				minDate : null,
-				maxDate : null,
-				showWeeks : true,
-				hourStep : 1,
-				minuteStep : 5,
-				showMeridian : true,
-				dayTitleFormat : 'yyyy MMMM',
-				readonlyTime : false
-			};
-			$scope.ops = angular.extend(ops, angular.fromJson($scope.field.Ops));
+		case 'datepicker':
+		case 'timepicker':
+			break;
+		case 'monthpicker':
+			angular.extend($scope.ops, {
+				minMode : 'month',
+				datepickerMode : "'month'"
+			});
+			$scope.formate = 'yyyy-MM';
+			break;
+		case 'yearpicker':
+			angular.extend($scope.ops, {
+				minMode : 'year',
+				datepickerMode : "'year'"
+			});
+			$scope.formate = 'yyyy';
 			break;
 	}
 
@@ -111,16 +126,22 @@ function($scope, $http, $location, $routeParams, $log) {
 function(EditorCssPath, $log) {
 	var pre = function(scope) {
 		scope.$watch('record', function(record) {
+			var data = record[scope.field.Name];
 			if ( typeof data === 'string') {
-				var data = record[scope.field.Name];
 				switch(scope.field.Type) {
-					case 'date':
+					case 'datetime-local':
+					case 'month':
+					case 'week':
 					case 'time':
-					case 'datepicker':
 					case 'timepicker':
+					case 'date':
+					case 'datepicker':
+					case 'monthpicker':
+					case 'yearpicker':
 					case 'datetimepicker':
 						$log.log('adjust string to Date')
 						record[scope.field.Name] = new Date(data);
+						break;
 				}
 			}
 		});
