@@ -111,17 +111,17 @@ function($scope, $http, $location, $routeParams, $log) {
 function(EditorCssPath, $log) {
 	var pre = function(scope) {
 		scope.$watch('record', function(record) {
-			var data = record[scope.field.Name];
-			switch(scope.field.Type) {
-				case 'date':
-				case 'time':
-				case 'datepicker':
-				case 'timepicker':
-				case 'datetimepicker':
-					if ( typeof data === 'string') {
+			if ( typeof data === 'string') {
+				var data = record[scope.field.Name];
+				switch(scope.field.Type) {
+					case 'date':
+					case 'time':
+					case 'datepicker':
+					case 'timepicker':
+					case 'datetimepicker':
 						$log.log('adjust string to Date')
 						record[scope.field.Name] = new Date(data);
-					}
+				}
 			}
 		});
 	};

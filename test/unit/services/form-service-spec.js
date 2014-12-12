@@ -34,7 +34,7 @@ describe('FormResource', function() {
 				r = data;
 			});
 			$httpBackend.flush();
-			expect(r).toEqualData(__fixtures__['form/mf_ok'].Fields);
+			expect(r).toEqualData(__fixtures__['form/mf_ok']);
 		});
 	});
 

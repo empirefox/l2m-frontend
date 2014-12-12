@@ -5,7 +5,7 @@ describe('FieldDirective', function() {
 	beforeEach(module('myApp'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
-	
+
 	var $httpBackend;
 	var baseDir = '/views/directive-templates/field/';
 	var fnames = ['textarea'];
@@ -21,7 +21,7 @@ describe('FieldDirective', function() {
 	    linkFn;
 	beforeEach(inject(function($rootScope, $compile) {
 		scope = $rootScope;
-		linkFn = $compile('<field-directive field="field" record="editing"></field-directive>');
+		linkFn = $compile('<field-control field="field" record="editing"></field-control>');
 	}));
 
 	//model -> UI

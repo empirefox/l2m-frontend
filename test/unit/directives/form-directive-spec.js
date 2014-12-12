@@ -48,9 +48,13 @@ describe('FormDirectiveCtrl', function() {
 		$httpBackend.flush();
 	}));
 
-	it('should fetch the form instance', function() {
-		expect(scope.form).toEqualData(__fixtures__['form/form_ok']);
-	});
+    it('should fetch the form instance', function() {
+        expect(scope.form).toEqualData(__fixtures__['form/form_ok']);
+    });
+
+    it('should fetch the mfs instance', function() {
+        expect(scope.mfs).toEqualData(__fixtures__['form/mfs_ok']);
+    });
 
 	it('should create a new record', function() {
 		expect(scope.newRecord().Pos).toEqual(-1);
