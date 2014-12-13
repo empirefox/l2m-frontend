@@ -1,12 +1,14 @@
-angularApp.controller('FormDirectiveCtrl', ['$scope', '$location', '$routeParams', 'FormResource', 'FormService', 'CpsService', 'Msg', '$q', 'ArrFn', 'JsonFn', 'PosFn',
-function($scope, $location, $routeParams, FormResource, FormService, CpsService, Msg, $q, ArrFn, JsonFn, PosFn) {
+angularApp.controller('FormDirectiveCtrl', ['$scope', '$location', '$routeParams', 'FormResource', 'FormService', 'CpsService', 'Msg', '$q', 'ArrFn', 'JsonFn', 'PosFn', 'TplFn',
+function($scope, $location, $routeParams, FormResource, FormService, CpsService, Msg, $q, ArrFn, JsonFn, PosFn, TplFn) {
 
 	var copy = angular.copy,
 	    noop = angular.noop,
 	    isDefined = $scope.isDefined = angular.isDefined,
 	    isUndefined = $scope.isUndefined = angular.isUndefined,
-	    FP = FormService.FP;
+	    FP = FormService.FP,
+	    pass = FormService.pass;
 
+	$scope.template = TplFn.form;
 	$scope.isFields = $routeParams.fname === 'Field';
 	$scope.canSetPos = CpsService.canSetPos();
 	$scope.ops = $scope.ops || {};
@@ -19,20 +21,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		currentPage : 1
 	};
 
-	function _if(could, data) {
-		var deferred = $q.defer();
-		if (could) {
-			deferred.resolve(data);
-		} else {
-			deferred.reject({
-				hide : true
-			});
-		}
-		return deferred.promise;
-	}
-
 	function begin(act, stopWhen, stopPop) {
-		return _if(!ban[act]).then(function() {
+		return FormService._if(!ban[act]).then(function() {
 			if (stopWhen) {
 				return $q.reject({
 					popName : stopPop
@@ -49,6 +39,14 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	function isEditNew() {
 		return isUndefined($scope.editing.Id);
+	}
+
+	function isTop(iNow) {
+		return iNow === 0;
+	}
+
+	function isBottom(iNow) {
+		return iNow === $scope.rs.length - 1;
 	}
 
 	function isLastPage() {
@@ -100,12 +98,6 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 		var act = handler.act;
 		var promise = begin(act, handler.stopWhen, handler.stopPop).then(handler.handle || noop);
 		Msg.end.call(promise, act);
-	}
-
-	function pass(data) {
-		return function() {
-			return data;
-		};
 	}
 
 	function saveNormal() {
@@ -289,7 +281,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	$scope.posTop = function(iNow) {
 		var record = $scope.rs[iNow];
 		remoteAction({
-			stopWhen : iNow === 0 && isFirstPage(),
+			stopWhen : isTop(iNow) && isFirstPage(),
 			stopPop : 'alreadyTop',
 			act : 'posTop',
 			postData : PosFn.newIp(record),
@@ -306,7 +298,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	$scope.posBottom = function(iNow) {
 		var record = $scope.rs[iNow];
 		remoteAction({
-			stopWhen : iNow === $scope.rs.length - 1 && isLastPage(),
+			stopWhen : isBottom(iNow) && isLastPage(),
 			stopPop : 'alreadyBottom',
 			act : 'posBottom',
 			postData : PosFn.newIp(record),
@@ -322,22 +314,22 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	$scope.posUp = function(iNow) {
 		simpleAction({
-			stopWhen : iNow === 0 && isFirstPage(),
+			stopWhen : isTop(iNow) && isFirstPage(),
 			stopPop : 'alreadyTop',
 			act : 'posUp',
 			handle : function() {
-				return iNow === 0 ? posUpSingle(iNow) : xpos(iNow, iNow - 1);
+				return isTop(iNow) ? posUpSingle(iNow) : xpos(iNow, iNow - 1);
 			}
 		});
 	};
 
 	$scope.posDown = function(iNow) {
 		simpleAction({
-			stopWhen : iNow === $scope.rs.length - 1 && isLastPage(),
+			stopWhen : isBottom(iNow) && isLastPage(),
 			stopPop : 'alreadyBottom',
 			act : 'posDown',
 			handle : function() {
-				return (iNow === $scope.rs.length - 1) ? posUpSingle(iNow, true) : xpos(iNow, iNow + 1);
+				return isBottom(iNow) ? posUpSingle(iNow, true) : xpos(iNow, iNow + 1);
 			}
 		});
 	};
@@ -467,7 +459,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 			return;
 		}
 
-		if ($scope.hasPos && isEditNew()) {
+		if ($scope.canSetPos && isEditNew()) {
 			$scope.saveUp();
 			return;
 		}
@@ -524,7 +516,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	//init page data
 	FormResource.form(function(data) {
 		$scope.form = data;
-		$scope.hasPos = hasPos();
+		$scope.canSetPos = CpsService.canSetPos() && hasPos();
 		if (!$scope.editing) {
 			$scope.edit();
 		}
@@ -545,7 +537,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	}
 
 	$scope.$watchCollection('rs', function(newValue, oldValue, scope) {
-		if (Array.isArray(scope.rs) && scope.hasPos) {
+		if (Array.isArray(scope.rs) && scope.canSetPos) {
 			scope.rs.sort(PosFn.desc);
 		}
 	});
@@ -557,10 +549,6 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	});
 
 	$scope.page();
-
-	$scope.template = function(name) {
-		return '/views/directive-templates/form/' + name + '.html'
-	};
 
 }]).directive('formDirective', ['$routeParams',
 function($routeParams) {

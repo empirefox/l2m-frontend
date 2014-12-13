@@ -1,18 +1,11 @@
 'use strict';
 
-angular.module('app.control.field', ['ui.bootstrap', 'app.control.children', 'app.control.parent', 'app.control.datepicker', 'app.fns']);
-angular.module('app.control.field').controller('fieldControlCtrl', ['$scope', 'TplFn',
-function($scope, TplFn) {
-	$scope.field.Type = $scope.field.Type || "text";
-	$scope.field.Title = $scope.field.Title || $scope.field.Name;
-	$scope.ops = angular.fromJson($scope.field.Ops);
-	$scope.templateUrl = TplFn.field($scope.field.Type);
-}]).directive('fieldControl', ['$log',
-function($log) {
+angular.module('app.control.field', ['ngRoute', 'ui.bootstrap', 'app.control.children', 'app.control.parent', 'app.control.datepicker', 'app.fns']);
+angular.module('app.control.field').directive('fieldControl', ['TplFn',
+function(TplFn) {
 	var pre = function(scope) {
 		scope.$watch('record', function(record) {
-			var data = record[scope.field.Name];
-			if ( typeof data === 'string') {
+			if (record && scope.field.Name && typeof record[scope.field.Name] === 'string') {
 				switch(scope.field.Type) {
 					case 'datetime-local':
 					case 'month':
@@ -24,7 +17,7 @@ function($log) {
 					case 'monthpicker':
 					case 'yearpicker':
 					case 'datetimepicker':
-						record[scope.field.Name] = new Date(data);
+						record[scope.field.Name] = new Date(record[scope.field.Name]);
 						break;
 				}
 			}
@@ -32,10 +25,14 @@ function($log) {
 	};
 
 	return {
-		template : '<ng-include src="templateUrl"></ng-include>',
+		template : '<ng-include src="url"></ng-include>',
 		restrict : 'E',
-		replace : true,
-		controller : 'fieldControlCtrl',
+		controller : function($scope) {
+			$scope.field.Type = $scope.field.Type || "text";
+			$scope.field.Title = $scope.field.Title || $scope.field.Name;
+			$scope.ops = angular.fromJson($scope.field.Ops);
+			$scope.url = TplFn.field($scope.field.Type);
+		},
 		scope : {
 			field : '=',
 			record : '='

@@ -164,10 +164,14 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 					case 'month':
 					case 'time':
 					case 'week':
+                        return fieldBaseDir + 'textfield.html';
 					default:
 						return fieldBaseDir + 'textfield.html';
 				}
 				return '';
+			},
+			form : function(name) {
+				return formBaseDir + name + '.html';
 			}
 		};
 		return TplFn;

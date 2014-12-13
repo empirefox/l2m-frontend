@@ -8,25 +8,26 @@ function($location, $routeParams, $resource, CpsService) {
 			return $routeParams.fname;
 		}
 	}, {
-        mf : {
-            method : 'GET',
-            params : {
-                act : 'mf'
-            }
-        },
-        mfs : {
-            method : 'GET',
-            isArray : true,
-            params : {
-                fname : 'mfs',
-                act : function() {
-                    var id = $location.search().form_id;
-                    if (angular.isDefined(id)) {
-                        return id;
-                    }
-                }
-            }
-        },
+		mf : {
+			method : 'GET',
+			params : {
+				act : 'mf'
+			}
+		},
+		mfs : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				fname : 'mfs',
+				act : function() {
+					/*jshint camelcase: false */
+					var id = $location.search().form_id;
+					if (angular.isDefined(id)) {
+						return id;
+					}
+				}
+			}
+		},
 		form : {
 			method : 'GET',
 			params : {
@@ -142,8 +143,9 @@ function($location, $routeParams, $resource, CpsService) {
 			}
 		}
 	});
-}]).service('FormService', ['FormResource',
-function(FormResource) {
+}]).service('FormService', ['FormResource', '$q',
+function(FormResource, $q) {
+	// basic
 	function applyArgs(handler, names) {
 		var args = [];
 		angular.forEach(names, function(name) {
@@ -154,18 +156,41 @@ function(FormResource) {
 		return args;
 	}
 
+	function _if(could, data) {
+		var deferred = $q.defer();
+		if (could) {
+			deferred.resolve(data);
+		} else {
+			deferred.reject({
+				hide : true
+			});
+		}
+		return deferred.promise;
+	}
 
-	this.applyArgs = applyArgs;
+	function pass(data) {
+		return function() {
+			return data;
+		};
+	}
 
-	this.FP = function(handler) {
+	function FP(handler) {
 		return function() {
 			var args = applyArgs(handler, ['param', 'postData', 'handle', 'error']);
 			return FormResource[handler.act].apply(null, args).$promise;
 		};
-	};
-	this.F = function(name) {
+	}
+
+	function F(name) {
 		return function() {
 			return FormResource[name]().$promise;
 		};
-	};
+	}
+
+
+	this.applyArgs = applyArgs;
+	this._if = _if;
+	this.pass = pass;
+	this.FP = FP;
+	this.F = F;
 }]);

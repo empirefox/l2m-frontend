@@ -46,6 +46,7 @@ describe('FormDirectiveCtrl', function() {
 		});
 
 		$httpBackend.flush();
+        scope.$digest();
 	}));
 
     it('should fetch the form instance', function() {
