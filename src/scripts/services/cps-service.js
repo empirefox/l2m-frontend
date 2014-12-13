@@ -79,6 +79,10 @@ function(Cps, $routeParams, $location, ArrFn) {
 
 	var cps = this;
 
+	this.asFk = function(){
+	    return S($routeParams.fname).underscore().chompLeft('_').s + "_id";
+	};
+
 	this.getArray = function() {
 		return Cps[$routeParams.fname] || [];
 	};

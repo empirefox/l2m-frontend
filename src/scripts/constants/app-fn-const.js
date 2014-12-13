@@ -128,4 +128,47 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 			return JSON.parse(JSON.stringify(obj, JsonFn.delNoneExampleEntry));
 		};
 		return JsonFn;
+	}())).constant('TplFn', ( function() {
+		var baseDir = '/views/directive-templates/';
+		var fieldBaseDir = baseDir + 'field/';
+		var formBaseDir = baseDir + 'form/';
+		var TplFn = {
+			// next code-mirror
+			field : function(type) {
+				switch(type) {
+					case 'number':
+					case 'textarea':
+					case 'checkbox':
+					case 'hidden':
+					case 'radio':
+					case 'kindeditor':
+					case 'parent':
+					case 'children':
+					case 'timepicker':
+					case 'datetimepicker':
+						return fieldBaseDir + type + '.html';
+					case 'datepicker':
+					case 'monthpicker':
+					case 'yearpicker':
+						return fieldBaseDir + 'datepicker.html';
+					case 'text':
+					case 'textfield':
+					case 'search':
+					case 'url':
+					case 'telephone':
+					case 'email':
+					case 'password':
+					//ng额外
+					case 'date':
+					case 'datetime-local':
+					case 'month':
+					case 'time':
+					case 'week':
+					default:
+						return fieldBaseDir + 'textfield.html';
+				}
+				return '';
+			}
+		};
+		return TplFn;
 	}()));

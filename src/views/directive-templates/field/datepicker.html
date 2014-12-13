@@ -2,6 +2,7 @@
 	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填 </span>
 		<p ng-if="!field.Readonly" class="input-group">
 			<input
+			datepicker-control
 			datepicker-options="ops"
 			datepicker-popup="{{format}}"
 			name="{{field.Name}}"
