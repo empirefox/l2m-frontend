@@ -1,4 +1,6 @@
 angular.module('app.fns', []).constant('ArrFn', ( function() {
+		var isDefined = angular.isDefined,
+		    isUndefined = angular.isUndefined;
 		var ArrFn = {
 			isOutOfFn : function(container) {
 				return function(ele) {
@@ -22,7 +24,7 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 			containsWithProperty : function(container, target, propName) {
 				container = container || [];
 				return container.some(function(ele) {
-					if (angular.isDefined(propName)) {
+					if (isDefined(propName)) {
 						return ele[propName] === target[propName];
 					}
 					return ele === target;
@@ -77,7 +79,50 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 		return ArrFn;
 	}())).constant('PosFn', {
 	desc : function(a, b) {
-		return b.Pos - a.Pos;
+		return +(b.Pos || 0) - (a.Pos || 0);
+	},
+
+	orderByFn : function(ascs, descs) {
+		ascs = ascs || [];
+		descs = descs || [];
+		/*jshint eqnull:true */
+		return function(a, b) {
+			var result = 0;
+			var ok = ascs.some(function(asc) {
+				var va = a[asc],
+				    vb = b[asc];
+				if (va == vb) {
+					return false;
+				}
+				if (vb == null || va > vb) {
+					result = 1
+					return true;
+				}
+				if (va == null || va < vb) {
+					result = -1
+					return true;
+				}
+			});
+			if (ok) {
+				return result;
+			}
+			descs.some(function(desc) {
+				var va = a[desc],
+				    vb = b[desc];
+                if (va == vb) {
+                    return false;
+                }
+				if (vb == null || va > vb) {
+					result = -1
+					return true;
+				}
+				if (va == null || va < vb) {
+					result = 1
+					return true;
+				}
+			});
+			return result;
+		};
 	},
 
 	isIps : function(data) {
@@ -164,7 +209,7 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 					case 'month':
 					case 'time':
 					case 'week':
-                        return fieldBaseDir + 'textfield.html';
+						return fieldBaseDir + 'textfield.html';
 					default:
 						return fieldBaseDir + 'textfield.html';
 				}

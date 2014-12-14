@@ -516,7 +516,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	//init page data
 	FormResource.form(function(data) {
 		$scope.form = data;
-		$scope.canSetPos = CpsService.canSetPos() && hasPos();
+		$scope.hasPos = hasPos();
+		$scope.canSetPos = CpsService.canSetPos() && hasPos;
 		if (!$scope.editing) {
 			$scope.edit();
 		}
@@ -537,8 +538,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	}
 
 	$scope.$watchCollection('rs', function(newValue, oldValue, scope) {
-		if (Array.isArray(scope.rs) && scope.canSetPos) {
-			scope.rs.sort(PosFn.desc);
+		if (Array.isArray(scope.rs)) {
+			scope.rs.sort(CpsService.orderFn(hasPos));
 		}
 	});
 

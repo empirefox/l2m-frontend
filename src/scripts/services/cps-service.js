@@ -5,8 +5,8 @@ angular.module('cps-service', ['ngRoute', 'app.fns']).constant('Cps', {
 	Field : 'FormId'.split(','),
 	Oauth : 'AccountId'.split(',')
 
-}).service('CpsService', ['Cps', '$routeParams', '$location', 'ArrFn',
-function(Cps, $routeParams, $location, ArrFn) {
+}).service('CpsService', ['Cps', '$routeParams', '$location', 'ArrFn', 'PosFn',
+function(Cps, $routeParams, $location, ArrFn, PosFn) {
 
 	function newPosUpOnStep(models, iNow, step) {
 		var iMax = models.length - 1;
@@ -79,8 +79,8 @@ function(Cps, $routeParams, $location, ArrFn) {
 
 	var cps = this;
 
-	this.asFk = function(){
-	    return S($routeParams.fname).underscore().chompLeft('_').s + "_id";
+	this.asFk = function() {
+		return S($routeParams.fname).underscore().chompLeft('_').s + "_id";
 	};
 
 	this.getArray = function() {
@@ -131,6 +131,10 @@ function(Cps, $routeParams, $location, ArrFn) {
 			}
 		});
 		return ps;
+	};
+
+	this.orderFn = function(hasPos) {
+		return PosFn.orderByFn(cps.getArray(), hasPos ? ['Pos'] : undefined);
 	};
 
 	this.canSetPos = function() {
