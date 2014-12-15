@@ -1,0 +1,12 @@
+<div class="form-group">
+	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填</span></label>
+	<div
+	name="{{field.Name}}"
+	ng-model="record[field.Name]"
+	ng-required="field.Required"
+	ui-codemirror="ops"
+	inner-menu
+	codemirror-menu
+	codemirror-control
+	></div>
+</div>

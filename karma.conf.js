@@ -33,6 +33,21 @@ module.exports = function(config) {
       'bower_components/spectrum/spectrum.js',
 //      'bower_components/spectrum/i18n/jquery.spectrum-zh-cn.js',
       'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js',
+
+      'bower_components/codemirror/lib/codemirror.js',
+      'bower_components/codemirror/mode/javascript/javascript.js',
+      'bower_components/codemirror/mode/xml/xml.js',
+      'bower_components/codemirror/mode/css/css.js',
+      'bower_components/codemirror/mode/htmlmixed/htmlmixed.js',
+      'bower_components/angular-ui-codemirror/ui-codemirror.js',
+      'bower_components/js-beautify/js/lib/beautify.js',
+      'bower_components/js-beautify/js/lib/beautify-css.js',
+      'bower_components/js-beautify/js/lib/beautify-html.js',
+      'bower_components/js-beautify/js/lib/unpackers/javascriptobfuscator_unpacker.js',
+      'bower_components/js-beautify/js/lib/unpackers/myobfuscate_unpacker.js',
+      'bower_components/js-beautify/js/lib/unpackers/p_a_c_k_e_r_unpacker.js',
+      'bower_components/js-beautify/js/lib/unpackers/urlencode_unpacker.js',
+
       'bower_components/string/lib/string.js',
 
       'bower_components/angular-mocks/angular-mocks.js',

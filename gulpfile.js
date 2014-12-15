@@ -29,14 +29,42 @@ var cdnizerFiles = [
                 			cdn: 'cdnjs:angularjs-toaster:${ filenameMin }'
                 		},
                 		'cdnjs:font-awesome',
-                		{
-                			file: '**/spectrum/spectrum.js',
-                			cdn: 'cdnjs:spectrum:js/${ filenameMin }'
-                		},
-                		{
-                			file: '**/spectrum/*.css',
-                			cdn: 'cdnjs:spectrum:css/${ filenameMin }'
-                		},
+                        {
+                            file: '**/spectrum/spectrum.js',
+                            cdn: 'cdnjs:spectrum:js/${ filenameMin }'
+                        },
+                        {
+                            file: '**/spectrum/*.css',
+                            cdn: 'cdnjs:spectrum:css/${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror/**/javascript.js',
+                            cdn: 'cdnjs:codemirror:mode/javascript/${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror/**/xml.js',
+                            cdn: 'cdnjs:codemirror:mode/xml/${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror/**/css.js',
+                            cdn: 'cdnjs:codemirror:mode/css/${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror/**/htmlmixed.js',
+                            cdn: 'cdnjs:codemirror:mode/htmlmixed/${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror.js',
+                            cdn: 'cdnjs:codemirror:${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror/**/twilight.css',
+                            cdn: 'cdnjs:codemirror:theme/${ filenameMin }'
+                        },
+                        {
+                            file: '**/codemirror.css',
+                            cdn: 'cdnjs:codemirror:${ filenameMin }'
+                        },
 //                		{
 //                			file: '**/spectrum/i18n/*.js',
 //                			cdn: 'cdnjs:spectrum-i18n:js/${ filenameMin }'
@@ -225,6 +253,16 @@ gulp.task('copy:app', function () {
                     'bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
                     'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
                     'bower_components/angular-dialog-service/dist/dialogs.min.js',
+
+                    'bower_components/angular-ui-codemirror/ui-codemirror.js',
+                    'bower_components/js-beautify/js/lib/beautify.js',
+                    'bower_components/js-beautify/js/lib/beautify-css.js',
+                    'bower_components/js-beautify/js/lib/beautify-html.js',
+                    'bower_components/js-beautify/js/lib/unpackers/javascriptobfuscator_unpacker.js',
+                    'bower_components/js-beautify/js/lib/unpackers/myobfuscate_unpacker.js',
+                    'bower_components/js-beautify/js/lib/unpackers/p_a_c_k_e_r_unpacker.js',
+                    'bower_components/js-beautify/js/lib/unpackers/urlencode_unpacker.js',
+
                     template('<%= src %>/scripts/**/*.js', dirs)])
                .pipe(plugins.concat('app.min.js'))
                .pipe(plugins.cdnizer({

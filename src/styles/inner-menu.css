@@ -1,0 +1,14 @@
+.inner-menu-group {
+    top: 20px;
+    z-index: 10;
+    right: 30px;
+    float: right;
+    position: absolute;
+    opacity: 0.5;
+}
+.inner-menu-group:hover {
+    opacity: 1;
+}
+.inner-menu-group .btn {
+    text-align: left;
+}
