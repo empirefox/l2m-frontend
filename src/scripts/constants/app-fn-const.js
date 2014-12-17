@@ -1,6 +1,5 @@
 angular.module('app.fns', []).constant('ArrFn', ( function() {
-		var isDefined = angular.isDefined,
-		    isUndefined = angular.isUndefined;
+		var isDefined = angular.isDefined;
 		var ArrFn = {
 			isOutOfFn : function(container) {
 				return function(ele) {
@@ -85,39 +84,42 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 	orderByFn : function(ascs, descs) {
 		ascs = ascs || [];
 		descs = descs || [];
-		/*jshint eqnull:true */
 		return function(a, b) {
 			var result = 0;
+			/*jshint eqnull:true */
 			var ok = ascs.some(function(asc) {
 				var va = a[asc],
 				    vb = b[asc];
+				/*jslint eqeq: true*/
 				if (va == vb) {
 					return false;
 				}
 				if (vb == null || va > vb) {
-					result = 1
+					result = 1;
 					return true;
 				}
 				if (va == null || va < vb) {
-					result = -1
+					result = -1;
 					return true;
 				}
 			});
 			if (ok) {
 				return result;
 			}
+			/*jshint eqnull:true */
 			descs.some(function(desc) {
 				var va = a[desc],
 				    vb = b[desc];
-                if (va == vb) {
-                    return false;
-                }
+				/*jslint eqeq: true*/
+				if (va == vb) {
+					return false;
+				}
 				if (vb == null || va > vb) {
-					result = -1
+					result = -1;
 					return true;
 				}
 				if (va == null || va < vb) {
-					result = 1
+					result = 1;
 					return true;
 				}
 			});

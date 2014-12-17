@@ -1,0 +1,78 @@
+[
+    "cdnjs:jquery",
+    "cdnjs:angular.js:angular-animate.min.js",
+    "cdnjs:angular.js:angular-resource.min.js",
+    "cdnjs:angular.js:angular-route.min.js",
+    "cdnjs:angular.js:angular-sanitize.min.js",
+    "cdnjs:angular.js:angular.min.js",
+    {
+        "file": "**/angular-translate/*.js",
+        "package": "angular-translate",
+        "cdn": "cdnjs:bower-angular-translate:angular-translate.min.js"
+    },
+    "cdnjs:angular-i18n:angular-locale_zh-cn.js",
+    {
+        "file": "**/angular-ui-bootstrap/**/*.js",
+        "cdn": "cdnjs:angular-ui-bootstrap:ui-bootstrap-tpls.min.js"
+    },
+    {
+        "file": "**/angular-filter/**/*.js",
+        "package": "angular-filter",
+        "cdn": "//cdnjs.cloudflare.com/ajax/libs/angular-filter/${ version }/${ filenameMin }"
+    },
+    {
+        "file": "**/angularjs-toaster/*.js",
+        "cdn": "cdnjs:angularjs-toaster:${ filenameMin }"
+    },
+    {
+        "file": "**/angularjs-toaster/*.css",
+        "cdn": "cdnjs:angularjs-toaster:${ filenameMin }"
+    },
+    "cdnjs:font-awesome",
+    {
+        "file": "**/spectrum/spectrum.js",
+        "cdn": "cdnjs:spectrum:js/${ filenameMin }"
+    },
+    {
+        "file": "**/spectrum/*.css",
+        "cdn": "cdnjs:spectrum:css/${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror/**/javascript.js",
+        "cdn": "cdnjs:codemirror:mode/javascript/${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror/**/xml.js",
+        "cdn": "cdnjs:codemirror:mode/xml/${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror/**/css.js",
+        "cdn": "cdnjs:codemirror:mode/css/${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror/**/htmlmixed.js",
+        "cdn": "cdnjs:codemirror:mode/htmlmixed/${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror.js",
+        "cdn": "cdnjs:codemirror:${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror/**/twilight.css",
+        "cdn": "cdnjs:codemirror:theme/${ filenameMin }"
+    },
+    {
+        "file": "**/codemirror.css",
+        "cdn": "cdnjs:codemirror:${ filenameMin }"
+    },
+    {
+        "file": "**/string.js",
+        "package": "string",
+        "cdn": "cdnjs:string.js:${ filenameMin }"
+    },
+    {
+        "file": "**/bootstrap/**/bootstrap.css",
+        "package": "bootstrap",
+        "cdn": "cdnjs:twitter-bootstrap:css/bootstrap.min.css"
+    }
+]

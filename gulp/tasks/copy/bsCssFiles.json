@@ -1,0 +1,10 @@
+[
+    {
+        "file": "{{font-awesome.css}}",
+        "cdn": "cdnjs:font-awesome"
+    }, {
+        "file": "{{bootstrap.css}}",
+        "package": "bootstrap",
+        "cdn": "cdnjs:twitter-bootstrap:css/bootstrap.min.css"
+    }
+]

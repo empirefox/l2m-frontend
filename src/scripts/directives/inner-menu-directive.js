@@ -2,22 +2,6 @@
 
 angular.module('app.menu.inner', ['ui.bootstrap']).directive('innerMenu', ['$compile',
 function($compile) {
-	return {
-		restrict : 'A',
-		priority : 1000,
-		link : linker
-	};
-
-	function linker(scope, iElement, iAttrs) {
-		scope.btns = scope.btns || scope.$eval(iAttrs.innerMenu);
-		if (!scope.btns) {
-			return;
-		}
-		var tpl = angular.element(template());
-		var btns = $compile(tpl)(scope);
-		iElement.prepend(btns);
-	}
-
 	// btn: {fa, txt, tips, onClick()}
 	function template() {
 		var tpl = '<div ng-if="btns.length" class="inner-menu-group">';
@@ -29,5 +13,21 @@ function($compile) {
 		tpl += '   </div>';
 		return tpl;
 	}
+
+	function linker(scope, iElement, iAttrs) {
+		scope.btns = scope.btns || scope.$eval(iAttrs.innerMenu);
+		if (!scope.btns) {
+			return;
+		}
+		var tpl = angular.element(template());
+		var btns = $compile(tpl)(scope);
+		iElement.prepend(btns);
+	}
+
+	return {
+		restrict : 'A',
+		priority : 1000,
+		link : linker
+	};
 
 }]);

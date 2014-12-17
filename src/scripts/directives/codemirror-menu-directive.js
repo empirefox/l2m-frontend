@@ -1,12 +1,7 @@
 'use strict';
 
 angular.module('app.menu.codemirror', ['ui.codemirror']).directive('codemirrorMenu', function() {
-	return {
-		restrict : 'A',
-		priority : 10,
-		link : linker
-	};
-
+	/*jshint camelcase: false */
 	function linker(scope, iElement, iAttrs) {
 		if (!scope.codemirror) {
 			throw new Error('app.menu.codemirror need scope.codemirror to work');
@@ -20,7 +15,7 @@ angular.module('app.menu.codemirror', ['ui.codemirror']).directive('codemirrorMe
 			var output = engine(scope.codemirror.getValue(), ops);
 			scope.codemirror.setValue(output);
 			scope.codemirror.setOption('mode', mode);
-		}
+		};
 		// btn: {mode, fa, txt, tips, onClick()}
 		scope.btns = [{
 			fa : 'code',
@@ -52,5 +47,11 @@ angular.module('app.menu.codemirror', ['ui.codemirror']).directive('codemirrorMe
 		}
 
 	}
+
+	return {
+		restrict : 'A',
+		priority : 10,
+		link : linker
+	};
 
 });
