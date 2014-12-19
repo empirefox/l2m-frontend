@@ -1,1 +1,0 @@
-angular.module('bs-ng-editor', ['angularBsEditor']).constant('EditorCssPath', ['{{bootstrap.css}}', '{{font-awesome.css}}']);

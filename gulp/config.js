@@ -24,7 +24,7 @@ var config = {
 	styles : {
 		src : r('{{ src }}/styles/*.css'),
 		dest : dest + '/css',
-		name : 'main.css'
+		name : 'app.css'
 	},
 	misc : {
 		src : [r('{{ src }}/.*'), r('!{{ src }}/index.html'), r('!{{ src }}/scripts'), r('!{{ src }}/styles'), r('!{{ src }}/views')],

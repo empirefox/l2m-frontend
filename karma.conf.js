@@ -1,127 +1,88 @@
 // Karma configuration
 // Generated on Fri Aug 29 2014 10:40:27 GMT+0800 (CST)
+var Lazy = require("lazy.js");
+var getPath = require("bower-path");
+var resource = require('./gulp/resource.json');
+
+var jsdelivrs = [];
+Lazy(resource.jsdelivr.js).compact().each(function(cdn) {
+	if ( typeof cdn.files === 'string' && cdn.files.length > 0) {
+		cdn.files.split('+').forEach(function(file) {
+			var segs = file.split('/');
+			var name = segs[segs.length - 1];
+			jsdelivrs.push('bower_components/' + cdn.package + '/**/' + name);
+		});
+	} else {
+		var main = getPath(cdn.package).split(',')[0].replace('/./', '/');
+		jsdelivrs.push(main);
+	}
+});
+var files = Lazy([resource.cdn.js, jsdelivrs, resource.local.js, resource.test]).flatten().toArray();
 
 module.exports = function(config) {
-  config.set({
+	config.set({
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+		// base path that will be used to resolve all patterns (eg. files, exclude)
+		basePath : '',
 
+		// frameworks to use
+		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+		frameworks : ['jasmine'],
 
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+		// list of files / patterns to load in the browser
+		files : files,
 
+		// list of files to exclude
+		exclude : [],
 
-    // list of files / patterns to load in the browser
-    files: [
-      'bower_components/jquery/dist/jquery.js',
-      'bower_components/angular/angular.js',
-      'bower_components/angular-animate/angular-animate.js',
-      'bower_components/angular-resource/angular-resource.js',
-      'bower_components/angular-route/angular-route.js',
-      'bower_components/angular-sanitize/angular-sanitize.js',
-      'bower_components/angular-translate/angular-translate.js',
-      'bower_components/angular-i18n/angular-locale_zh-cn.js',
-      'bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-*.min.js',
-      'bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
-      'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
-      'bower_components/angular-filter/dist/angular-filter.js',
-      'bower_components/angular-dialog-service/dist/dialogs.min.js',
-      'bower_components/angularjs-toaster/toaster.js',
-      'bower_components/pluralize/pluralize.js',
-      'bower_components/spectrum/spectrum.js',
-//      'bower_components/spectrum/i18n/jquery.spectrum-zh-cn.js',
-      'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js',
+		// preprocess matching files before serving them to the browser
+		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+		preprocessors : {
+			'src/views/**/*.html' : 'ng-html2js',
+			// json_fixtures
+			'test/fixtures/**/*.json' : 'json_fixtures'
+		},
 
-      'bower_components/codemirror/lib/codemirror.js',
-      'bower_components/codemirror/mode/javascript/javascript.js',
-      'bower_components/codemirror/mode/xml/xml.js',
-      'bower_components/codemirror/mode/css/css.js',
-      'bower_components/codemirror/mode/htmlmixed/htmlmixed.js',
-      'bower_components/angular-ui-codemirror/ui-codemirror.js',
-      'bower_components/js-beautify/js/lib/beautify.js',
-      'bower_components/js-beautify/js/lib/beautify-css.js',
-      'bower_components/js-beautify/js/lib/beautify-html.js',
-      'bower_components/js-beautify/js/lib/unpackers/javascriptobfuscator_unpacker.js',
-      'bower_components/js-beautify/js/lib/unpackers/myobfuscate_unpacker.js',
-      'bower_components/js-beautify/js/lib/unpackers/p_a_c_k_e_r_unpacker.js',
-      'bower_components/js-beautify/js/lib/unpackers/urlencode_unpacker.js',
+		ngHtml2JsPreprocessor : {
+			stripPrefix : 'src',
+			moduleName : 'l2m-tpl'
+		},
 
-      'bower_components/string/lib/string.js',
+		jsonFixturesPreprocessor : {
+			// strip this from the file path \ fixture name
+			stripPrefix : ['test/fixtures/'],
+			// strip this to the file path \ fixture name
+			prependPrefix : '',
+			// change the global fixtures variable name
+			variableName : ['__fixtures__']
+		},
 
-      'bower_components/angular-mocks/angular-mocks.js',
+		// test results reporter to use
+		// possible values: 'dots', 'progress'
+		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
+		reporters : ['progress'],
 
-      'lib/messenger.js',
-      'lib/ke/*.js',
+		// web server port
+		port : 9876,
 
-      'src/scripts/**/*.js',
-      'test/unit/helper.js',
-      'test/unit/**/*.js',
-      'src/views/**/*.html',
+		// enable / disable colors in the output (reporters and logs)
+		colors : true,
 
-	  'test/fixtures/**/*.json'
-    ],
+		// level of logging
+		// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN ||
+		// config.LOG_INFO || config.LOG_DEBUG
+		logLevel : config.LOG_INFO,
 
+		// enable / disable watching file and executing tests whenever any file changes
+		autoWatch : true,
 
-    // list of files to exclude
-    exclude: [
-    ],
+		// start these browsers
+		// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+		browsers : ['PhantomJS'],
+		// browsers: ['Chrome', 'Firefox', 'PhantomJS'],
 
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    	'src/views/**/*.html': 'ng-html2js',
-    	'test/fixtures/**/*.json': 'json_fixtures'
-    },
-
-    ngHtml2JsPreprocessor: {
-    	stripPrefix: 'src',
-    	moduleName: 'l2m-tpl'
-    },
-
-    jsonFixturesPreprocessor: {
-      // strip this from the file path \ fixture name
-      stripPrefix: ['test/fixtures/'],
-      // strip this to the file path \ fixture name
-      prependPrefix: '',
-      // change the global fixtures variable name
-      variableName: ['__fixtures__']
-    },
-
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
-
-
-    // web server port
-    port: 9876,
-
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
-    // browsers: ['Chrome', 'Firefox', 'PhantomJS'],
-
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
-  });
+		// Continuous Integration mode
+		// if true, Karma captures browsers, runs the tests and exits
+		singleRun : false
+	});
 };
