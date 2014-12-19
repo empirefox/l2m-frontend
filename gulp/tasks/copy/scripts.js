@@ -4,7 +4,6 @@ var plugins = require('gulp-load-plugins')();
 var streamqueue = require('streamqueue');
 var resource = require('../../resource.json').local || {};
 var toStaticfilesCDN = require('./cdn-helper').toStaticfilesCDN();
-var bsCssFiles = require('./bsCssFiles.json');
 var config = require('../../config').scripts;
 
 gulp.task('copy:scripts', function() {

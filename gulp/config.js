@@ -1,6 +1,3 @@
-var dest = "./dist";
-var src = './src';
-
 var swig = require('swig');
 var r = new swig.Swig({
 	locals : {
@@ -10,10 +7,10 @@ var r = new swig.Swig({
 }).render;
 
 var config = {
-	dest : dest,
+	dest : r('{{ dest }}'),
 	'index.html' : {
 		src : r('{{ src }}/index.html'),
-		dest : dest
+		dest : r('{{ dest }}')
 	},
 	scripts : {
 		src : r('{{ src }}/scripts/**/*.js'),
@@ -23,17 +20,17 @@ var config = {
 	},
 	styles : {
 		src : r('{{ src }}/styles/*.css'),
-		dest : dest + '/css',
+		dest : r('{{ dest }}/css'),
 		name : 'app.css'
 	},
 	misc : {
 		src : [r('{{ src }}/.*'), r('!{{ src }}/index.html'), r('!{{ src }}/scripts'), r('!{{ src }}/styles'), r('!{{ src }}/views')],
-		dest : dest
+		dest : r('{{ dest }}')
 	},
 
 	sass : {
-		src : src + "/sass/*.{sass,scss}",
-		dest : dest,
+		src : r('{{ src }}/sass/*.{sass,scss}'),
+		dest : r('{{ dest }}'),
 		settings : {
 			// Required if you want to use SASS syntax
 			// See https://github.com/dlmanning/gulp-sass/issues/81
@@ -42,8 +39,8 @@ var config = {
 		}
 	},
 	images : {
-		src : src + "/images/**",
-		dest : dest + "/images"
+		src : r("{{ src }}/images/**"),
+		dest : r("{{ dest }}/images")
 	},
 	browserify : {
 		// Enable source maps
@@ -53,12 +50,12 @@ var config = {
 		// A separate bundle will be generated for each
 		// bundle config in the list below
 		bundleConfigs : [{
-			entries : src + '/javascript/app.coffee',
-			dest : dest,
+			entries : r('{{ src }}/javascript/app.coffee'),
+			dest : r('{{ dest }}'),
 			outputName : 'app.js'
 		}, {
-			entries : src + '/javascript/head.coffee',
-			dest : dest,
+			entries : r('{{ src }}/javascript/head.coffee'),
+			dest : r('{{ dest }}'),
 			outputName : 'head.js'
 		}]
 	}

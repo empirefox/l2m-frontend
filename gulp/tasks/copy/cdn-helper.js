@@ -1,14 +1,15 @@
+var swig = require('swig');
 var replace = require('gulp-replace');
 var Lazy = require("lazy.js");
 
 var cdnReplacer = {
 	css : {
 		reg : /<!--\s*jsdelivr-css\s*-->/g,
-		tpl : '<link rel="stylesheet" href="//cdn.jsdelivr.net/g/{{cdns}}" />'
+		tpl : swig.compile('<link rel="stylesheet" href="//cdn.jsdelivr.net/g/{{ cdns }}" />')
 	},
 	js : {
 		reg : /<!--\s*jsdelivr-js\s*-->/g,
-		tpl : '<script src="//cdn.jsdelivr.net/g/{{cdns}}"></script>'
+		tpl : swig.compile('<script src="//cdn.jsdelivr.net/g/{{ cdns }}"></script>')
 	}
 };
 
@@ -19,7 +20,9 @@ var helper = {
 			var files = ( typeof cdn.files === 'string' && cdn.files.length > 0) ? '(' + cdn.files + ')' : '';
 			return cdn.package + files;
 		}).join();
-		var markup = cdns === '' ? '' : replacer.tpl.replace('{{cdns}}', cdns);
+		var markup = cdns === '' ? '' : replacer.tpl({
+			cdns : cdns
+		});
 		return replace(replacer.reg, markup);
 	},
 
