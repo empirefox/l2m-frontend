@@ -1,7 +1,7 @@
 {
-	"cdn": 
+	"cdn":
 	{
-		"js": 
+		"js":
 		[
 			"bower_components/jquery/dist/jquery.js",
 			"bower_components/string/lib/string.js",
@@ -20,10 +20,11 @@
 			"bower_components/codemirror/mode/javascript/javascript.js",
 			"bower_components/codemirror/mode/xml/xml.js",
 			"bower_components/codemirror/mode/css/css.js",
-			"bower_components/codemirror/mode/htmlmixed/htmlmixed.js"
+			"bower_components/codemirror/mode/htmlmixed/htmlmixed.js",
+            "bower_components/textAngular/dist/textAngular.min.js"
 		],
 
-		"css": 
+		"css":
 		[
 			"bower_components/bootstrap/dist/css/bootstrap.css",
 			"bower_components/font-awesome/css/font-awesome.css",
@@ -34,9 +35,9 @@
 		]
 	},
 
-	"jsdelivr": 
+	"jsdelivr":
 	{
-		"js": 
+		"js":
 		[
 			{
 				"package": "rangy",
@@ -44,15 +45,15 @@
 			}
 		],
 
-		"css": 
+		"css":
 		[
-			
+
 		]
 	},
 
-	"local": 
+	"local":
 	{
-		"js": 
+		"js":
 		[
 			"bower_components/pluralize/pluralize.js",
 			"bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js",
@@ -69,7 +70,7 @@
 			"bower_components/js-beautify/js/lib/unpackers/urlencode_unpacker.js"
 		],
 
-		"css": 
+		"css":
 		[
 			"bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.css",
 			"bower_components/angular-ui-tree/dist/angular-ui-tree.min.css",
@@ -77,7 +78,7 @@
 		]
 	},
 
-	"test": 
+	"test":
 	[
 		"bower_components/angular-mocks/angular-mocks.js",
 		"src/scripts/**/*.js",

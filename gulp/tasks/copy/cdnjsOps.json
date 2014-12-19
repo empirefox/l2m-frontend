@@ -74,5 +74,10 @@
         "file": "**/bootstrap/**/bootstrap.css",
         "package": "bootstrap",
         "cdn": "cdnjs:twitter-bootstrap:css/bootstrap.min.css"
+    },
+    {
+        "file": "**/textAngular.min.js",
+        "package": "textAngular",
+        "cdn": "cdnjs:textAngular:${ filenameMin }"
     }
 ]
