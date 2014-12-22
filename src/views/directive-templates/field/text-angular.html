@@ -1,0 +1,15 @@
+<div class="form-group">
+	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填</span></label>
+	<div ng-if="!field.Readonly">
+		<div text-angular-toolbar name="{{field.Name}}-toolbar"></div>
+		<div
+		text-angular
+		ta-target-toolbars="{{field.name}}-toolbar"
+		name="{{field.Name}}"
+		ng-model="record[field.Name]"
+		ng-required="field.Required"
+		placeholder="{{field.Placeholder}}"
+		></div>
+	</div>
+	<div ng-if="field.Readonly" ta-bind="text" ng-model="record[field.Name]"></div>
+</div>

@@ -1,11 +1,12 @@
 <div class="form-group">
 	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填 </span></label>
 	<p ng-if="!field.Readonly" class="input-group">
-		<timepicker
+		<div
+		timepicker
 		name="{{field.Name}}"
 		ng-model="record[field.Name]"
 		ng-required="field.Required"
-		></timepicker>
+		></div>
 	</p>
 	<p ng-if="field.Readonly" ng-bind="record[field.Name] | data : 'shortTime'" class="form-control-static"></p>
 </div>

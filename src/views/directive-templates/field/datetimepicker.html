@@ -1,14 +1,15 @@
 <div class="form-group">
 	<label><span ng-bind="field.Title"></span><span class="text-danger" ng-show="field.Required && !record[field.Name]">* 必填 </span> </label>
 	<div ng-if="!field.Readonly" style="white-space:nowrap;">
-		<datetimepicker
+		<div
+		datetimepicker
 		name="{{field.Name}}"
 		ng-required="field.Required"
 		ng-model="record[field.Name]"
 		date-options="ops.dateOptions"
 		min-date="ops.minDate"
 		max-date="ops.maxDate"
-		readonly-time="ops.readonlyInput"></datetimepicker>
+		readonly-time="ops.readonlyInput"></div>
 	</div>
 	<p ng-if="field.Readonly" ng-bind="record[field.Name] | data" class="form-control-static"></p>
 </div>
