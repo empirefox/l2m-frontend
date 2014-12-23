@@ -80,11 +80,6 @@
 
 	"test":
 	[
-		"bower_components/angular-mocks/angular-mocks.js",
-		"src/scripts/**/*.js",
-		"test/unit/helper.js",
-		"test/unit/**/*.js",
-		"src/views/**/*.html",
-		"test/fixtures/**/*.json"
+		"bower_components/angular-mocks/angular-mocks.js"
 	]
 }

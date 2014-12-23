@@ -20,5 +20,5 @@ gulp.task('test:unit', function() {
 });
 
 gulp.task('test:unit:auto', function() {
-	return gulp.watch([script.files], ['test']);
+	return gulp.watch([config.src], ['test']);
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.control.datepicker', ['ui.bootstrap.datepicker']).directive('datepickerControl', function() {
+angular.module('app.control.datepicker', ['app.control.field', 'ui.bootstrap.datepicker']).directive('datepickerControl', function() {
 	return {
 		restrict : 'A',
 		controller : function($scope) {

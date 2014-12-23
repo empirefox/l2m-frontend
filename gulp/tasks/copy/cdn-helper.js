@@ -1,14 +1,15 @@
 var swig = require('swig');
 var replace = require('gulp-replace');
 var Lazy = require("lazy.js");
+var config = require('../../config');
 
 var cdnReplacer = {
 	css : {
-		reg : /<!--\s*jsdelivr-css\s*-->/g,
+		reg : config.jsdelivr.cssReg,
 		tpl : swig.compile('<link rel="stylesheet" href="//cdn.jsdelivr.net/g/{{ cdns }}" />')
 	},
 	js : {
-		reg : /<!--\s*jsdelivr-js\s*-->/g,
+		reg : config.jsdelivr.jsReg,
 		tpl : swig.compile('<script src="//cdn.jsdelivr.net/g/{{ cdns }}"></script>')
 	}
 };

@@ -2,11 +2,15 @@ var swig = require('swig');
 var r = new swig.Swig({
 	locals : {
 		src : './src',
-		dest : './dist'
+		dest : './dist',
+		test : './test',
+		views : 'views'
 	}
 }).render;
 
 var config = {
+	render : r,
+	port : 8080,
 	dest : r('{{ dest }}'),
 	'index.html' : {
 		src : r('{{ src }}/index.html'),
@@ -14,7 +18,7 @@ var config = {
 	},
 	scripts : {
 		src : r('{{ src }}/scripts/**/*.js'),
-		tpl : r('{{ src }}/views/**/*.html'),
+		tpl : r('{{ src }}/{{ views }}/**/*.html'),
 		dest : r('{{ dest }}/js'),
 		name : 'app.min.js'
 	},
@@ -24,8 +28,17 @@ var config = {
 		name : 'app.css'
 	},
 	misc : {
-		src : [r('{{ src }}/.*'), r('!{{ src }}/index.html'), r('!{{ src }}/scripts'), r('!{{ src }}/styles'), r('!{{ src }}/views')],
+		src : [r('{{ src }}/.*'), r('!{{ src }}/index.html'), r('!{{ src }}/scripts'), r('!{{ src }}/styles'), r('!{{ src }}/{{ views }}')],
 		dest : r('{{ dest }}')
+	},
+	test : {
+		fixtures : r('{{ test }}/fixtures/**/*.json'),
+		unit : [r('{{ test }}/unit/helper.js'), r('{{ test }}/unit/**/*.js')],
+		e2e : r('{{ test }}/e2e/*.scenario.js')
+	},
+	jsdelivr : {
+		cssReg : /<!--\s*jsdelivr-css\s*-->/g,
+		jsReg : /<!--\s*jsdelivr-js\s*-->/g
 	},
 
 	sass : {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.control.parent', []).directive('parentControl', ['$http', '$location', '$log',
+angular.module('app.control.parent', ['app.control.field']).directive('parentControl', ['$http', '$location', '$log',
 function($http, $location, $log) {
 	return {
 		restrict : 'A',

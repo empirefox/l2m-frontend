@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.control.codemirror', ['app.menu.inner', 'app.menu.codemirror']).directive('codemirrorControl', function() {
+angular.module('app.control.codemirror', ['app.control.field', 'app.menu.inner', 'app.menu.codemirror']).directive('codemirrorControl', function() {
 
 	// ops means codemirror ops, js-beautify ops is NOT supported yet
 	function postLink(scope) {

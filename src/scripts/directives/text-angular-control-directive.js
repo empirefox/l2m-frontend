@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.control.textAngular', ['textAngular']).config(['$provide',
+angular.module('app.control.textAngular', ['app.control.field', 'textAngular']).config(['$provide',
 function($provide) {
 	// this demonstrates how to register a new tool and add it to the default toolbar
 	$provide.decorator('taOptions', ['$delegate',
@@ -19,83 +19,38 @@ function($provide) {
 		return taOptions;
 		// whatever you return will be the taOptions
 	}]);
-
-	$provide.decorator('taTranslations', function() {
-		return {
-			// moved to sub-elements
-			//toggleHTML: "Toggle HTML",
-			//insertImage: "Please enter a image URL to insert",
-			//insertLink: "Please enter a URL to insert",
-			//insertVideo: "Please enter a youtube URL to embed",
-			html : {
-				buttontext : 'Toggle HTML',
-				tooltip : 'Toggle html / Rich Text'
-			},
-			// tooltip for heading - might be worth splitting
-			heading : {
-				tooltip : 'Heading '
-			},
-			p : {
-				tooltip : 'Paragraph'
-			},
-			pre : {
-				tooltip : 'Preformatted text'
-			},
-			ul : {
-				tooltip : 'Unordered List'
-			},
-			ol : {
-				tooltip : 'Ordered List'
-			},
-			quote : {
-				tooltip : 'Quote/unqoute selection or paragraph'
-			},
-			undo : {
-				tooltip : 'Undo'
-			},
-			redo : {
-				tooltip : 'Redo'
-			},
-			bold : {
-				tooltip : 'Bold'
-			},
-			italic : {
-				tooltip : 'Italic'
-			},
-			underline : {
-				tooltip : 'Underline'
-			},
-			justifyLeft : {
-				tooltip : 'Align text left'
-			},
-			justifyRight : {
-				tooltip : 'Align text right'
-			},
-			justifyCenter : {
-				tooltip : 'Center'
-			},
-			indent : {
-				tooltip : 'Increase indent'
-			},
-			outdent : {
-				tooltip : 'Decrease indent'
-			},
-			clear : {
-				tooltip : 'Clear formatting'
-			},
-			insertImage : {
-				dialogPrompt : 'Please enter an image URL to insert',
-				tooltip : 'Insert image',
-				hotkey : 'the - possibly language dependent hotkey ... for some future implementation'
-			},
-			insertVideo : {
-				tooltip : 'Insert video',
-				dialogPrompt : 'Please enter a youtube URL to embed'
-			},
-			insertLink : {
-				tooltip : 'Insert / edit link',
-				dialogPrompt : "Please enter a URL to insert"
-			}
-		};
-	});
+}]).config(['taTranslations',
+function(taTranslations) {
+	// moved to sub-elements
+	//toggleHTML: "Toggle HTML",
+	//insertImage: "Please enter a image URL to insert",
+	//insertLink: "Please enter a URL to insert",
+	//insertVideo: "Please enter a youtube URL to embed",
+	taTranslations.html.buttontext = 'Toggle HTML';
+	taTranslations.html.tooltip = 'Toggle html / Rich Text';
+	// tooltip for heading - might be worth splitting
+	taTranslations.heading.tooltip = 'Heading ';
+	taTranslations.p.tooltip = 'Paragraph';
+	taTranslations.pre.tooltip = 'Preformatted text';
+	taTranslations.ul.tooltip = 'Unordered List';
+	taTranslations.ol.tooltip = 'Ordered List';
+	taTranslations.quote.tooltip = 'Quote/unqoute selection or paragraph';
+	taTranslations.undo.tooltip = 'Undo';
+	taTranslations.redo.tooltip = 'Redo';
+	taTranslations.bold.tooltip = 'Bold';
+	taTranslations.italic.tooltip = 'Italic';
+	taTranslations.underline.tooltip = 'Underline';
+	taTranslations.justifyLeft.tooltip = 'Align text left';
+	taTranslations.justifyRight.tooltip = 'Align text right';
+	taTranslations.justifyCenter.tooltip = 'Center';
+	taTranslations.indent.tooltip = 'Increase indent';
+	taTranslations.outdent.tooltip = 'Decrease indent';
+	taTranslations.clear.tooltip = 'Clear formatting';
+	taTranslations.insertImage.dialogPrompt = 'Please enter an image URL to insert';
+	taTranslations.insertImage.tooltip = 'Insert image';
+	taTranslations.insertImage.hotkey = 'the - possibly language dependent hotkey... for some future implementation';
+	taTranslations.insertVideo.tooltip = 'Insert video';
+	taTranslations.insertVideo.dialogPrompt = 'Please enter a youtube URL to embed';
+	taTranslations.insertLink.tooltip = 'Insert / edit link';
+	taTranslations.insertLink.dialogPrompt = "Please enter a URL to insert";
 }]);

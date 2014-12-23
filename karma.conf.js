@@ -3,21 +3,15 @@
 var Lazy = require("lazy.js");
 var getPath = require("bower-path");
 var resource = require('./gulp/resource.json');
+var config = require('./gulp/config');
 
-var jsdelivrs = [];
-Lazy(resource.jsdelivr.js).compact().each(function(cdn) {
-	if ( typeof cdn.files === 'string' && cdn.files.length > 0) {
-		cdn.files.split('+').forEach(function(file) {
-			var segs = file.split('/');
-			var name = segs[segs.length - 1];
-			jsdelivrs.push('bower_components/' + cdn.package + '/**/' + name);
-		});
-	} else {
-		var main = getPath(cdn.package).split(',')[0].replace('/./', '/');
-		jsdelivrs.push(main);
-	}
-});
-var files = Lazy([resource.cdn.js, jsdelivrs, resource.local.js, resource.test]).flatten().toArray();
+// files
+var files = require('./gulp/helper').karmaFiles;
+
+// preprocessors
+var preprocessors = {};
+preprocessors[config.scripts.tpl] = 'ng-html2js';
+preprocessors[config.test.fixtures] = 'json_fixtures';
 
 module.exports = function(config) {
 	config.set({
@@ -37,11 +31,7 @@ module.exports = function(config) {
 
 		// preprocess matching files before serving them to the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-		preprocessors : {
-			'src/views/**/*.html' : 'ng-html2js',
-			// json_fixtures
-			'test/fixtures/**/*.json' : 'json_fixtures'
-		},
+		preprocessors : preprocessors,
 
 		ngHtml2JsPreprocessor : {
 			stripPrefix : 'src',

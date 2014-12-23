@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.control.children', ['app.fns']).directive('childrenControl', ['$location', '$routeParams',
+angular.module('app.control.children', ['app.control.field', 'app.fns']).directive('childrenControl', ['$location', '$routeParams',
 function($location, $routeParams) {
 	return {
 		restrict : 'A',

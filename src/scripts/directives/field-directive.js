@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('app.control.field', ['ngRoute', 'ui.bootstrap', 'app.control.textAngular', 'app.control.codemirror', 'app.control.children', 'app.control.parent', 'app.control.datepicker', 'app.fns']);
+angular.module('app.control.fields', ['app.control.textAngular', 'app.control.codemirror', 'app.control.children', 'app.control.parent', 'app.control.datepicker']);
+
+angular.module('app.control.field', ['ngRoute', 'ui.bootstrap', 'app.fns']);
 angular.module('app.control.field').directive('fieldControl', ['TplFn',
 function(TplFn) {
 	var pre = function(scope) {
