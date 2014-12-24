@@ -180,9 +180,10 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 		var fieldBaseDir = baseDir + 'field/';
 		var formBaseDir = baseDir + 'form/';
 		var TplFn = {
-			// next code-mirror
 			field : function(type) {
 				switch(type) {
+					case 'codemirror':
+					case 'text-angular':
 					case 'number':
 					case 'textarea':
 					case 'checkbox':

@@ -59,6 +59,7 @@ gulp.task('server', function(done) {
 		index : false
 	}));
 	app.use(express.static(config.render('{{ test }}')));
+	app.use(express.static(config.render('{{ src }}')));
 	app.use('/bower_components', express.static('./bower_components'));
 
 	app.listen(config.port);

@@ -1,0 +1,38 @@
+<html ng-app="protractorApp">
+	<head>
+		<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
+
+		<script src="/bower_components/angular/angular.js"></script>
+		<script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+		<script src="/bower_components/angular-i18n/angular-locale_zh-cn.js"></script>
+		<script src="/bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.11.2.min.js"></script>
+		<script src="/bower_components/angular-route/angular-route.js"></script>
+		<script src="/bower_components/textAngular/dist/textAngular.min.js"></script>
+		<script src="/bower_components/rangy/rangy-core.js"></script>
+		<script src="/bower_components/rangy/rangy-selectionsaverestore.js"></script>
+		<script src="/scripts/constants/app-fn-const.js"></script>
+		<script src="/scripts/directives/field-directive.js"></script>
+		<script src="/scripts/directives/text-angular-control-directive.js"></script>
+	</head>
+	<body ng-controller="textAngularCtrl">
+		<form name="myForm" role="form">
+			<field-control field="field" record="editing"></field-control>
+		</form>
+		<hr />
+
+		<tt>field = {{field}}</tt>
+		<br/>
+		<tt>record = {{editing}}</tt>
+		<br/>
+		<tt>myForm.TaEditor.$valid = {{myForm.TaEditor.$valid}}</tt>
+		<br>
+		<tt>myForm.TaEditor.$error = {{myForm.TaEditor.$error}}</tt>
+		<br>
+		<tt>myForm.$valid = {{myForm.$valid}}</tt>
+		<br>
+		<tt>myForm.$error.required = {{!!myForm.$error.required}}</tt>
+		<br>
+		<script src='[[mainjs]]'></script>
+	</body>
+<html>
