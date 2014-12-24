@@ -5,7 +5,7 @@ beforeEach(function() {
 	browser.get('/scenario/textAngular');
 });
 
-ddescribe('textAngular', function() {
+describe('textAngular', function() {
 	var fieldControl = element(by.tagName('field-control'));
 	var field = element(by.exactBinding('field'));
 	var record = element(by.exactBinding('editing'));
@@ -23,9 +23,16 @@ ddescribe('textAngular', function() {
 		expect(editorValid.getText()).toContain('false');
 		expect(formValid.getText()).toContain('false');
 		expect(formRequired.getText()).toContain('true');
+
+		expect(taDiv.getAttribute('placeholder')).toBe('new content here');
+		expect(editorBar).not.toHaveClass('focussed');
 	});
 
-	it('should create text-angular-control', function() {
-		expect(taDiv.getAttribute('placeholder')).toBe('new content here');
+	it('should change record when inputing text', function() {
+		editorPane.click();
+		expect(editorBar).toHaveClass('focussed');
+
+		editorPane.sendKeys('user content');
+		expect(record.getText()).toContain('{"TaEditor":"<p>user content</p>"}');
 	});
 });
