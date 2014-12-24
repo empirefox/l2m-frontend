@@ -1,4 +1,5 @@
-<html ng-app="protractorApp">
+<!DOCTYPE html>
+<html>
 	<head>
 		<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
 		<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
@@ -15,10 +16,12 @@
 		<script src="/scripts/directives/field-directive.js"></script>
 		<script src="/scripts/directives/text-angular-control-directive.js"></script>
 	</head>
-	<body ng-controller="textAngularCtrl">
-		<form name="myForm" role="form">
-			<field-control field="field" record="editing"></field-control>
-		</form>
+	<body ng-app="protractorApp">
+		<div class="container" ng-controller="textAngularCtrl">
+			<form name="myForm" role="form">
+				<field-control field="field" record="editing"></field-control>
+			</form>
+		</div>
 		<hr />
 
 		<tt>field = {{field}}</tt>
