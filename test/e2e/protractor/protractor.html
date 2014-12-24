@@ -1,0 +1,12 @@
+<html ng-app="protractorApp">
+	<head>
+		<script src="/bower_components/angular/angular.js"></script>
+		<script src='[[mainjs]]'></script>
+	</head>
+	<body>
+		Check me to check both:
+		<input type="checkbox" ng-model="master">
+		<br/>
+		<input id="checkSlave" type="checkbox" ng-checked="master">
+	</body>
+<html>

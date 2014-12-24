@@ -1,6 +1,12 @@
 var config = require('./gulp/config.js');
 
 exports.config = {
+	//	directConnect : true,
+
+	seleniumServerJar : './node_modules/protractor/selenium/selenium-server-standalone-2.44.0.jar',
+
+	seleniumPort : 4444,
+
 	jasmineNodeOpts : {
 		showColors : true,
 		defaultTimeoutInterval : 30000

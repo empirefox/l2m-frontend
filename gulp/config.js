@@ -34,7 +34,7 @@ var config = {
 	test : {
 		fixtures : r('{{ test }}/fixtures/**/*.json'),
 		unit : [r('{{ test }}/unit/helper.js'), r('{{ test }}/unit/**/*.js')],
-		e2e : r('{{ test }}/e2e/*.scenario.js')
+		e2e : r('{{ test }}/e2e/**/*.scenario.js')
 	},
 	jsdelivr : {
 		cssReg : /<!--\s*jsdelivr-css\s*-->/g,

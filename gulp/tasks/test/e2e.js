@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    gutil = require('gulp-util'),
     protractor = require('gulp-protractor').protractor,
     webdriverStandalone = require('gulp-protractor').webdriver_standalone,
     webdriverUpdate = require('gulp-protractor').webdriver_update,
@@ -16,8 +17,9 @@ gulp.task('webdriver:standalone', ['webdriver:update'], webdriverStandalone);
 gulp.task('test:e2e', ['webdriver:update'], function() {
 	return gulp.src('./foobar').pipe(protractor({
 		configFile : 'protractor.conf.js',
-	})).on('error', function(e) {
-		throw e
+	})).on('error', function(err) {
+		gutil.log(err);
+		this.emit('end');
 	});
 });
 
