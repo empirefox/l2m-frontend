@@ -1,6 +1,6 @@
 'use strict';
 
-describe('FormResource', function() {
+describe('app.form.service', function() {
 	var $rootScope,
 	    FormResource,
 	    FormService,
@@ -9,7 +9,7 @@ describe('FormResource', function() {
 
 	beforeEach(EqualData);
 
-	beforeEach(module('myApp'));
+	beforeEach(module('app.form.service'));
 
 	beforeEach(inject(httpd()));
 

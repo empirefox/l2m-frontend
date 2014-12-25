@@ -1,7 +1,7 @@
 'use strict';
 
 // all Ips is {Ips: mods}
-angular.module('formServices', []).factory('FormResource', ['$location', '$routeParams', '$resource', 'CpsService',
+angular.module('app.form.service', ['ngRoute', 'ngResource', 'app.cps']).factory('FormResource', ['$location', '$routeParams', '$resource', 'CpsService',
 function($location, $routeParams, $resource, CpsService) {
 	return $resource('/:fname/:act', {
 		fname : function() {
@@ -143,8 +143,23 @@ function($location, $routeParams, $resource, CpsService) {
 			}
 		}
 	});
-}]).service('FormService', ['FormResource', '$q',
-function(FormResource, $q) {
+}]).service('FormService', ['FormResource', '$q', '$routeParams', 'TplFn',
+function(FormResource, $q, $routeParams, TplFn) {
+
+	function isFields() {
+		return $routeParams.fname === 'Field';
+	}
+
+	function templateUrl() {
+		var fname = $routeParams.fname;
+		var prefix = '';
+		switch (fname) {
+			case 'Field':
+				prefix = fname + '-';
+		}
+		return TplFn.formBaseDir + prefix + 'form.html';
+	}
+
 	// basic
 	function applyArgs(handler, names) {
 		var args = [];
@@ -188,6 +203,8 @@ function(FormResource, $q) {
 	}
 
 
+	this.isFields = isFields;
+	this.templateUrl = templateUrl;
 	this.applyArgs = applyArgs;
 	this._if = _if;
 	this.pass = pass;

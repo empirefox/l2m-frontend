@@ -62,6 +62,5 @@ describe('FieldDirective', function() {
 		});
 	});
 
-	//other field directives
-	//.........
+	//other field directives tested in e2e
 });

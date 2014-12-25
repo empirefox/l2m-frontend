@@ -75,6 +75,20 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 		ArrFn.intersectName = function(all, from) {
 			return all.filter(ArrFn.namesInFn(from, true));
 		};
+
+		ArrFn.remove = function(arr, target) {
+			var index = arr.indexOf(target);
+			if (index > -1) {
+				arr.splice(index, 1);
+			}
+		};
+
+		ArrFn.replace = function(arr, target, rep) {
+			var index = arr.indexOf(target);
+			if (index > -1) {
+				arr[index] = rep;
+			}
+		};
 		return ArrFn;
 	}())).constant('PosFn', {
 	desc : function(a, b) {
@@ -180,6 +194,9 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 		var fieldBaseDir = baseDir + 'field/';
 		var formBaseDir = baseDir + 'form/';
 		var TplFn = {
+			fieldBaseDir : fieldBaseDir,
+			formBaseDir : formBaseDir,
+
 			field : function(type) {
 				switch(type) {
 					case 'codemirror':
@@ -218,7 +235,8 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 				}
 				return '';
 			},
-			form : function(name) {
+
+			formFragment : function(name) {
 				return formBaseDir + name + '.html';
 			}
 		};

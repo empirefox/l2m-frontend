@@ -1,6 +1,6 @@
 //MUST one-one with Server!!!
 //used by save up
-angular.module('cps-service', ['ngRoute', 'app.fns']).constant('Cps', {
+angular.module('app.cps', ['ngRoute', 'app.fns']).constant('Cps', {
 
 	Field : 'FormId'.split(','),
 	Oauth : 'AccountId'.split(',')

@@ -1,4 +1,4 @@
-angular.module('navs-const', []).constant('navs', [{
+angular.module('app.navs.const', []).constant('navs', [{
 	display : '从这里开始',
 	when : '/',
 	templateUrl : '/views/main.html',

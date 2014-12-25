@@ -1,5 +1,30 @@
 'use strict';
-angular.module('msg', ['ngRoute', 'toaster', 'dialogs.main']).constant('ActionText', {
+angular.module('app.msg', ['ngRoute', 'toaster', 'dialogs.main', 'pascalprecht.translate']).config(['dialogsProvider', '$translateProvider',
+function(dialogsProvider, $translateProvider) {
+	dialogsProvider.useBackdrop('static');
+	dialogsProvider.useEscClose(false);
+	dialogsProvider.useCopy(false);
+	dialogsProvider.setSize('sm');
+
+	$translateProvider.translations('zh-CN', {
+		DIALOGS_ERROR : "错误",
+		DIALOGS_ERROR_MSG : "发生未知错误.",
+		DIALOGS_CLOSE : "关闭",
+		DIALOGS_PLEASE_WAIT : "请稍等",
+		DIALOGS_PLEASE_WAIT_ELIPS : "请稍等...",
+		DIALOGS_PLEASE_WAIT_MSG : "等待操作结束.",
+		DIALOGS_PERCENT_COMPLETE : "已完成 %",
+		DIALOGS_NOTIFICATION : "通知",
+		DIALOGS_NOTIFICATION_MSG : "未知程序通知.",
+		DIALOGS_CONFIRMATION : "请确认",
+		DIALOGS_CONFIRMATION_MSG : "确认进行.",
+		DIALOGS_OK : "确定",
+		DIALOGS_YES : "确认",
+		DIALOGS_NO : "取消"
+	});
+
+	$translateProvider.preferredLanguage('zh-CN');
+}]).constant('ActionText', {
 
 	mf : {
 		name : '获取mf'
@@ -111,6 +136,10 @@ angular.module('msg', ['ngRoute', 'toaster', 'dialogs.main']).constant('ActionTe
 	alreadyBottom : {
 		type : 'info',
 		body : '已是最底项'
+	},
+	loadTablesError : {
+		type : 'error',
+		body : '加载tables错误'
 	}
 }).factory('Msg', ['$log', '$routeParams', 'toaster', 'dialogs', 'ActionText', 'Pops',
 function($log, $routeParams, toaster, dialogs, ActionText, Pops) {

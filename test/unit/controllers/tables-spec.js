@@ -4,7 +4,8 @@ describe('TablesCtrl', function() {
 	var controller,
 	    scope;
 
-	beforeEach(module('myApp'));
+	beforeEach(module('app.navs.tables'));
+	beforeEach(module('l2m-tpl'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
 

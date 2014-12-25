@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.control.field', ['ngRoute', 'ui.bootstrap', 'app.fns']);
+angular.module('app.control.field', ['ui.bootstrap', 'app.fns']);
 angular.module('app.control.field').directive('fieldControl', ['TplFn',
 function(TplFn) {
 	var pre = function(scope) {

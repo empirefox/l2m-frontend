@@ -1,5 +1,8 @@
-angularApp.controller('FormDirectiveCtrl', ['$scope', '$location', '$routeParams', 'FormResource', 'FormService', 'CpsService', 'Msg', '$q', 'ArrFn', 'JsonFn', 'PosFn', 'TplFn',
-function($scope, $location, $routeParams, FormResource, FormService, CpsService, Msg, $q, ArrFn, JsonFn, PosFn, TplFn) {
+'use strict';
+
+angular.module('app.form', ['ui.tree', 'app.form.service', 'app.control.field', 'app.cps', 'app.msg', 'app.fns']);
+angular.module('app.form').controller('FormDirectiveCtrl', ['$scope', '$location', 'FormResource', 'FormService', 'CpsService', 'Msg', '$q', 'ArrFn', 'JsonFn', 'PosFn', 'TplFn',
+function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrFn, JsonFn, PosFn, TplFn) {
 
 	var copy = angular.copy,
 	    noop = angular.noop,
@@ -8,8 +11,8 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	    FP = FormService.FP,
 	    pass = FormService.pass;
 
-	$scope.template = TplFn.form;
-	$scope.isFields = $routeParams.fname === 'Field';
+	$scope.template = TplFn.formFragment;
+	$scope.isFields = FormService.isFields();
 	$scope.canSetPos = CpsService.canSetPos();
 	$scope.ops = $scope.ops || {};
 	var ban = $scope.ops.ban || {};
@@ -59,7 +62,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	function removeRecord(record, reserve) {
 		if (!reserve) {
-			$scope.rs.remove(record);
+			ArrFn.remove($scope.rs, record);
 			if ($scope.record === record) {
 				$scope.edit();
 			}
@@ -469,7 +472,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 	$scope.remove = function() {
 		if ($scope._rs) {
 			if (isUndefined($scope.editing.Id)) {
-				$scope.rs.remove($scope.record);
+				ArrFn.remove($scope.rs, $scope.record);
 				$scope.edit();
 			}
 			return;
@@ -481,7 +484,7 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 				Ids : [$scope.editing.Id]
 			},
 			handle : function() {
-				$scope.rs.remove($scope.record);
+				ArrFn.remove($scope.rs, $scope.record);
 				$scope.edit();
 			}
 		});
@@ -551,20 +554,12 @@ function($scope, $location, $routeParams, FormResource, FormService, CpsService,
 
 	$scope.page();
 
-}]).directive('formDirective', ['$routeParams',
-function($routeParams) {
+}]).directive('formDirective', ['FormResource',
+function(FormResource) {
 	return {
 		controller : 'FormDirectiveCtrl',
 		/*jshint unused:false */
-		templateUrl : function(elem, attr) {
-			var fname = $routeParams.fname;
-			var prefix = '';
-			switch (fname) {
-				case 'Field':
-					prefix = fname + '-';
-			}
-			return '/views/directive-templates/form/' + prefix + 'form.html';
-		},
+		templateUrl : FormResource.templateUrl,
 		restrict : 'E',
 		scope : {
 			ops : '='

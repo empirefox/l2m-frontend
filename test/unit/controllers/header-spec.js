@@ -7,7 +7,7 @@ describe('HeaderCtrl', function() {
 	    navs,
 	    toaster;
 
-	beforeEach(module('myApp'));
+	beforeEach(module('app.header'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
 
@@ -15,11 +15,11 @@ describe('HeaderCtrl', function() {
 		$httpBackend = _$httpBackend_;
 		navs = _navs_;
 		scope = $rootScope.$new();
-		toaster = jasmine.createSpyObj('toaster', ['pop', 'clear']);
+		Msg = jasmine.createSpyObj('Msg', ['loadTablesError']);
 
 		controller = $controller('HeaderCtrl', {
 			'$scope' : scope,
-			'toaster' : toaster
+			'Msg' : Msg
 		});
 		$httpBackend.flush();
 	}));

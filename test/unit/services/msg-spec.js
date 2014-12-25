@@ -5,7 +5,7 @@ describe('Msg', function() {
 	    toaster;
 
 	var fname = 'Field';
-	beforeEach(module('msg'));
+	beforeEach(module('app.msg'));
 	beforeEach(inject(function($routeParams, _toaster_, _Msg_) {
 		$routeParams.fname = fname;
 		Msg = _Msg_;

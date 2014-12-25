@@ -1,10 +1,13 @@
+'use strict';
+
 describe('FormDirectiveCtrl', function() {
-	beforeEach(module('myApp'));
+	beforeEach(module('app.form'));
+	beforeEach(module('l2m-tpl'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
 
 	var baseDir = '/views/directive-templates/';
-	var fnames1 = ['textarea', 'checkbox', 'date', 'dropdown', 'hidden', 'radio', 'kindeditor'];
+	var fnames1 = ['textarea', 'checkbox', 'date', 'dropdown', 'hidden', 'radio', 'text-angular'];
 	var fnames2 = ['text', 'search', 'url', 'telephone', 'email', 'password', 'dateTimeLocal', 'month', 'number', 'time', 'week'];
 	beforeEach(inject(function($templateCache, $httpBackend) {
 		var url = baseDir + 'form/form.html';
@@ -46,16 +49,16 @@ describe('FormDirectiveCtrl', function() {
 		});
 
 		$httpBackend.flush();
-        scope.$digest();
+		scope.$digest();
 	}));
 
-    it('should fetch the form instance', function() {
-        expect(scope.form).toEqualData(__fixtures__['form/form_ok']);
-    });
+	it('should fetch the form instance', function() {
+		expect(scope.form).toEqualData(__fixtures__['form/form_ok']);
+	});
 
-    it('should fetch the mfs instance', function() {
-        expect(scope.mfs).toEqualData(__fixtures__['form/mfs_ok']);
-    });
+	it('should fetch the mfs instance', function() {
+		expect(scope.mfs).toEqualData(__fixtures__['form/mfs_ok']);
+	});
 
 	it('should create a new record', function() {
 		expect(scope.newRecord().Pos).toEqual(-1);

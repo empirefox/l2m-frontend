@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('MultiTextCtrl', ['$scope',
+angular.module('app.navs.multiText', []).controller('MultiTextCtrl', ['$scope',
 function($scope) {
 	$scope.arg = "a";
 	$scope.compute = function() {

@@ -8,7 +8,7 @@ describe('CpsService', function() {
 	    $location;
 
 	var fname = 'Field';
-	beforeEach(module('cps-service'));
+	beforeEach(module('app.cps'));
 	beforeEach(inject(function($routeParams, _$location_, CpsService, _Cps_) {
 		$routeParams.fname = fname;
 		service = CpsService;
