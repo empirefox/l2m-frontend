@@ -4,7 +4,7 @@ angular.module('app.text.select', ['ngSanitize']).directive('selectText', functi
 
 	return {
 		restrict : 'A',
-		link : function(scope, element, attr) {
+		link : function(scope, element) {
 			element.on('mouseenter', function() {
 				var text = element[0],
 				    range,

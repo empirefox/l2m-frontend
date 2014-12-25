@@ -20,7 +20,7 @@ function($scope, FormResource, HeaderService, navs, Msg) {
 	$scope.navs = navs;
 	FormResource.forms(function(data) {
 		$scope.tables = data;
-	}, function(error) {
+	}, function() {
 		Msg.loadTablesError();
 	});
 }]);
