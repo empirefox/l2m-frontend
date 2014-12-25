@@ -3,7 +3,8 @@
 describe('FieldDirective', function() {
 
 	beforeEach(module('app.control.field'));
-	beforeEach(module('l2m-tpl'));
+    beforeEach(module('l2m-tpl'));
+    beforeEach(module('ngRoute'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
 

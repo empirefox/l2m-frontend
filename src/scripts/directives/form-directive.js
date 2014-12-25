@@ -109,7 +109,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 			if (isNew) {
 				$scope.rs.push(record);
 			} else {
-				$scope.rs.replace($scope.record, record);
+				ArrFn.replace($scope.rs, $scope.record, record);
 			}
 			$scope.edit(record);
 		});

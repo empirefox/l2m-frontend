@@ -5,7 +5,7 @@ describe('HeaderCtrl', function() {
 	    $httpBackend,
 	    scope,
 	    navs,
-	    toaster;
+	    Msg;
 
 	beforeEach(module('app.header'));
 	beforeEach(EqualData);
@@ -30,7 +30,7 @@ describe('HeaderCtrl', function() {
 	});
 
 	it('should get the tables', function() {
-		expect(toaster.pop).not.toHaveBeenCalled();
+		expect(Msg.loadTablesError).not.toHaveBeenCalled();
 		expect(scope.tables.length).toBe(6);
 		expect(scope.tables[0].Name).toBe('Bucket1');
 	});
