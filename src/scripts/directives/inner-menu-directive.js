@@ -21,7 +21,7 @@ function($compile) {
 		}
 		var tpl = angular.element(template());
 		var btns = $compile(tpl)(scope);
-		iElement.prepend(btns);
+		iElement.children().eq(0).prepend(btns);
 	}
 
 	return {
