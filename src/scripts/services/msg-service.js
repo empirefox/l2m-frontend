@@ -228,7 +228,7 @@ function($log, $routeParams, toaster, dialogs, ActionText, Pops) {
 
 	msg.confirm = function(act) {
 		return function(data) {
-			var confirm = ActionText[act].confirm;
+			var confirm = (ActionText[act] || {}).confirm;
 			if (confirm) {
 				return msg._confirm(confirm.head, confirm.msg, confirm.opts).then(function() {
 					return data;

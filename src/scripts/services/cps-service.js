@@ -133,6 +133,19 @@ function(Cps, $routeParams, $location, ArrFn, PosFn) {
 		return ps;
 	};
 
+	this.extract = function() {
+		var search = $location.search(),
+		    obj = {};
+		cps.getArray().forEach(function(p) {
+			var value = search[S(p).underscore().chompLeft('_').s];
+			if (angular.isDefined(value)) {
+				var sv = S(value);
+				obj[p] = sv.isNumeric() ? sv.toInt() : value;
+			}
+		});
+		return obj;
+	};
+
 	this.orderFn = function(hasPos) {
 		return PosFn.orderByFn(cps.getArray(), hasPos ? ['Pos'] : undefined);
 	};
@@ -151,8 +164,8 @@ function(Cps, $routeParams, $location, ArrFn, PosFn) {
 		}
 
 		// 还没有元素
-		if (models.length === 0) {
-			return bottom;
+		if (!models || models.length === 0) {
+			return angular.isDefined(bottom) ? bottom : -1;
 		}
 
 		bottom = angular.isDefined(bottom) ? bottom : models[models.length - 1].Pos;

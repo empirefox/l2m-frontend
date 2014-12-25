@@ -12,8 +12,11 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 	    pass = FormService.pass;
 
 	$scope.template = TplFn.formFragment;
+	$scope.ps = CpsService.extract();
 	$scope.isFields = FormService.isFields();
 	$scope.canSetPos = CpsService.canSetPos();
+	$scope.pageTop = {};
+	$scope.pageBottom = {};
 	$scope.ops = $scope.ops || {};
 	var ban = $scope.ops.ban || {};
 
@@ -408,6 +411,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 
 	$scope.edit = function(record) {
 		$scope.record = record || $scope.newRecord();
+		angular.extend($scope.record, $scope.ps);
 		$scope.editing = copy($scope.record);
 	};
 
@@ -554,12 +558,12 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 
 	$scope.page();
 
-}]).directive('formDirective', ['FormResource',
-function(FormResource) {
+}]).directive('formDirective', ['FormService',
+function(FormService) {
 	return {
 		controller : 'FormDirectiveCtrl',
 		/*jshint unused:false */
-		templateUrl : FormResource.templateUrl,
+		templateUrl : FormService.templateUrl,
 		restrict : 'E',
 		scope : {
 			ops : '='
