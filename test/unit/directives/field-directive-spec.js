@@ -3,25 +3,10 @@
 describe('FieldDirective', function() {
 
 	beforeEach(module('app.control.field'));
-    beforeEach(module('l2m-tpl'));
-    beforeEach(module('ngRoute'));
+	beforeEach(module('l2m-tpl'));
+	beforeEach(module('ngRoute'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
-
-	var $httpBackend,
-	    TplFn,
-	    $timeout;
-	var baseDir = '/views/directive-templates/field/';
-	var fnames = ['textarea'];
-	beforeEach(inject(function($templateCache, _$httpBackend_, _$timeout_, _TplFn_) {
-		TplFn = _TplFn_;
-		$timeout = _$timeout_;
-		$httpBackend = _$httpBackend_;
-		fnames.forEach(function(fname) {
-			var url = baseDir + fname + '.html';
-			$httpBackend.whenGET(url).respond($templateCache.get(url));
-		});
-	}));
 
 	var scope,
 	    $rootScope,

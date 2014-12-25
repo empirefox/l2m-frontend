@@ -3,33 +3,18 @@
 describe('FormDirectiveCtrl', function() {
 	beforeEach(module('app.form'));
 	beforeEach(module('l2m-tpl'));
+	beforeEach(module('ngRoute'));
 	beforeEach(EqualData);
 	beforeEach(inject(httpd()));
 
-	var baseDir = '/views/directive-templates/';
-	var fnames1 = ['textarea', 'checkbox', 'date', 'dropdown', 'hidden', 'radio', 'text-angular'];
-	var fnames2 = ['text', 'search', 'url', 'telephone', 'email', 'password', 'dateTimeLocal', 'month', 'number', 'time', 'week'];
-	beforeEach(inject(function($templateCache, $httpBackend) {
-		var url = baseDir + 'form/form.html';
-		$httpBackend.whenGET(url).respond($templateCache.get(url));
-		fnames1.forEach(function(fname) {
-			url = baseDir + 'field/' + fname + '.html';
-			$httpBackend.whenGET(url).respond($templateCache.get(url));
-		});
-		fnames2.forEach(function(fname) {
-			url = baseDir + 'field/' + 'textfield.html';
-			$httpBackend.whenGET(url).respond($templateCache.get(url));
-		});
-	}));
-
-	var $httpBackend,
-	    scope,
+	var scope,
+	    $httpBackend,
 	    controller,
 	    Msg;
 
-	beforeEach(inject(function($rootScope, $controller, _$httpBackend_, _Msg_) {
-		$httpBackend = _$httpBackend_;
+	beforeEach(inject(function($rootScope, _$httpBackend_, $controller, _Msg_) {
 		scope = $rootScope.$new();
+		$httpBackend = _$httpBackend_;
 		Msg = _Msg_;
 		spyOn(Msg, 'confirm');
 		spyOn(Msg, '_$start');
