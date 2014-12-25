@@ -1,11 +1,9 @@
 "use strict";
-// Add the custom matchers to jasmine
-beforeEach(function() {
-	this.addMatchers(require('../util/toHaveClassMatchers'));
-	browser.get('/scenario/textAngular');
-});
-
 describe('textAngular', function() {
+	beforeEach(function() {
+		this.addMatchers(require('../util/toHaveClassMatchers'));
+		browser.get('/scenario/textAngular');
+	});
 	var fieldControl = element(by.tagName('field-control'));
 	var field = element(by.exactBinding('field'));
 	var record = element(by.exactBinding('editing'));

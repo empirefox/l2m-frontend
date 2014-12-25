@@ -1,38 +1,36 @@
 "use strict";
-// Add the custom matchers to jasmine
-beforeEach(function() {
-	this.addMatchers(require('../util/toHaveClassMatchers'));
-	browser.get('/scenario/textAngular');
-});
 
-describe('textAngular', function() {
+describe('codemirror', function() {
+	beforeEach(function() {
+		this.addMatchers(require('../util/toHaveClassMatchers'));
+		browser.get('/scenario/codemirror');
+	});
 	var fieldControl = element(by.tagName('field-control'));
 	var field = element(by.exactBinding('field'));
 	var record = element(by.exactBinding('editing'));
-	var editorValid = element(by.binding('myForm.TaEditor.$valid'));
-	var editorError = element(by.binding('myForm.TaEditor.$error'));
+	var editorValid = element(by.binding('myForm.CodeMirror.$valid'));
+	var editorError = element(by.binding('myForm.CodeMirror.$error'));
 	var formValid = element(by.binding('myForm.$valid'));
 	var formRequired = element(by.binding('!!myForm.$error.required'));
 
-	var taDiv = element(by.css('[text-angular]'));
-	var editorPane = element(by.model('html'));
-	var editorBar = element(by.css('div.ta-toolbar.btn-toolbar'));
+	var jsBeautify = element.all(by.css('div.inner-menu-group button')).first();
+	var editorPane = element(by.tagName('textarea'));
+    var editorTrigger = element(by.css('div.CodeMirror-scroll'));
 
 	it('should init to model', function() {
-		expect(field.getText()).toContain('"TaEditor"');
+		expect(field.getText()).toContain('"CodeMirror"');
 		expect(editorValid.getText()).toContain('false');
 		expect(formValid.getText()).toContain('false');
 		expect(formRequired.getText()).toContain('true');
-
-		expect(taDiv.getAttribute('placeholder')).toBe('new content here');
-		expect(editorBar).not.toHaveClass('focussed');
 	});
 
-	it('should change record when inputing text', function() {
-		editorPane.click();
-		expect(editorBar).toHaveClass('focussed');
+	it('should change record when inputing text and beautify code', function() {
+		editorTrigger.click();
 
-		editorPane.sendKeys('user content');
-		expect(record.getText()).toContain('{"TaEditor":"<p>user content</p>"}');
+		editorPane.sendKeys('{"a":1}');
+		expect(record.getText()).toContain('{\\"a\\":1}');
+
+		jsBeautify.click();
+		expect(record.getText()).toContain('{\\n \\"a\\": 1\\n}');
 	});
 });

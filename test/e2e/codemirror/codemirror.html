@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="protractorApp">
 	<head>
 		<!-- globel -->
 		<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
@@ -42,26 +42,26 @@
 		<script src="/scripts/directives/inner-menu-directive.js"></script>
 		<script src="/scripts/directives/codemirror-menu-directive.js"></script>
 	</head>
-	<body ng-app="protractorApp">
+	<body>
 		<div class="container" ng-controller="Ctrl">
 			<form name="myForm" role="form">
 				<field-control field="field" record="editing"></field-control>
 			</form>
-		</div>
-		<hr />
+			<hr />
 
-		<tt>field = {{field}}</tt>
-		<br/>
-		<tt>record = {{editing}}</tt>
-		<br/>
-		<tt>myForm.CodeMirror.$valid = {{myForm.CodeMirror.$valid}}</tt>
-		<br>
-		<tt>myForm.CodeMirror.$error = {{myForm.CodeMirror.$error}}</tt>
-		<br>
-		<tt>myForm.$valid = {{myForm.$valid}}</tt>
-		<br>
-		<tt>myForm.$error.required = {{!!myForm.$error.required}}</tt>
-		<br>
+			<tt>field = {{field}}</tt>
+			<br/>
+			<tt>record = {{editing}}</tt>
+			<br/>
+			<tt>myForm.CodeMirror.$valid = {{myForm.CodeMirror.$valid}}</tt>
+			<br>
+			<tt>myForm.CodeMirror.$error = {{myForm.CodeMirror.$error}}</tt>
+			<br>
+			<tt>myForm.$valid = {{myForm.$valid}}</tt>
+			<br>
+			<tt>myForm.$error.required = {{!!myForm.$error.required}}</tt>
+			<br>
+		</div>
 		<script src='[[mainjs]]'></script>
 	</body>
 <html>
