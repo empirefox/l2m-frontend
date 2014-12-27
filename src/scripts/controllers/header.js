@@ -12,15 +12,11 @@ function($location) {
 	};
 }]);
 
-angular.module('app.header', ['app.header.service', 'app.form.service', 'app.navs.const', 'app.msg'])
+angular.module('app.header', ['app.data.tables', 'app.header.service', 'app.navs.const'])
 // HeaderCtrl
-.controller('HeaderCtrl', ['$scope', 'FormResource', 'HeaderService', 'navs', 'Msg',
-function($scope, FormResource, HeaderService, navs, Msg) {
+.controller('HeaderCtrl', ['$scope', 'TablesService', 'HeaderService', 'navs',
+function($scope, TablesService, HeaderService, navs) {
 	$scope.active = HeaderService.active;
 	$scope.navs = navs;
-	FormResource.forms(function(data) {
-		$scope.tables = data;
-	}, function() {
-		Msg.loadTablesError();
-	});
+	$scope.ts = TablesService;
 }]);

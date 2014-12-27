@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('app.form', ['ui.tree', 'app.form.service', 'app.control.field', 'app.cps', 'app.msg', 'app.fns']);
-angular.module('app.form').controller('FormDirectiveCtrl', ['$scope', '$location', 'FormResource', 'FormService', 'CpsService', 'Msg', '$q', 'ArrFn', 'JsonFn', 'PosFn', 'TplFn',
-function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrFn, JsonFn, PosFn, TplFn) {
+angular.module('app.form', ['ui.tree', 'app.data.tables', 'app.form.service', 'app.control.field', 'app.cps', 'app.msg', 'app.fns']);
+angular.module('app.form').controller('FormDirectiveCtrl',
+// inject
+['$scope', '$location', 'FormResource', 'FormService', 'CpsService', 'TablesService', 'Msg', '$q', 'ArrFn', 'JsonFn', 'PosFn', 'TplFn',
+function($scope, $location, FormResource, FormService, CpsService, TablesService, Msg, $q, ArrFn, JsonFn, PosFn, TplFn) {
 
 	var copy = angular.copy,
 	    noop = angular.noop,
@@ -15,6 +17,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 	$scope.template = TplFn.formFragment;
 	$scope.ps = CpsService.extract();
 	$scope.isFields = FormService.isFields();
+	$scope.isForms = FormService.isForms();
 	$scope.canSetPos = CpsService.canSetPos();
 	$scope.pageTop = {};
 	$scope.pageBottom = {};
@@ -27,6 +30,12 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 		itemsPerPage : 20,
 		currentPage : 1
 	};
+
+	function updateTables() {
+		if ($scope.isForms) {
+			TablesService.getTables();
+		}
+	}
 
 	function begin(act, stopWhen, stopPop) {
 		return FormService._if(!ban[act]).then(function() {
@@ -113,6 +122,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 	function saveNormal() {
 		var isNew = isEditNew();
 		return $scope.editing.$save(function(record) {
+			updateTables();
 			if (isNew) {
 				$scope.addRecord(record);
 			} else {
@@ -140,6 +150,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 
 		if (newPos === -1) {
 			return FormResource.saveup($scope.editing).$promise.then(function(data) {
+				updateTables();
 				var record = new FormResource(data.Newer);
 				$scope.addRecord(record);
 				$scope.edit(record);
@@ -282,6 +293,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 				Ids : ids
 			},
 			handle : function() {
+				updateTables();
 				$scope.rs = ArrFn.intersectName($scope.rs, $scope.mfs);
 				if (ArrFn.containsId(removes, $scope.record)) {
 					$scope.edit();
@@ -373,6 +385,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 				Ids : [record.Id]
 			},
 			handle : function() {
+				updateTables();
 				ArrFn.remove($scope.rs, record);
 				if (record.Id === $scope.record.Id) {
 					$scope.edit();
@@ -430,6 +443,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 			act : 'saveAll',
 			postData : $scope._rs,
 			handle : function(data) {
+				updateTables();
 				$scope.rs = $scope.__rs;
 				delete $scope.__rs;
 				$scope.__isFull = false;
@@ -498,6 +512,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 				Ids : [$scope.editing.Id]
 			},
 			handle : function() {
+				updateTables();
 				ArrFn.remove($scope.rs, $scope.record);
 				$scope.edit();
 			}
@@ -541,9 +556,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 	});
 
 	if ($scope.isFields) {
-
 		$scope.pager.itemsPerPage = 200;
-
 		var promise = FormResource.mfs().$promise.then(function(data) {
 			$scope.mfs = data;
 

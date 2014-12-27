@@ -82,14 +82,13 @@ function($location, $routeParams, $resource, CpsService) {
 			}
 		},
 
-		forms : {
-			method : 'GET',
-			isArray : true,
-			cache : true,
-			params : {
-				fname : 'forms'
-			}
-		},
+        forms : {
+            method : 'GET',
+            isArray : true,
+            params : {
+                fname : 'forms'
+            }
+        },
 		rearrange : {
 			method : 'PUT',
 			isArray : true,
@@ -150,6 +149,10 @@ function(FormResource, $q, $routeParams, TplFn) {
 		return $routeParams.fname === 'Field';
 	}
 
+	function isForms() {
+		return $routeParams.fname === 'Form';
+	}
+
 	function templateUrl() {
 		var fname = $routeParams.fname;
 		var prefix = '';
@@ -203,7 +206,8 @@ function(FormResource, $q, $routeParams, TplFn) {
 	}
 
 
-	this.isFields = isFields;
+    this.isFields = isFields;
+    this.isForms = isForms;
 	this.templateUrl = templateUrl;
 	this.applyArgs = applyArgs;
 	this._if = _if;

@@ -1,4 +1,6 @@
-angular.module('app.fns', []).constant('ArrFn', ( function() {
+angular.module('app.fns', [])
+// ArrFn
+.constant('ArrFn', ( function() {
 		var isDefined = angular.isDefined;
 		var ArrFn = {
 			isOutOfFn : function(container) {
@@ -93,87 +95,95 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 			}
 		};
 		return ArrFn;
-	}())).constant('PosFn', {
-	desc : function(a, b) {
-		return +(b.Pos || 0) - (a.Pos || 0);
-	},
+	}()))
+// PosFn
+.constant('PosFn', ( function() {
 
-	orderByFn : function(ascs, descs) {
-		ascs = ascs || [];
-		descs = descs || [];
-		return function(a, b) {
-			var result = 0;
-			/*jshint eqnull:true */
-			var ok = ascs.some(function(asc) {
-				var va = a[asc],
-				    vb = b[asc];
-				/*jslint eqeq: true*/
-				if (va == vb) {
-					return false;
-				}
-				if (vb == null || va > vb) {
-					result = 1;
-					return true;
-				}
-				if (va == null || va < vb) {
-					result = -1;
-					return true;
-				}
-			});
-			if (ok) {
-				return result;
-			}
-			/*jshint eqnull:true */
-			descs.some(function(desc) {
-				var va = a[desc],
-				    vb = b[desc];
-				/*jslint eqeq: true*/
-				if (va == vb) {
-					return false;
-				}
-				if (vb == null || va > vb) {
-					result = -1;
-					return true;
-				}
-				if (va == null || va < vb) {
-					result = 1;
-					return true;
-				}
-			});
-			return result;
-		};
-	},
-
-	isIps : function(data) {
 		var $regex = /^\$/;
-		if (Array.isArray(data) && data.length > 0) {
-			var keys = Object.keys(data[0]).filter(function(k) {
-				return !$regex.test(k);
-			}).sort().join('');
-			return 'IdPos' === keys;
-		}
-		return false;
-	},
+		var PosFn = {
+			desc : function(a, b) {
+				return +(b.Pos || 0) - (a.Pos || 0);
+			},
 
-	newIp : function(data) {
-		if (data === -1) {
-			return {
-				Id : -1,
-				Pos : -1
-			};
-		}
-		return {
-			Id : data.Id,
-			Pos : data.Pos
+			orderByFn : function(ascs, descs) {
+				ascs = ascs || [];
+				descs = descs || [];
+				return function(a, b) {
+					var result = 0;
+					/*jshint eqnull:true */
+					var ok = ascs.some(function(asc) {
+						var va = a[asc],
+						    vb = b[asc];
+						/*jslint eqeq: true*/
+						if (va == vb) {
+							return false;
+						}
+						if (vb == null || va > vb) {
+							result = 1;
+							return true;
+						}
+						if (va == null || va < vb) {
+							result = -1;
+							return true;
+						}
+					});
+					if (ok) {
+						return result;
+					}
+					/*jshint eqnull:true */
+					descs.some(function(desc) {
+						var va = a[desc],
+						    vb = b[desc];
+						/*jslint eqeq: true*/
+						if (va == vb) {
+							return false;
+						}
+						if (vb == null || va > vb) {
+							result = -1;
+							return true;
+						}
+						if (va == null || va < vb) {
+							result = 1;
+							return true;
+						}
+					});
+					return result;
+				};
+			},
+
+			isIps : function(data) {
+				if (Array.isArray(data) && data.length > 0) {
+					var keys = Object.keys(data[0]).filter(function(k) {
+						return !$regex.test(k);
+					}).sort().join('');
+					return 'IdPos' === keys;
+				}
+				return false;
+			},
+
+			newIp : function(data) {
+				if (data === -1) {
+					return {
+						Id : -1,
+						Pos : -1
+					};
+				}
+				return {
+					Id : data.Id,
+					Pos : data.Pos
+				};
+			},
+
+			xpos : function(ip1, ip2) {
+				var temp = ip1.Pos;
+				ip1.Pos = ip2.Pos;
+				ip2.Pos = temp;
+			}
 		};
-	},
-
-	xpos : function(ip1, ip2) {
-		var temp = ip1.Pos;
-		ip1.Pos = ip2.Pos;
-		ip2.Pos = temp;
-	}
-}).constant('JsonFn', ( function() {
+		return PosFn;
+	}()))
+// JsonFn
+.constant('JsonFn', ( function() {
 		var JsonFn = {
 			delGoNullTime : function(key, value) {
 				if (/^0001-01-01T(\d{2}):(\d{2}):(\d{2}).*$/.test(value)) {
@@ -192,7 +202,9 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 			return JSON.parse(JSON.stringify(obj, JsonFn.delNoneExampleEntry));
 		};
 		return JsonFn;
-	}())).constant('TplFn', ( function() {
+	}()))
+// TplFn
+.constant('TplFn', ( function() {
 		var baseDir = '/views/directive-templates/';
 		var fieldBaseDir = baseDir + 'field/';
 		var formBaseDir = baseDir + 'form/';
@@ -233,10 +245,8 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 					case 'time':
 					case 'week':
 						return fieldBaseDir + 'textfield.html';
-					default:
-						return fieldBaseDir + 'textfield.html';
 				}
-				return '';
+				return fieldBaseDir + 'textfield.html';
 			},
 
 			formFragment : function(name) {
