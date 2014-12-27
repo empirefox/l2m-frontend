@@ -7,17 +7,20 @@ angular.module('app.fns', []).constant('ArrFn', ( function() {
 				};
 			},
 
+			// -1 when not found, -2 when not found and pos is the biggest one
 			findIndexByPos : function(container, pos) {
 				container = container || [];
-				var index = -2;
+				var index = -1,
+				    isBiggest = true;
 				container.some(function(ele, i) {
+					isBiggest = isBiggest && pos > ele.Pos;
 					if (ele.Pos === pos) {
 						index = i;
 						return true;
 					}
 					return false;
 				});
-				return index;
+				return (index === -1 && isBiggest) ? -2 : index;
 			},
 
 			containsWithProperty : function(container, target, propName) {

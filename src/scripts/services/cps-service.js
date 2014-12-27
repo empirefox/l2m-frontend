@@ -171,21 +171,22 @@ function(Cps, $routeParams, $location, ArrFn, PosFn) {
 		bottom = angular.isDefined(bottom) ? bottom : models[models.length - 1].Pos;
 		top = angular.isDefined(top) ? (top === -1 ? models[0].Pos + 16 : top) : models[0].Pos;
 
+		// must use concat to generate a new array
 		if (models[0].Pos < top) {
-			models.unshift({
+			models = [{
 				Pos : top + 1
-			});
+			}].concat(models);
 		}
 
 		if (models[models.length - 1].Pos > bottom) {
-			models.push({
+			models = models.concat([{
 				Pos : bottom - 1
-			});
+			}]);
 		}
 
 		// 取得基准位置
 		var iNow = ArrFn.findIndexByPos(models, basePos);
-		if (iNow === -2) {
+		if (iNow < 0) {
 			return basePos;
 		}
 		// 不能是最上面元素，需要排除0
