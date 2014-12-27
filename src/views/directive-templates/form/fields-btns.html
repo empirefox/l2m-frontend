@@ -1,0 +1,13 @@
+<button ng-click="save()" ng-disabled="myForm.$invalid" type="button" class="btn btn-success">
+	<i class="glyphicon glyphicon-ok-circle"> </i>
+	<span ng-show="isUndefined(editing.Id)">新建</span>
+	<span ng-hide="isUndefined(editing.Id)">保存</span>
+</button>
+<button ng-click="edit()" type="button" class="btn btn-primary">
+	<i class="glyphicon glyphicon-repeat"> </i>
+	重置
+</button>
+<button ng-click="remove()" ng-disabled="isUndefined(editing.Id)" type="button" class="btn btn-danger">
+	<i class="glyphicon glyphicon-remove-circle"> </i>
+	删除
+</button>

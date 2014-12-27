@@ -6,6 +6,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 
 	var copy = angular.copy,
 	    noop = angular.noop,
+	    extend = angular.extend,
 	    isDefined = $scope.isDefined = angular.isDefined,
 	    isUndefined = $scope.isUndefined = angular.isUndefined,
 	    FP = FormService.FP,
@@ -38,7 +39,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 	}
 
 	function hasPos() {
-		return $scope.form.Fields.some(function(field) {
+		return ($scope.form.Fields || []).some(function(field) {
 			return field.Name === 'Pos';
 		});
 	}
@@ -113,7 +114,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 		var isNew = isEditNew();
 		return $scope.editing.$save(function(record) {
 			if (isNew) {
-				$scope.rs.push(record);
+				$scope.addRecord(record);
 			} else {
 				ArrFn.replace($scope.rs, $scope.record, record);
 			}
@@ -140,7 +141,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 		if (newPos === -1) {
 			return FormResource.saveup($scope.editing).$promise.then(function(data) {
 				var record = new FormResource(data.Newer);
-				$scope.rs.push(record);
+				$scope.addRecord(record);
 				$scope.edit(record);
 				return data;
 			});
@@ -184,7 +185,9 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 
 	//candidates
 	$scope.copyFromForm = function(record) {
-		$scope.edit(new FormResource(copy(record)));
+		$scope.edit(new FormResource(extend({
+			Pos : -1
+		}, record)));
 	};
 
 	//isFields
@@ -376,6 +379,11 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 				}
 			}
 		});
+	};
+
+	$scope.addRecord = function(record) {
+		$scope.rs = $scope.rs || [];
+		$scope.rs.push(record);
 	};
 
 	//return a new Resource instance
