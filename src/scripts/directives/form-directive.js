@@ -63,8 +63,10 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 		return $scope.pager.currentPage === 1;
 	}
 
-	function removeRecord(record, reserve) {
-		if (!reserve) {
+	function orderOrRemove(record, reserve) {
+		if (reserve) {
+			$scope.rs.push($scope.rs.shift());
+		} else {
 			ArrFn.remove($scope.rs, record);
 			if ($scope.record === record) {
 				$scope.edit();
@@ -86,6 +88,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 			$scope.rs.some(copy);
 			[$scope.record, $scope.editing].some(copy);
 		});
+
 		return data;
 	}
 
@@ -296,7 +299,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 			},
 			handle : function(data) {
 				record.Pos = data.Pos;
-				removeRecord(record, isFirstPage());
+				orderOrRemove(record, isFirstPage());
 			}
 		});
 	};
@@ -312,7 +315,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 				search : CpsService.pSearch(record)
 			},
 			handle : function(data) {
-				removeRecord(record, isLastPage());
+				orderOrRemove(record, isLastPage());
 				return data;
 			}
 		});
@@ -367,7 +370,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 				Ids : [record.Id]
 			},
 			handle : function() {
-                ArrFn.remove($scope.rs, record);
+				ArrFn.remove($scope.rs, record);
 				if (record.Id === $scope.record.Id) {
 					$scope.edit();
 				}

@@ -124,7 +124,7 @@ function($location, $routeParams, $resource, CpsService) {
 			}
 		},
 		posTop : {
-			method : 'PUT',
+			method : 'POST',
 			params : {
 				act : 'postop',
 			}
