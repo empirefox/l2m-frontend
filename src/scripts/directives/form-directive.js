@@ -144,7 +144,7 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 		}
 
 		if (newPos > 0) {
-			return saveNormalWithPos(newPos.Pos);
+			return saveNormalWithPos(newPos);
 		}
 	}
 
@@ -352,11 +352,11 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 		$scope.edit(r);
 	};
 
-	$scope.removeNode = function(scope) {
+	$scope.removeNode = function(record) {
 		remoteAction({
 			pre : function() {
-				if (isUndefined(scope.$modelValue.Id)) {
-					scope.remove();
+				if (isUndefined(record.Id)) {
+					ArrFn.remove($scope.rs, record);
 					return $q.reject({
 						succeed : true
 					});
@@ -364,12 +364,11 @@ function($scope, $location, FormResource, FormService, CpsService, Msg, $q, ArrF
 			},
 			act : 'remove',
 			postData : {
-				Ids : [scope.$modelValue.Id]
+				Ids : [record.Id]
 			},
 			handle : function() {
-				var id = scope.$modelValue.Id;
-				scope.remove();
-				if (id === $scope.record.Id) {
+                ArrFn.remove($scope.rs, record);
+				if (record.Id === $scope.record.Id) {
 					$scope.edit();
 				}
 			}

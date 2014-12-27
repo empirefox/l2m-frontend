@@ -38,7 +38,7 @@ function(Cps, $routeParams, $location, ArrFn, PosFn) {
 			// 向上处理
 			if (step < 0) {
 				if (step === -1) {
-					return (pCheck + pNow) / 2;
+					return Math.floor((pCheck + pNow) / 2);
 				}
 				for (var i = iNow - 1; i > iNext; i--) {
 					mods.push({
@@ -54,7 +54,7 @@ function(Cps, $routeParams, $location, ArrFn, PosFn) {
 			}
 			// 向下处理
 			if (step === 1) {
-				return (pCheck + pNow) / 2;
+				return Math.floor((pCheck + pNow) / 2);
 			}
 			for (var j = iNow; j < iNext; j++) {
 				mods.push({
@@ -172,15 +172,15 @@ function(Cps, $routeParams, $location, ArrFn, PosFn) {
 		top = angular.isDefined(top) ? (top === -1 ? models[0].Pos + 16 : top) : models[0].Pos;
 
 		if (models[0].Pos < top) {
-			models = [{
+			models.unshift({
 				Pos : top + 1
-			}].concat(models);
+			});
 		}
 
 		if (models[models.length - 1].Pos > bottom) {
-			models = models.concat([{
+			models.push({
 				Pos : bottom - 1
-			}]);
+			});
 		}
 
 		// 取得基准位置
