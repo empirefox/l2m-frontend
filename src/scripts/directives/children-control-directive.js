@@ -9,7 +9,8 @@ function($location, $routeParams) {
 				var s = {};
 				var pIdKey = S($routeParams.fname).underscore().chompLeft('_').s + "_id";
 				s[pIdKey] = $scope.record.Id;
-				//以form名称定向
+				// self fname|Parent| => child field|parent_id|
+				// Redirect to: /table/Child?parent_id=1
 				$location.path('/table/' + pluralize.singular($scope.field.Name)).search(s);
 			};
 		}

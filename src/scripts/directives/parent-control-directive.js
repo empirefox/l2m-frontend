@@ -9,16 +9,21 @@ function($http, $location, $log) {
 			    isUndefined = angular.isUndefined;
 
 			var parentForm = function() {
+			    // ParentId => Parent
 				return S($scope.field.Name).chompRight('Id').s;
 			};
 			$scope.view = function() {
+			    // Redirect to: /table/Parent?id=1
 				$location.path('/table/' + parentForm()).search({
 					id : $scope.record[$scope.field.Name]
 				});
 			};
+			// record changed > change the record's parent display name
 			$scope.$watch('record', function(record, old) {
 				var name = $scope.field.Name;
 				if (isUndefined($scope.record[name])) {
+				    // no record now > delete
+				    // parentName: Parent
 					delete $scope.parentName;
 					return;
 				}
@@ -26,6 +31,7 @@ function($http, $location, $log) {
 					return;
 				}
 				var url = '/' + parentForm() + '/names';
+				// Get /Parent/names?id=123
 				$http.get(url, {
 					params : {
 						search : {
