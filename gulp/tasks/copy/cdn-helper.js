@@ -28,7 +28,7 @@ var helper = {
 	},
 
 	toStaticfilesCDN : function() {
-		return replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//cdn.staticfile.org');
+		return replace(/\/\/cdnjs\.cloudflare\.com\/ajax\/libs/g, '//dn-cdnjscn.qbox.me/ajax/libs');
 	}
 };
 

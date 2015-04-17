@@ -31,7 +31,8 @@
 			"bower_components/spectrum/spectrum.css",
 			"bower_components/angularjs-toaster/toaster.css",
 			"bower_components/codemirror/lib/codemirror.css",
-			"bower_components/codemirror/theme/twilight.css"
+			"bower_components/codemirror/theme/twilight.css",
+            "bower_components/textAngular/src/textAngular.css"
 		]
 	},
 
@@ -41,7 +42,7 @@
 		[
 			{
 				"package": "rangy",
-				"files": "rangy-core.js+rangy-selectionsaverestore.js"
+				"files": "rangy-core.js+rangy-selectionsaverestore.js+rangy-classapplier.js"
 			}
 		],
 
@@ -67,14 +68,16 @@
 			"bower_components/js-beautify/js/lib/unpackers/javascriptobfuscator_unpacker.js",
 			"bower_components/js-beautify/js/lib/unpackers/myobfuscate_unpacker.js",
 			"bower_components/js-beautify/js/lib/unpackers/p_a_c_k_e_r_unpacker.js",
-			"bower_components/js-beautify/js/lib/unpackers/urlencode_unpacker.js"
+			"bower_components/js-beautify/js/lib/unpackers/urlencode_unpacker.js",
+			"bower_components/ta-bootstrap/dist/app.js"
 		],
 
 		"css":
 		[
 			"bower_components/angular-ui-bootstrap-datetimepicker/datetimepicker.css",
 			"bower_components/angular-ui-tree/dist/angular-ui-tree.min.css",
-			"bower_components/angular-dialog-service/dist/dialogs.min.css"
+			"bower_components/angular-dialog-service/dist/dialogs.min.css",
+            "bower_components/ta-bootstrap/dist/app.css"
 		]
 	},
 
